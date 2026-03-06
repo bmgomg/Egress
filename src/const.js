@@ -1,0 +1,15 @@
+export const APP_STATE = 'THIS SIDE UP V2';
+export const PROMPT_TRANSITION = 300;
+export const PROMPT_PLAY_AGAIN = 'Play again?';
+export const PROMPT_RESET_STATS = 'Reset stats?';
+export const PROMPT_NO = 'No';
+export const MODE_PRACITCE = 'PRACTICE';
+export const MODE_CHALLENGE = 'CHALLENGE';
+export const SIZE = 3;
+export const CELL_COUNT = SIZE * SIZE;
+export const CELL_SIZE = 70;
+export const CELL_MARGIN = 3;
+export const TICK_MS = 500;
+export const LEVELS = [{ secs: 30 },{ secs: 30 },{ secs: 30 },{ secs: 20 },{ secs: 10 },];
+export const TASKS_PER_LEVEL = 10;
+export const MAX_STRIKES = 3;
