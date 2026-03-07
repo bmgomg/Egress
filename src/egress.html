@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Egress</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+:root {
+  --bg:        #0b0e14;
+  --panel:     #0f1420;
+  --lead:      #1e2a1e;
+  --lead-lt:   #2e4030;
+  --gold:      #c8a84a;
+  --gold-lt:   #e8cc80;
+  --gold-dim:  #6a5820;
+  --blue:      #4a9fd4;
+  --blue-lt:   #8ecfee;
+  --blue-dim:  #1a3a50;
+  --amber:     #c87820;
+  --amber-lt:  #f0b050;
+  --amber-dim: #5a3008;
+  --door:      #50d090;
+  --door-dim:  #1a4a30;
+  --text:      #c0b090;
+  --text-dim:  #4a4030;
+  --cinzel:    'Cinzel', serif;
+  --garamond:  'EB Garamond', serif;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--garamond);
+  overflow: hidden;
+  user-select: none;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Atmospheric background */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 10%, #C8A84A0F 0%, transparent 60%),
+    radial-gradient(ellipse 60% 70% at 85% 90%, #4A9FD40F 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, #50D09008 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ── SCREENS ── */
+.screen { display:none; flex-direction:column; align-items:center; width:100%; max-width:420px; padding:0 16px; }
+.screen.active { display:flex; }
+
+/* ══════════════════════════════════════
+   TITLE SCREEN
+══════════════════════════════════════ */
+#screen-title {
+  gap: 0;
+  justify-content: center;
+  height: 100vh;
+}
+
+.title-ornament {
+  font-size: 13px;
+  letter-spacing: 0.6em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  font-family: var(--cinzel);
+  margin-bottom: 12px;
+}
+
+.game-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(42px, 12vw, 64px);
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  text-shadow:
+    0 0 40px #C8A84A80,
+    0 0 80px #C8A84A33;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.game-tagline {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  margin-bottom: 48px;
+  text-align: center;
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+.title-divider {
+  width: 160px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+  margin-bottom: 48px;
+}
+
+.title-btn {
+  font-family: var(--cinzel);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: none;
+  border: 1px solid var(--gold-dim);
+  padding: 14px 40px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.title-btn::before, .title-btn::after {
+  content: '';
+  position: absolute;
+  width: 6px; height: 6px;
+  border-color: var(--gold);
+  border-style: solid;
+  transition: all 0.2s;
+}
+.title-btn::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+.title-btn::after  { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+
+.title-btn:hover {
+  background: #C8A84A0F;
+  border-color: var(--gold);
+  box-shadow: 0 0 20px #C8A84A26;
+}
+
+.title-btn.secondary {
+  font-size: 11px;
+  color: var(--text-dim);
+  border-color: var(--text-dim);
+  padding: 10px 32px;
+}
+.title-btn.secondary::before, .title-btn.secondary::after { border-color: var(--text-dim); }
+.title-btn.secondary:hover { color: var(--text); border-color: var(--text); background: #C0B0900A; box-shadow: none; }
+
+/* ══════════════════════════════════════
+   INSTRUCTIONS SCREEN
+══════════════════════════════════════ */
+#screen-instructions {
+  gap: 0;
+  justify-content: center;
+  height: 100vh;
+  padding: 32px 24px;
+}
+
+.instr-title {
+  font-family: var(--cinzel);
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.instr-lead {
+  font-size: 15px;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.65;
+  text-align: center;
+  margin-bottom: 28px;
+  max-width: 320px;
+}
+
+.instr-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--lead-lt), transparent);
+  margin-bottom: 24px;
+}
+
+.instr-list {
+  list-style: none;
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.instr-list li {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+.instr-list li .bullet {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.instr-list li span em {
+  font-style: normal;
+  color: var(--text);
+}
+
+/* ══════════════════════════════════════
+   GAME SCREEN
+══════════════════════════════════════ */
+#screen-game {
+  gap: 0;
+  justify-content: space-between;
+  height: 100vh;
+  padding: 0;
+}
+
+/* Top bar */
+.top-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--lead);
+}
+
+.top-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 18px;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 20px #C8A84A66;
+}
+
+.top-level {
+  font-family: var(--cinzel);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--text);
+  opacity: 0.5;
+  text-transform: uppercase;
+}
+
+/* Stats row */
+.stats-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--lead);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex: 1;
+  position: relative;
+}
+
+.stat-item + .stat-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 20%; height: 60%;
+  width: 1px;
+  background: var(--lead);
+}
+
+.stat-label {
+  font-family: var(--cinzel);
+  font-size: 8px;
+  letter-spacing: 0.3em;
+  color: var(--text);
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
+.stat-val {
+  font-family: var(--cinzel);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+}
+
+.stat-val.gold  { color: var(--gold); text-shadow: 0 0 12px #C8A84A80; }
+.stat-val.green { color: var(--door); text-shadow: 0 0 12px #50D09080; }
+.stat-val.dim   { color: var(--text); opacity: 0.35; }
+
+/* Game area — the box */
+.game-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  min-height: 0;
+}
+
+.box-outer {
+  position: relative;
+}
+
+canvas#box-canvas {
+  display: block;
+}
+
+/* Controls */
+.controls-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 16px 20px;
+  border-top: 1px solid var(--lead);
+}
+
+.move-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid var(--lead-lt);
+  color: var(--gold);
+  cursor: pointer;
+  padding: 14px 28px;
+  transition: all 0.15s;
+  position: relative;
+  min-width: 100px;
+}
+
+.move-btn::before, .move-btn::after {
+  content: '';
+  position: absolute;
+  width: 7px; height: 7px;
+  border-color: var(--gold-dim);
+  border-style: solid;
+  transition: border-color 0.15s;
+}
+.move-btn::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+.move-btn::after  { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+
+.move-btn:active:not(:disabled) {
+  transform: scale(0.96);
+  background: #C8A84A0F;
+}
+.move-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+
+.move-btn .btn-icon { font-size: 28px; line-height: 1; }
+.move-btn .btn-label {
+  font-family: var(--cinzel);
+  font-size: 8px;
+  letter-spacing: 0.3em;
+  color: var(--text);
+  opacity: 0.5;
+  text-transform: uppercase;
+}
+
+.move-count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.move-count-val {
+  font-family: var(--cinzel);
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+  min-width: 2ch;
+  text-align: center;
+}
+
+.move-count-label {
+  font-family: var(--cinzel);
+  font-size: 8px;
+  letter-spacing: 0.25em;
+  color: var(--text);
+  opacity: 0.5;
+  text-transform: uppercase;
+}
+
+/* Bottom bar */
+.bottom-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px 14px;
+  border-top: 1px solid var(--lead);
+}
+
+.bottom-btn {
+  font-family: var(--cinzel);
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 0;
+  transition: color 0.15s;
+}
+.bottom-btn:hover { color: var(--gold); }
+
+.move-history {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  max-width: 160px;
+  overflow: hidden;
+}
+
+.mh-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+.mh-dot.cw  { background: var(--amber); }
+.mh-dot.ccw { background: var(--blue); }
+
+/* ══════════════════════════════════════
+   WIN / COMPLETE SCREENS
+══════════════════════════════════════ */
+#screen-win, #screen-complete {
+  gap: 0;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
+
+.win-ornament {
+  font-family: var(--cinzel);
+  font-size: 10px;
+  letter-spacing: 0.5em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.win-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(32px, 9vw, 48px);
+  color: var(--gold);
+  text-shadow: 0 0 30px #C8A84A99, 0 0 80px #C8A84A33;
+  margin-bottom: 8px;
+  line-height: 1.1;
+}
+
+.win-subtitle {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text-dim);
+  margin-bottom: 36px;
+}
+
+.win-stats {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.win-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.win-stat-label {
+  font-family: var(--cinzel);
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.win-stat-val {
+  font-family: var(--cinzel);
+  font-size: 36px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+}
+
+.win-stat-val.gold  { color: var(--gold); text-shadow: 0 0 16px #C8A84A80; }
+.win-stat-val.green { color: var(--door); text-shadow: 0 0 16px #50D09080; }
+
+.win-rating {
+  font-size: 28px;
+  letter-spacing: 0.15em;
+  margin-bottom: 40px;
+  color: var(--gold);
+  text-shadow: 0 0 20px #C8A84A80;
+}
+
+.win-divider {
+  width: 120px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+  margin: 0 auto 36px;
+}
+
+.win-btn {
+  font-family: var(--cinzel);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: none;
+  border: 1px solid var(--gold-dim);
+  padding: 13px 36px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin: 0 8px;
+  position: relative;
+}
+.win-btn::before, .win-btn::after {
+  content: '';
+  position: absolute;
+  width: 6px; height: 6px;
+  border-color: var(--gold);
+  border-style: solid;
+}
+.win-btn::before { top:-1px; left:-1px; border-width:1px 0 0 1px; }
+.win-btn::after  { bottom:-1px; right:-1px; border-width:0 1px 1px 0; }
+.win-btn:hover { background: #C8A84A12; border-color: var(--gold); box-shadow: 0 0 20px #C8A84A26; }
+
+.win-btn.dim {
+  color: var(--text-dim); border-color: var(--text-dim); font-size: 10px; padding: 10px 28px;
+}
+.win-btn.dim::before, .win-btn.dim::after { border-color: var(--text-dim); }
+.win-btn.dim:hover { color: var(--text); border-color: var(--text); background: #C0B0900A; box-shadow: none; }
+
+/* ══════════════════════════════════════
+   TRANSITIONS
+══════════════════════════════════════ */
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+@keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.5} }
+@keyframes glow   { 0%,100%{text-shadow:0 0 20px #C8A84A66} 50%{text-shadow:0 0 40px #C8A84ACC,0 0 80px #C8A84A4D} }
+
+.screen.active { animation: fadeIn 0.35s ease; }
+</style>
+</head>
+<body>
+
+<!-- ══════════ TITLE SCREEN ══════════ -->
+<div id="screen-title" class="screen active">
+  <div class="title-ornament">A puzzle of gravity &amp; escape</div>
+  <div class="game-title">Egress</div>
+  <div class="game-tagline">A box full of blocks and bubbles. One door. Rotate to empty it.</div>
+  <div class="title-divider"></div>
+  <button class="title-btn" id="btn-play">Play</button>
+  <button class="title-btn secondary" id="btn-how">How to Play</button>
+</div>
+
+<!-- ══════════ INSTRUCTIONS SCREEN ══════════ -->
+<div id="screen-instructions" class="screen">
+  <div class="instr-title">How to Play</div>
+  <div class="instr-lead">Rotate the box to empty it through the door—a gap in one wall, always at a corner.</div>
+  <div class="instr-divider"></div>
+  <ul class="instr-list">
+    <li>
+      <svg class="bullet" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#4a9fd4" stroke-width="1.5"/><circle cx="10" cy="10" r="4" fill="#4A9FD433"/><circle cx="7" cy="7" r="1.5" fill="white" fill-opacity="0.6"/></svg>
+      <span><em>Blocks are heavier than air, bubbles are lighter than air</em></span>
+    </li>
+    <li>
+      <svg class="bullet" viewBox="0 0 20 20"><rect x="3" y="5" width="14" height="12" fill="#C8782033" stroke="#c87820" stroke-width="1.5"/><line x1="3" y1="5" x2="17" y2="5" stroke="#f0b050" stroke-width="1.5"/></svg>
+      <span>The door must be on the <em>top or bottom wall</em> for pieces to escape—side walls are sealed</span>
+    </li>
+    <li>
+      <svg class="bullet" viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="6" fill="#C878204D" stroke="#c87820" stroke-width="1"/><circle cx="10" cy="15" r="4" fill="#4A9FD44D" stroke="#4a9fd4" stroke-width="1"/></svg>
+      <span>A block on top of <em>one bubble</em> drags it down—they fall together</span>
+    </li>
+    <li>
+      <svg class="bullet" viewBox="0 0 20 20"><circle cx="7" cy="14" r="3.5" fill="#4A9FD44D" stroke="#4a9fd4" stroke-width="1"/><circle cx="13" cy="14" r="3.5" fill="#4A9FD44D" stroke="#4a9fd4" stroke-width="1"/><rect x="6" y="3" width="8" height="6" fill="#C878204D" stroke="#c87820" stroke-width="1"/></svg>
+      <span>A block on <em>two or more bubbles</em> gets lifted up—they rise together</span>
+    </li>
+  </ul>
+  <div class="instr-divider"></div>
+  <div style="font-size:13px;font-style:italic;color:var(--text-dim);margin-bottom:32px;text-align:center">Clear the box in as few rotations as possible.</div>
+  <button class="title-btn" id="btn-start">Begin</button>
+</div>
+
+<!-- ══════════ GAME SCREEN ══════════ -->
+<div id="screen-game" class="screen">
+  <div class="top-bar">
+    <div class="top-title">Egress</div>
+    <div class="top-level" id="level-label">Level 1</div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-label">Par</div>
+      <div class="stat-val gold" id="stat-par">—</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">Moves</div>
+      <div class="stat-val" id="stat-moves">0</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">Best</div>
+      <div class="stat-val dim" id="stat-best">—</div>
+    </div>
+  </div>
+
+  <div class="game-area">
+    <div class="box-outer">
+      <canvas id="box-canvas"></canvas>
+    </div>
+  </div>
+
+  <div class="controls-row">
+    <button class="move-btn" id="btn-ccw">
+      <div class="btn-icon">↺</div>
+      <div class="btn-label">CCW</div>
+    </button>
+    <div class="move-count">
+      <div class="move-count-val" id="pieces-left">9</div>
+      <div class="move-count-label">Pieces</div>
+    </div>
+    <button class="move-btn" id="btn-cw">
+      <div class="btn-icon">↻</div>
+      <div class="btn-label">CW</div>
+    </button>
+  </div>
+
+  <div class="bottom-bar" style="display:flex;width:100%;align-items:center;justify-content:space-between;padding:10px 20px 14px;border-top:1px solid var(--lead);flex-shrink:0;">
+    <button class="bottom-btn" id="btn-menu">Menu</button>
+    <button class="bottom-btn" id="btn-hint">Hint</button>
+    <button class="bottom-btn" id="btn-reset">Reset</button>
+  </div>
+</div>
+
+<!-- ══════════ WIN SCREEN ══════════ -->
+<div id="screen-win" class="screen">
+  <div class="win-ornament">Puzzle Solved</div>
+  <div class="win-title" id="win-title">Cleared</div>
+  <div class="win-subtitle" id="win-subtitle">The box is empty</div>
+  <div class="win-stats">
+    <div class="win-stat">
+      <div class="win-stat-label">Moves</div>
+      <div class="win-stat-val" id="win-moves">—</div>
+    </div>
+    <div class="win-stat">
+      <div class="win-stat-label">Par</div>
+      <div class="win-stat-val gold" id="win-par">—</div>
+    </div>
+    <div class="win-stat">
+      <div class="win-stat-label">Best</div>
+      <div class="win-stat-val green" id="win-best">—</div>
+    </div>
+  </div>
+  <div class="win-rating" id="win-rating">★★★</div>
+  <div class="win-divider"></div>
+  <div>
+    <button class="win-btn dim" id="btn-retry">Retry</button>
+    <button class="win-btn" id="btn-next">Next →</button>
+  </div>
+</div>
+
+<!-- ══════════ HINT OVERLAY ══════════ -->
+<div id="hint-overlay" style="display:none;position:fixed;inset:0;background:#000000BF;z-index:50;align-items:center;justify-content:center;">
+  <div style="background:var(--panel);border:1px solid var(--gold-dim);padding:32px 40px;text-align:center;max-width:320px;position:relative;">
+    <div style="font-family:var(--cinzel);font-size:10px;letter-spacing:0.4em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:16px;">Solution</div>
+    <div id="hint-text" style="font-family:var(--cinzel);font-size:14px;color:var(--text);letter-spacing:0.15em;line-height:2;margin-bottom:24px;"></div>
+    <button class="win-btn dim" id="btn-hint-close">Close</button>
+  </div>
+</div>
+<div id="screen-complete" class="screen">
+  <div class="win-ornament">All Levels Complete</div>
+  <div class="win-title">Mastered</div>
+  <div class="win-subtitle" style="margin-bottom:48px">You have emptied every box</div>
+  <div class="win-divider"></div>
+  <button class="win-btn" id="btn-restart">Play Again</button>
+</div>
+
+<script>
+'use strict';
+// ═══════════════════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════════════════
+const EMPTY=0, BLOCK=1, BUBBLE=2;
+
+// ═══════════════════════════════════════════════════════
+// LEVELS (pre-generated, BFS-verified)
+// ═══════════════════════════════════════════════════════
+const LEVELS = [
+  {grid:[[1,2,2],[2,2,2],[2,2,2]],door:{wall:3,corner:0},par:5,solution:["CW","CCW","CW","CCW","CW"]},
+  {grid:[[1,1,1],[1,2,2],[2,2,2]],door:{wall:3,corner:1},par:5,solution:["CW","CCW","CW","CCW","CCW"]},
+  {grid:[[1,1,1],[1,2,1],[1,2,1]],door:{wall:0,corner:1},par:6,solution:["CW","CW","CCW","CCW","CW","CW"]},
+  {grid:[[2,2,1],[1,2,2],[2,2,2]],door:{wall:3,corner:0},par:7,solution:["CW","CW","CW","CW","CW","CCW","CW"]},
+  {grid:[[1,2,2],[2,1,2],[2,2,2]],door:{wall:1,corner:0},par:7,solution:["CCW","CCW","CCW","CCW","CCW","CW","CCW"]},
+  {grid:[[2,2,1],[2,2,2],[2,1,2]],door:{wall:1,corner:0},par:7,solution:["CCW","CW","CCW","CW","CCW","CCW","CCW"]},
+  {grid:[[2,1,1],[1,2,1],[2,1,2]],door:{wall:0,corner:1},par:8,solution:["CW","CW","CCW","CCW","CW","CW","CW","CW"]},
+  {grid:[[2,2,2],[2,2,2],[2,2,1]],door:{wall:2,corner:0},par:8,solution:["CW","CW","CCW","CW","CW","CW","CW","CW"]},
+  {grid:[[2,2,1],[2,1,1],[1,2,1]],door:{wall:1,corner:0},par:9,solution:["CCW","CW","CCW","CCW","CCW","CW","CCW","CCW","CCW"]},
+  {grid:[[1,1,2],[1,2,1],[2,2,2]],door:{wall:3,corner:0},par:9,solution:["CCW","CW","CW","CW","CW","CW","CW","CCW","CW"]},
+];
+
+// ═══════════════════════════════════════════════════════
+// PHYSICS ENGINE
+// ═══════════════════════════════════════════════════════
+function toPhysCorner(w,c){return[[0,1],[1,2],[3,2],[0,3]][w][c];}
+function fromPhysCorner(p,w){return({0:{0:0,3:0},1:{0:1,1:0},2:{1:1,2:1},3:{2:0,3:1}})[p][w];}
+function rotateDoorCW(d){const np=(toPhysCorner(d.wall,d.corner)+1)%4,nw=(d.wall+1)%4;return{wall:nw,corner:fromPhysCorner(np,nw)};}
+function rotateDoorCCW(d){const np=(toPhysCorner(d.wall,d.corner)+3)%4,nw=(d.wall+3)%4;return{wall:nw,corner:fromPhysCorner(np,nw)};}
+function rotateGridCW(g){const N=g.length,ng=Array.from({length:N},()=>Array(N).fill(0));for(let r=0;r<N;r++)for(let c=0;c<N;c++)ng[c][N-1-r]=g[r][c];return ng;}
+function rotateGridCCW(g){const N=g.length,ng=Array.from({length:N},()=>Array(N).fill(0));for(let r=0;r<N;r++)for(let c=0;c<N;c++)ng[N-1-c][r]=g[r][c];return ng;}
+function getExitCol(door,N){if(door.wall===0||door.wall===2)return door.corner===0?0:N-1;return null;}
+
+function settleColumn(col,topExit,botExit){
+  let c=[...col];const N=c.length;let ch=true;
+  while(ch){ch=false;
+    for(let r=0;r<N;r++){
+      if(c[r]!==BLOCK)continue;
+      let nB=0;for(let i=r+1;i<N&&c[i]===BUBBLE;i++)nB++;
+      if(nB>=2){
+        if(r>0&&c[r-1]===EMPTY){c[r-1]=BLOCK;c[r]=BUBBLE;c[r+nB]=EMPTY;ch=true;break;}
+        else if(r===0&&topExit){c[r]=EMPTY;ch=true;break;}
+      }else if(nB===1){
+        if(r+2<N&&c[r+2]===EMPTY){c[r+2]=BUBBLE;c[r+1]=BLOCK;c[r]=EMPTY;ch=true;break;}
+        else if(r+1===N-1&&botExit){c[r+1]=EMPTY;c[r]=EMPTY;ch=true;break;}
+      }
+    }
+    if(ch)continue;
+    for(let r=1;r<N;r++){if(c[r]===BUBBLE&&c[r-1]===EMPTY){c[r-1]=BUBBLE;c[r]=EMPTY;ch=true;break;}}
+    if(ch)continue;
+    if(topExit&&c[0]===BUBBLE){c[0]=EMPTY;ch=true;continue;}
+    for(let r=N-2;r>=0;r--){if(c[r]===BLOCK&&c[r+1]===EMPTY){c[r+1]=BLOCK;c[r]=EMPTY;ch=true;break;}}
+    if(ch)continue;
+    if(botExit&&c[N-1]===BLOCK){c[N-1]=EMPTY;ch=true;continue;}
+  }
+  return c;
+}
+
+function applyPhysics(grid,door){
+  const N=grid.length,exitCol=getExitCol(door,N),tE=door.wall===0,bE=door.wall===2;
+  let g=grid.map(r=>[...r]);
+  for(let c=0;c<N;c++){
+    const col=settleColumn(g.map(r=>r[c]),tE&&exitCol===c,bE&&exitCol===c);
+    for(let r=0;r<N;r++)g[r][c]=col[r];
+  }
+  return g;
+}
+
+function countPieces(grid){return grid.flat().filter(x=>x!==EMPTY).length;}
+
+// ═══════════════════════════════════════════════════════
+// GAME STATE
+// ═══════════════════════════════════════════════════════
+let currentLevel=0;
+let state=null;
+const bests=Array(LEVELS.length).fill(null);
+
+function loadLevel(idx){
+  currentLevel=idx;
+  const lvl=LEVELS[idx];
+  state={
+    grid: lvl.grid.map(r=>[...r]),
+    door: {...lvl.door},
+    moves: 0,
+    history: [],
+  };
+  state.grid=applyPhysics(state.grid,state.door);
+  updateStats();
+  draw();
+}
+
+// ═══════════════════════════════════════════════════════
+// ANIMATION
+// ═══════════════════════════════════════════════════════
+const ANIM_DURATION = 500; // ms
+const ANIM_DELAY = 150;    // ms pause after rotation before pieces move
+let animState = null; // null = idle
+
+// A particle is a piece moving from one canvas position to another (or exiting)
+// { type, fromX, fromY, toX, toY, exiting, alpha }
+
+function doMove(cw){
+  if(animState) return; // block input during animation
+
+  // Snapshot grid before rotation
+  const gridBeforeRot = state.grid.map(r=>[...r]);
+  const doorBeforeRot = {...state.door};
+
+  // Apply rotation
+  if(cw){state.grid=rotateGridCW(state.grid);state.door=rotateDoorCW(state.door);}
+  else  {state.grid=rotateGridCCW(state.grid);state.door=rotateDoorCCW(state.door);}
+
+  const gridAfterRot  = state.grid.map(r=>[...r]);
+  const doorAfterRot  = {...state.door};
+
+  // Apply physics to get final grid
+  const gridFinal = applyPhysics(state.grid, state.door);
+
+  // Build particles: for each piece in gridAfterRot, find where it ends up in gridFinal
+  // Strategy: track by column (physics is column-local)
+  const cs = cellSize();
+  const particles = [];
+
+  for(let col=0; col<3; col++){
+    const before = gridAfterRot.map(r=>r[col]); // column top→bottom after rotation
+    const after  = gridFinal.map(r=>r[col]);     // column after physics
+
+    // Match pieces: walk from top, assign each piece in 'before' to its landing in 'after'
+    // Pieces that were in 'before' but not 'after' have exited
+    const exitCol = getExitCol(doorAfterRot, 3);
+    const isExitCol = (exitCol === col);
+    const topExit = doorAfterRot.wall===0 && isExitCol;
+    const botExit = doorAfterRot.wall===2 && isExitCol;
+
+    // Count pieces of each type before and after
+    const beforePieces = before.map((v,r)=>v!==EMPTY?{type:v,r}:null).filter(Boolean);
+    const afterPieces  = after.map((v,r)=>v!==EMPTY?{type:v,r}:null).filter(Boolean);
+
+    // Match greedily by type, preserving order
+    // Blocks: match top-to-bottom in after
+    // Bubbles: match top-to-bottom in after
+    // Unmatched = exited
+    const afterBlocks  = afterPieces.filter(p=>p.type===BLOCK);
+    const afterBubbles = afterPieces.filter(p=>p.type===BUBBLE);
+    let bi=0, ui=0;
+
+    for(const bp of beforePieces){
+      const fromX = col*cs + cs/2;
+      const fromY = bp.r*cs + cs/2;
+
+      if(bp.type===BLOCK && bi<afterBlocks.length){
+        const dest = afterBlocks[bi++];
+        particles.push({
+          type:BLOCK, fromX, fromY,
+          toX: col*cs+cs/2, toY: dest.r*cs+cs/2,
+          exiting:false, alpha:1
+        });
+      } else if(bp.type===BUBBLE && ui<afterBubbles.length){
+        const dest = afterBubbles[ui++];
+        particles.push({
+          type:BUBBLE, fromX, fromY,
+          toX: col*cs+cs/2, toY: dest.r*cs+cs/2,
+          exiting:false, alpha:1
+        });
+      } else {
+        // Piece exits — animate toward door edge
+        const exitY = botExit ? cs*3+cs*0.5 : topExit ? -cs*0.5 : fromY;
+        particles.push({
+          type:bp.type, fromX, fromY,
+          toX: col*cs+cs/2, toY: exitY,
+          exiting:true, alpha:1
+        });
+      }
+    }
+  }
+
+  // Commit final state
+  state.grid = gridFinal;
+  state.moves++;
+  state.history.push(cw?'CW':'CCW');
+  updateStats();
+
+  // Run animation
+  const startTime = performance.now();
+  animState = { particles, door: doorAfterRot, startTime };
+
+  function frame(now){
+    const elapsed = now - startTime;
+    const t = Math.min(Math.max((elapsed - ANIM_DELAY) / ANIM_DURATION, 0), 1);
+    drawAnimFrame(t, animState.particles, animState.door);
+    if(elapsed < ANIM_DELAY + ANIM_DURATION){
+      requestAnimationFrame(frame);
+    } else {
+      animState = null;
+      draw();
+      if(countPieces(state.grid)===0) setTimeout(showWin,300);
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+function easeBlock(t){ return t*t; }          // ease-in: blocks accelerate down
+function easeBubble(t){ return 1-(1-t)*(1-t); } // ease-out: bubbles decelerate up
+
+function drawAnimFrame(t, particles, door){
+  const cs = cellSize();
+  const W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  // Backgrounds
+  for(let r=0;r<3;r++) for(let c=0;c<3;c++){
+    ctx.fillStyle=(r+c)%2===0?'#0c1a0e':'#0a1810';
+    ctx.fillRect(c*cs,r*cs,cs,cs);
+    const grad=ctx.createRadialGradient(c*cs+cs/2,r*cs+cs/2,0,c*cs+cs/2,r*cs+cs/2,cs*0.6);
+    grad.addColorStop(0,'#50785014'); grad.addColorStop(1,'#00000000');
+    ctx.fillStyle=grad; ctx.fillRect(c*cs,r*cs,cs,cs);
+  }
+  // Lead lines
+  ctx.strokeStyle='#1e2a1e'; ctx.lineWidth=3;
+  for(let i=1;i<3;i++){
+    ctx.beginPath();ctx.moveTo(i*cs,0);ctx.lineTo(i*cs,H);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(0,i*cs);ctx.lineTo(W,i*cs);ctx.stroke();
+  }
+
+  // Draw particles
+  ctx.save();
+  ctx.rect(0,0,W,H); // clip to canvas so exiting pieces disappear at edge
+  for(const p of particles){
+    const ease = p.type===BLOCK ? easeBlock(t) : easeBubble(t);
+    const px = p.fromX + (p.toX-p.fromX)*ease;
+    const py = p.fromY + (p.toY-p.fromY)*ease;
+    const alpha = p.exiting ? Math.max(0, 1-t*1.5) : 1;
+    ctx.globalAlpha = alpha;
+    if(p.type===BUBBLE) drawBubble(ctx, px-cs/2, py-cs/2, cs);
+    else                drawBlock (ctx, px-cs/2, py-cs/2, cs);
+  }
+  ctx.globalAlpha=1;
+  ctx.restore();
+
+  // Walls + door indicator using the post-rotation door
+  drawWalls(door, cs, W, H);
+}
+
+function updateStats(){
+  const lvl=LEVELS[currentLevel];
+  document.getElementById('stat-par').textContent=lvl.par;
+  document.getElementById('stat-moves').textContent=state.moves;
+  const best=bests[currentLevel];
+  const bestEl=document.getElementById('stat-best');
+  bestEl.textContent=best!==null?best:'—';
+  bestEl.className='stat-val '+(best!==null?'green':'dim');
+  document.getElementById('pieces-left').textContent=countPieces(state.grid);
+  document.getElementById('level-label').textContent=`Level ${currentLevel+1} of ${LEVELS.length}`;
+
+  // History dots
+  const hist=document.getElementById('move-history');
+  if(hist){
+    hist.innerHTML='';
+    state.history.slice(-18).forEach(m=>{
+      const d=document.createElement('div');
+      d.className='mh-dot '+(m==='CW'?'cw':'ccw');
+      hist.appendChild(d);
+    });
+  }
+}
+
+function showWin(){
+  const lvl=LEVELS[currentLevel];
+  const moves=state.moves, par=lvl.par;
+  if(bests[currentLevel]===null||moves<bests[currentLevel])bests[currentLevel]=moves;
+  const best=bests[currentLevel];
+  const over=moves-par;
+  const rating=over<=0?'★★★':over<=2?'★★☆':'★☆☆';
+  const subtitle=over<=0?'Solved at par!':over===1?'One over par':over===2?'Two over par':'Keep practicing';
+
+  document.getElementById('win-title').textContent=over<=0?'Perfect':'Cleared';
+  document.getElementById('win-subtitle').textContent=subtitle;
+  document.getElementById('win-moves').textContent=moves;
+  document.getElementById('win-moves').className='win-stat-val'+(over<=0?' gold':'');
+  document.getElementById('win-par').textContent=par;
+  document.getElementById('win-best').textContent=best;
+  document.getElementById('win-rating').textContent=rating;
+
+  const nextBtn=document.getElementById('btn-next');
+  nextBtn.style.display=currentLevel<LEVELS.length-1?'':'none';
+
+  showScreen('win');
+}
+
+// ═══════════════════════════════════════════════════════
+// RENDERING — STAINED GLASS AESTHETIC
+// ═══════════════════════════════════════════════════════
+const canvas=document.getElementById('box-canvas');
+const ctx=canvas.getContext('2d');
+
+function setupCanvas(){
+  const topBar     = document.querySelector('.top-bar');
+  const statsRow   = document.querySelector('.stats-row');
+  const controlsRow= document.querySelector('.controls-row');
+  const bottomBar  = document.querySelector('.bottom-bar');
+  const usedH = topBar.offsetHeight + statsRow.offsetHeight +
+                controlsRow.offsetHeight + bottomBar.offsetHeight;
+  const availH = window.innerHeight - usedH - 24;
+  const availW = Math.min(window.innerWidth, 420) - 32;
+  const size = Math.min(availW, availH, 380);
+  canvas.width = size;
+  canvas.height = size;
+}
+
+function cellSize(){return Math.floor(canvas.width/3);}
+
+// Door gap: which segment of the outer border is open
+function doorGap(door,cs){
+  const N=3,total=cs*N,idx=door.corner===0?0:N-1;
+  switch(door.wall){
+    case 0:return{x1:idx*cs,y1:0,x2:idx*cs+cs,y2:0};
+    case 2:return{x1:idx*cs,y1:total,x2:idx*cs+cs,y2:total};
+    case 1:return{x1:total,y1:idx*cs,x2:total,y2:idx*cs+cs};
+    case 3:return{x1:0,y1:idx*cs,x2:0,y2:idx*cs+cs};
+  }
+}
+
+function drawWalls(door, cs, W, H){
+  const gap=doorGap(door,cs);
+  ctx.strokeStyle='#1e2a1e';
+  ctx.lineWidth=5;
+  ctx.lineCap='square';
+  function seg(x1,y1,x2,y2){if(x1===x2&&y1===y2)return;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
+  if(door.wall===0){seg(0,0,gap.x1,0);seg(gap.x2,0,W,0);}else seg(0,0,W,0);
+  if(door.wall===2){seg(0,H,gap.x1,H);seg(gap.x2,H,W,H);}else seg(0,H,W,H);
+  if(door.wall===3){seg(0,0,0,gap.y1);seg(0,gap.y2,0,H);}else seg(0,0,0,H);
+  if(door.wall===1){seg(W,0,W,gap.y1);seg(W,gap.y2,W,H);}else seg(W,0,W,H);
+  // Corner accents
+  ctx.fillStyle='#2e4030';
+  [[0,0],[W,0],[W,H],[0,H]].forEach(([x,y])=>{ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.fill();});
+  // Door indicator
+  const isVertical=(door.wall===0||door.wall===2);
+  const gapMid=isVertical?(gap.x1+gap.x2)/2:(gap.y1+gap.y2)/2;
+  if(isVertical){
+    const isTop=door.wall===0;
+    const gx=gap.x1,gw=cs,gh=cs*0.28;
+    const dg=ctx.createLinearGradient(gx,0,gx+gw,0);
+    dg.addColorStop(0,'#50D09000');dg.addColorStop(0.3,'#50D0904D');
+    dg.addColorStop(0.7,'#50D0904D');dg.addColorStop(1,'#50D09000');
+    ctx.fillStyle=dg;ctx.fillRect(gx,isTop?0:H-gh,gw,gh);
+    const lineY=isTop?0:H;
+    const lg=ctx.createLinearGradient(gx,0,gx+gw,0);
+    lg.addColorStop(0,'#50D09000');lg.addColorStop(0.2,'#50D090');
+    lg.addColorStop(0.8,'#50D090');lg.addColorStop(1,'#50D09000');
+    ctx.strokeStyle=lg;ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(gx,lineY);ctx.lineTo(gx+gw,lineY);ctx.stroke();
+    ctx.fillStyle='#50D090E6';
+    ctx.shadowColor='#50D090E6';ctx.shadowBlur=12;
+    ctx.font=`bold ${Math.floor(cs*0.3)}px serif`;
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(isTop?'↑':'↓',gapMid,isTop?cs*0.22:H-cs*0.22);
+    ctx.shadowBlur=0;
+  } else {
+    const isRight=door.wall===1;
+    const lineX=isRight?W:0;
+    const lg=ctx.createLinearGradient(0,gap.y1,0,gap.y2);
+    lg.addColorStop(0,'#50D09000');lg.addColorStop(0.2,'#50D090');
+    lg.addColorStop(0.8,'#50D090');lg.addColorStop(1,'#50D09000');
+    ctx.strokeStyle=lg;ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(lineX,gap.y1);ctx.lineTo(lineX,gap.y2);ctx.stroke();
+    ctx.fillStyle='#50D09059';
+    ctx.font=`${Math.floor(cs*0.28)}px serif`;
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('⊗',isRight?W-cs*0.22:cs*0.22,gapMid);
+  }
+}
+
+function draw(){
+  const cs=cellSize();
+  const W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  for(let r=0;r<3;r++)for(let c=0;c<3;c++){
+    ctx.fillStyle=(r+c)%2===0?'#0c1a0e':'#0a1810';
+    ctx.fillRect(c*cs,r*cs,cs,cs);
+    const grad=ctx.createRadialGradient(c*cs+cs/2,r*cs+cs/2,0,c*cs+cs/2,r*cs+cs/2,cs*0.6);
+    grad.addColorStop(0,'#50785014');grad.addColorStop(1,'#00000000');
+    ctx.fillStyle=grad;ctx.fillRect(c*cs,r*cs,cs,cs);
+  }
+  ctx.strokeStyle='#1e2a1e';ctx.lineWidth=3;
+  for(let i=1;i<3;i++){
+    ctx.beginPath();ctx.moveTo(i*cs,0);ctx.lineTo(i*cs,H);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(0,i*cs);ctx.lineTo(W,i*cs);ctx.stroke();
+  }
+  for(let r=0;r<3;r++)for(let c=0;c<3;c++){
+    const cell=state.grid[r][c];
+    if(cell===BUBBLE)drawBubble(ctx,c*cs,r*cs,cs);
+    if(cell===BLOCK) drawBlock(ctx,c*cs,r*cs,cs);
+  }
+  drawWalls(state.door,cs,W,H);
+}
+
+
+function drawBubble(ctx,x,y,cs){
+  const cx=x+cs/2,cy=y+cs/2,r=cs*0.36;
+
+  // Outer ambient glow
+  const glow=ctx.createRadialGradient(cx,cy,r*0.5,cx,cy,r*1.6);
+  glow.addColorStop(0,'#4A9FD41F');
+  glow.addColorStop(1,'#4A9FD400');
+  ctx.fillStyle=glow;
+  ctx.beginPath();ctx.arc(cx,cy,r*1.6,0,Math.PI*2);ctx.fill();
+
+  // Main glass body
+  const body=ctx.createRadialGradient(cx-r*0.28,cy-r*0.28,0,cx,cy,r);
+  body.addColorStop(0,'#B4E6FFE0');
+  body.addColorStop(0.35,'#4A9FD4B7');
+  body.addColorStop(0.75,'#1E508CA6');
+  body.addColorStop(1,'#0A1E4680');
+  ctx.fillStyle=body;
+  ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();
+
+  // Lead rim
+  ctx.strokeStyle='#14321ECC';
+  ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke();
+
+  // Inner color ring
+  ctx.strokeStyle='#64B4E64D';
+  ctx.lineWidth=1;
+  ctx.beginPath();ctx.arc(cx,cy,r*0.7,0,Math.PI*2);ctx.stroke();
+
+  // Primary specular
+  const spec=ctx.createRadialGradient(cx-r*0.28,cy-r*0.3,0,cx-r*0.1,cy-r*0.1,r*0.55);
+  spec.addColorStop(0,'#FFFFFFA6');
+  spec.addColorStop(1,'#FFFFFF00');
+  ctx.fillStyle=spec;
+  ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();
+
+  // Sharp catchlight
+  ctx.fillStyle='#FFFFFFE6';
+  ctx.beginPath();ctx.arc(cx-r*0.27,cy-r*0.3,r*0.1,0,Math.PI*2);ctx.fill();
+
+  // Bottom reflected light
+  const refl=ctx.createRadialGradient(cx+r*0.1,cy+r*0.35,0,cx,cy+r*0.4,r*0.4);
+  refl.addColorStop(0,'#64C8FF33');
+  refl.addColorStop(1,'#64C8FF00');
+  ctx.fillStyle=refl;
+  ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();
+}
+
+function drawBlock(ctx,x,y,cs){
+  const pad=cs*0.1;
+  const bx=x+pad,by=y+pad,bw=cs-pad*2,bh=cs-pad*2;
+  const iso=bw*0.22; // isometric offset
+
+  // Drop shadow
+  ctx.fillStyle='#0000004D';
+  ctx.fillRect(bx+3,by+3,bw,bh);
+
+  // Front face
+  const front=ctx.createLinearGradient(bx,by,bx,by+bh);
+  front.addColorStop(0,'#b87030');
+  front.addColorStop(1,'#6a3810');
+  ctx.fillStyle=front;
+  ctx.fillRect(bx,by,bw,bh);
+
+  // Top face (lighter)
+  ctx.fillStyle='#e8a840';
+  ctx.beginPath();
+  ctx.moveTo(bx,by);
+  ctx.lineTo(bx+iso,by-iso);
+  ctx.lineTo(bx+bw+iso,by-iso);
+  ctx.lineTo(bx+bw,by);
+  ctx.closePath();
+  ctx.fill();
+
+  // Top face highlight
+  ctx.fillStyle='#FFDCC833';
+  ctx.beginPath();
+  ctx.moveTo(bx,by);
+  ctx.lineTo(bx+iso,by-iso);
+  ctx.lineTo(bx+bw*0.5+iso,by-iso);
+  ctx.lineTo(bx+bw*0.5,by);
+  ctx.closePath();
+  ctx.fill();
+
+  // Right face (darker)
+  ctx.fillStyle='#7a3810';
+  ctx.beginPath();
+  ctx.moveTo(bx+bw,by);
+  ctx.lineTo(bx+bw+iso,by-iso);
+  ctx.lineTo(bx+bw+iso,by+bh-iso);
+  ctx.lineTo(bx+bw,by+bh);
+  ctx.closePath();
+  ctx.fill();
+
+  // Lead outlines
+  ctx.strokeStyle='#0A050080';
+  ctx.lineWidth=1.2;
+  // Front rect
+  ctx.strokeRect(bx,by,bw,bh);
+  // Top edge
+  ctx.beginPath();
+  ctx.moveTo(bx,by);ctx.lineTo(bx+iso,by-iso);
+  ctx.lineTo(bx+bw+iso,by-iso);ctx.lineTo(bx+bw,by);
+  ctx.stroke();
+  // Right vertical edge
+  ctx.beginPath();
+  ctx.moveTo(bx+bw+iso,by-iso);ctx.lineTo(bx+bw+iso,by+bh-iso);
+  ctx.stroke();
+  // Bottom right edge
+  ctx.beginPath();
+  ctx.moveTo(bx+bw+iso,by+bh-iso);ctx.lineTo(bx+bw,by+bh);
+  ctx.stroke();
+
+  // Front face highlight (left edge)
+  ctx.fillStyle='#FFB4501F';
+  ctx.fillRect(bx,by,bw*0.25,bh);
+}
+
+// ═══════════════════════════════════════════════════════
+// SCREEN MANAGEMENT
+// ═══════════════════════════════════════════════════════
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════
+// EVENTS
+// ═══════════════════════════════════════════════════════
+document.getElementById('btn-play').onclick=()=>{
+  showScreen('game'); setTimeout(()=>{setupCanvas();loadLevel(0);},50);
+};
+document.getElementById('btn-how').onclick=()=>showScreen('instructions');
+document.getElementById('btn-start').onclick=()=>{
+  showScreen('game'); setTimeout(()=>{setupCanvas();loadLevel(0);},50);
+};
+document.getElementById('btn-cw').onclick=()=>doMove(true);
+document.getElementById('btn-ccw').onclick=()=>doMove(false);
+document.getElementById('btn-reset').onclick=()=>{loadLevel(currentLevel);};
+document.getElementById('btn-menu').onclick=()=>showScreen('title');
+document.getElementById('btn-retry').onclick=()=>{showScreen('game');setTimeout(()=>{setupCanvas();loadLevel(currentLevel);},50);};
+document.getElementById('btn-next').onclick=()=>{
+  if(currentLevel<LEVELS.length-1){showScreen('game');setTimeout(()=>{setupCanvas();loadLevel(currentLevel+1);},50);}
+  else showScreen('complete');
+};
+document.getElementById('btn-hint').onclick=()=>{
+  const sol=LEVELS[currentLevel].solution;
+  document.getElementById('hint-text').textContent=sol.join(' → ');
+  document.getElementById('hint-overlay').style.display='flex';
+};
+document.getElementById('btn-hint-close').onclick=()=>{
+  document.getElementById('hint-overlay').style.display='none';
+};
+
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('screen-game').classList.contains('active'))return;
+  if(e.key==='ArrowRight'||e.key==='d'||e.key==='D')doMove(true);
+  if(e.key==='ArrowLeft'||e.key==='a'||e.key==='A')doMove(false);
+  if(e.key==='r'||e.key==='R')loadLevel(currentLevel);
+});
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+setupCanvas();
+window.addEventListener('resize',()=>{
+  setupCanvas();
+  if(state)draw();
+});
+</script>
+</body>
+</html>

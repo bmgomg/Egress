@@ -92,7 +92,7 @@
 
 	.result {
 		place-self: center;
-		font-family: Stencil;
+		font-family: Cinzel;
 		font-size: 32px;
 	}
 

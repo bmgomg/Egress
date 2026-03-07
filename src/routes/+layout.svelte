@@ -17,20 +17,28 @@
 			padding: 0;
 			height: 100dvh;
 			width: 100%;
-            --white: #ffffff;
-            --gold: #ffe4aa;
-			--water: #2c3a49;
-            --blue: #9dc1de;
-			--red: #ff3c31;
-			/* --background: #2f5f85; */
-			--background: #4c538d;
-			background: var(--background);
-            --ow: #d0d0d0;
-			color: var(--ow);
-			background-image: url('$lib/images/Texture.webp');
-			background-size: 407px 750px;
+			--bg: #0b0e14;
+			--panel: #0f1420;
+			--lead: #1e2a1e;
+			--lead-lt: #2e4030;
+			--gold: #c8a84a;
+			--gold-lt: #e8cc80;
+			--gold-dim: #6a5820;
+			--blue: #4a9fd4;
+			--blue-lt: #8ecfee;
+			--blue-dim: #1a3a50;
+			--amber: #c87820;
+			--amber-lt: #f0b050;
+			--amber-dim: #5a3008;
+			--door: #50d090;
+			--door-dim: #1a4a30;
+			--text: #c0b090;
+			/* --text-dim: #4a4030; */
+			--text-dim: #c0b09080;
+			background: var(--bg);
+			color: var(--text);
+			font-family: EBG;
 			place-content: center;
-			font-family: Poppins;
 		}
 
 		.button-base {
@@ -56,23 +64,18 @@
 		}
 
 		@font-face {
-			font-family: Stencil;
-			src: url('$lib/fonts/Warband Stencil Textured.otf');
+			font-family: Cinzel;
+			src: url('$lib/fonts/Cinzel.ttf');
 		}
 
 		@font-face {
-			font-family: Poppins;
-			src: url('$lib/fonts/Poppins.ttf');
+			font-family: CD;
+			src: url('$lib/fonts/Cinzel Decorative.ttf');
 		}
 
 		@font-face {
-			font-family: Roboto;
-			src: url('$lib/fonts/Roboto-Regular.ttf');
-		}
-
-		@font-face {
-			font-family: RC;
-			src: url('$lib/fonts/Roboto Condensed.ttf');
+			font-family: EBG;
+			src: url('$lib/fonts/EB Garamond.ttf');
 		}
 	}
 </style>

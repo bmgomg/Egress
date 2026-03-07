@@ -1,10 +1,9 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import { MODE_CHALLENGE, MODE_PRACITCE } from './const';
-	import { onMode } from './shared.svelte';
+	// import { onMode } from './shared.svelte';
 	import { ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
-	import Down from '$lib/images/Down.webp';
 
 	const ul = '<ul style="margin: 10px 0 0 0;">';
 	const li = '<li style="margin: 10px 0 0 -20px;">';
@@ -23,15 +22,15 @@
 
 {#if ss.home}
 	<div class="home" in:fade={{ duration: 200 }}>
-		<div class="title">THIS SIDE UP</div>
-		<img class="down" src={Down} alt="" width={100} />
+		<div class="title">Egress</div>
+		<div class="tagline">A box full of blocks and bubbles. One door. Rotate to empty it.</div>
 		<div class="content" tabindex="-1">
 			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 			{@html CONTENT}
 		</div>
 		<div class="buttons">
 			{#each [MODE_PRACITCE, MODE_CHALLENGE] as mode (mode)}
-				<TextButton id={'tb-mode-' + mode} text={[mode]} onClick={() => onMode(mode)} />
+				<TextButton id={'tb-mode-' + mode} text={[mode]} onClick={() => {}} />
 			{/each}
 		</div>
 	</div>
@@ -48,13 +47,27 @@
 	}
 
 	.title {
-		font-size: 64px;
-		font-family: Stencil;
-		filter: drop-shadow(0 1px 2px black);
+		font-family: 'Cinzel Decorative', serif;
+		font-size: clamp(42px, 12vw, 64px);
+		font-weight: 700;
+		color: var(--gold);
+		letter-spacing: 0.12em;
+		text-shadow:
+			0 0 40px rgba(200, 168, 74, 0.5),
+			0 0 80px rgba(200, 168, 74, 0.2);
+		line-height: 1;
+		margin-bottom: 10px;
 	}
 
-	.down {
-		margin-top: 35px;
+	.tagline {
+		font-size: 16px;
+		font-style: italic;
+		color: var(--text-dim);
+		letter-spacing: 0.08em;
+		margin-bottom: 48px;
+		text-align: center;
+		max-width: 280px;
+		line-height: 1.5;
 	}
 
 	.content {
@@ -71,7 +84,7 @@
 		display: grid;
 		grid-auto-flow: column;
 		gap: 32px;
-		font-family: Stencil;
+		font-family: Cinzel;
 		font-size: 32px;
 	}
 </style>

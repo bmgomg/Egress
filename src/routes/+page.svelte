@@ -1,6 +1,5 @@
 <script>
-    import Frame from '$lib/images/Frame.webp';
-	import GamePage from '../Game Page.svelte';
+	// import GamePage from '../Game Page.svelte';
 	import Home from '../Home.svelte';
 	import Splash from '../Splash.svelte';
 	import { ss } from '../state.svelte';
@@ -19,12 +18,12 @@
 
 			const r = clientRect('.app');
 
-			if (r.width < 450) {
-				scx = r.width / 450;
+			if (r.width < 470) {
+				scx = r.width / 470;
 			}
 
-			if (r.height < 788) {
-				scy = r.height / 788;
+			if (r.height < 800) {
+				scy = r.height / 800;
 			}
 
 			scale = Math.min(scx, scy);
@@ -52,8 +51,8 @@
 		<Splash />
 	{:else}
 		<div class="content bg" style="scale: {scale};">
-			<img class="frame" src={Frame} alt="" />
-			<GamePage />
+			<!-- <img class="frame" src={Frame} alt="" /> -->
+			<!-- <GamePage /> -->
 			<Home />
 			{#if ss.home}
 				<div class="disclaimer no-highlight">
@@ -70,6 +69,10 @@
 		display: grid;
 		place-content: center;
 		box-sizing: border-box;
+		background:
+			radial-gradient(ellipse 70% 50% at 15% 10%, #c8a84a28 0%, transparent 60%),
+			radial-gradient(ellipse 60% 70% at 85% 90%, #4a9fd428 0%, transparent 60%),
+			radial-gradient(ellipse 40% 40% at 50% 50%, #50d09010 0%, transparent 70%);
 	}
 
 	.content {
@@ -77,23 +80,11 @@
 		place-self: center;
 		display: grid;
 		touch-action: none;
-		width: 450px;
-		height: 788px;
+		width: 470px;
+		height: 800px;
 		box-sizing: border-box;
-        background: var(--background);
-        background-image: radial-gradient(transparent, black 150%);
+		border: 1px dotted var(--text);
 	}
-
-    .bg {
-        background: #135c99;
-        background-image: radial-gradient(transparent, black 150%), url('$lib/images/Texture.webp');
-        background-size: 407px 750px;
-  }
-
-    .frame {
-        grid-area: 1/1;
-        touch-action: none;
-    }
 
 	.disclaimer {
 		display: none;
