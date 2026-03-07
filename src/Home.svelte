@@ -86,7 +86,6 @@
 		margin: 40px 0 50px;
 		font-size: 19px;
 		color: var(--text-dim);
-		filter: drop-shadow(0 1px 1px black);
 	}
 
 	.buttons {
