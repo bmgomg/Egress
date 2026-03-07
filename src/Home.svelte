@@ -5,23 +5,25 @@
 	import { ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
 
-	const ul = '<ul style="margin: 10px 0 0 0;">';
+	const ul = '<ul style="margin: 0px 0 0 0;">';
 	const li = '<li style="margin: 10px 0 0 -20px;">';
-	const hi = '<span style="color: var(--gold);">';
-
-	// ${li}A block is heavier than ${hi}any</span> number of bubbles.</li>
+	const hi = '<span style="color: var(--text);">';
 
 	const CONTENT = `
-	    <span>Solve the puzzle by ${hi}rotating</span> the grid. You may also ${hi}flip</span> it.</span>
         ${ul}
-        ${li}One cell is ${hi}vacant</span>.</li>
-        ${li}Every other cell contains either a ${hi}block</span> (heavier than air) or a ${hi}bubble</span> (lighter than air).</li>
-        ${li}The puzzle is complete when the ${hi}vacant</span> cell reaches the ${hi}center</span> of the grid.</li>
-        </ul>`;
+        ${li}${hi}Blocks</span> are ${hi}heavier</span> than air. ${hi}Bubbles</span> are ${hi}lighter</span> than air.</li>
+        ${li}The ${hi}door</span> must be on the ${hi}top or bottom</span> wall for pieces to escape.</li>
+        ${li}A block on top of ${hi}one bubble</span> drags it ${hi}down</span>—they fall together.</li>
+        ${li}A block on top of ${hi}two bubbles</span> gets lifted ${hi}up</span>—they rise together.</li>
+        </ul>
+		<span style='margin-top: 30px;'>Clear the box in as few rotations as possible.</span>
+		`;
 </script>
 
 {#if ss.home}
 	<div class="home" in:fade={{ duration: 200 }}>
+		<div class="title-ornament">A puzzle of</div>
+		<div class="title-ornament">gravity &amp; escape</div>
 		<div class="title">Egress</div>
 		<div class="tagline">A box full of blocks and bubbles. One door. Rotate to empty it.</div>
 		<div class="content" tabindex="-1">
@@ -46,6 +48,14 @@
 		font-size: 18px;
 	}
 
+	.title-ornament {
+		font-size: 13px;
+		letter-spacing: 0.6em;
+		color: var(--gold-dim);
+		text-transform: uppercase;
+		font-family: var(--cinzel);
+	}
+
 	.title {
 		font-family: 'Cinzel Decorative', serif;
 		font-size: clamp(42px, 12vw, 64px);
@@ -53,10 +63,10 @@
 		color: var(--gold);
 		letter-spacing: 0.12em;
 		text-shadow:
-			0 0 40px rgba(200, 168, 74, 0.5),
-			0 0 80px rgba(200, 168, 74, 0.2);
+			0 0 40px #c8a84a80,
+			0 0 80px #c8a84a33;
 		line-height: 1;
-		margin-bottom: 10px;
+		margin: 30px 0 10px;
 	}
 
 	.tagline {
@@ -64,7 +74,6 @@
 		font-style: italic;
 		color: var(--text-dim);
 		letter-spacing: 0.08em;
-		margin-bottom: 48px;
 		text-align: center;
 		max-width: 280px;
 		line-height: 1.5;
@@ -75,8 +84,8 @@
 		align-content: start;
 		width: 360px;
 		margin: 40px 0 50px;
-		font-weight: bold;
-		color: var(--blue);
+		font-size: 19px;
+		color: var(--text-dim);
 		filter: drop-shadow(0 1px 1px black);
 	}
 
