@@ -1,11 +1,10 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { MODE_CHALLENGE, MODE_PRACITCE } from './const';
 	// import { onMode } from './shared.svelte';
 	import { ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
 
-	const ul = '<ul style="margin: 0px 0 0 0;">';
+	const ul = '<ul style="margin: 0;">';
 	const li = '<li style="margin: 10px 0 0 -20px;">';
 	const hi = '<span style="color: var(--text);">';
 
@@ -26,13 +25,15 @@
 		<div class="title-ornament">gravity &amp; escape</div>
 		<div class="title">Egress</div>
 		<div class="tagline">A box full of blocks and bubbles. One door. Rotate to empty it.</div>
+		<div class="divider"></div>
 		<div class="content" tabindex="-1">
 			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 			{@html CONTENT}
 		</div>
+		<div class="divider"></div>
 		<div class="buttons">
-			{#each [MODE_PRACITCE, MODE_CHALLENGE] as mode (mode)}
-				<TextButton id={'tb-mode-' + mode} text={[mode]} onClick={() => {}} />
+			{#each [2, 3] as size (size)}
+				<TextButton id={'tb-size-' + size} text={[size + ' × ' + size]} onClick={() => {}} />
 			{/each}
 		</div>
 	</div>
@@ -83,16 +84,23 @@
 		display: grid;
 		align-content: start;
 		width: 360px;
-		margin: 40px 0 50px;
 		font-size: 19px;
 		color: var(--text-dim);
+		font-style: italic;
 	}
 
 	.buttons {
 		display: grid;
 		grid-auto-flow: column;
-		gap: 32px;
-		font-family: Cinzel;
-		font-size: 32px;
+		gap: 30px;
+		font-family: EBG;
+		font-size: 30px;
+	}
+
+	.divider {
+		width: 200px;
+		height: 1px;
+		background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+		margin: 40px 0;
 	}
 </style>

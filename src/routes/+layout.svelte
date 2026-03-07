@@ -34,7 +34,7 @@
 			--door-dim: #1a4a30;
 			--text: #c0b090;
 			/* --text-dim: #4a4030; */
-			--text-dim: #c0b09080;
+			--text-dim: #c0b09090;
 			background: var(--bg);
 			color: var(--text);
 			font-family: EBG;

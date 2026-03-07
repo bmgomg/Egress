@@ -70,7 +70,7 @@
 		place-content: center;
 		box-sizing: border-box;
 		background:
-			radial-gradient(ellipse 70% 50% at 15% 10%, #c8a84a28 0%, transparent 60%),
+			radial-gradient(ellipse 70% 50% at 15% 10%, #c8a84a20 0%, transparent 60%),
 			radial-gradient(ellipse 60% 70% at 85% 90%, #4a9fd428 0%, transparent 60%),
 			radial-gradient(ellipse 40% 40% at 50% 50%, #50d09010 0%, transparent 70%);
 	}
@@ -83,7 +83,7 @@
 		width: 470px;
 		height: 800px;
 		box-sizing: border-box;
-		border: 1px dotted var(--text);
+		/* border: 1px dotted var(--text); */
 	}
 
 	.disclaimer {

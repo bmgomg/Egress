@@ -58,13 +58,44 @@
 		place-self: center;
 		display: grid;
 		place-items: center;
-		border-radius: 50%;
-		transition: transform 0.1s, color 0.3s;
+		transition:
+			transform 0.1s,
+			color 0.3s;
 		cursor: pointer;
+		color: var(--gold);
+		border: 1px solid var(--gold-dim);
+		padding: 0.25em 1.25em;
 	}
 
 	.button:hover {
-		filter: contrast(2) brightness(2);
+		background: #c8a84a0f;
+		border-color: var(--gold);
+		box-shadow: 0 0 20px #c8a84a26;
+	}
+
+	.button::before,
+	.button::after {
+		content: '';
+		position: absolute;
+		width: 0.3em;
+		height: 0.3em;
+		border-color: var(--gold);
+		border-style: solid;
+		transition: all 0.2s;
+	}
+
+	.button::before {
+		left: 0;
+		top: 0;
+		translate: -1px -1px;
+		border-width: 1px 0 0 1px;
+	}
+
+	.button::after {
+		right: 0;
+		bottom: 0;
+		translate: 1px 1px;
+		border-width: 0 1px 1px 0;
 	}
 
 	.disabled {
