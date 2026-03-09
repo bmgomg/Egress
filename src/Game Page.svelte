@@ -4,9 +4,7 @@
 	import Board from './Board.svelte';
 	import Controls from './Controls.svelte';
 	import Scoreboard from './Scoreboard.svelte';
-	import { secsRemained } from './shared.svelte';
 	import Stats from './Stats.svelte';
-	import Timer from './Timer.svelte';
 	// import Prompt from './Prompt.svelte';
 	// import GameOver from './Game Over.svelte';
 
@@ -18,7 +16,6 @@
 	<Scoreboard />
 	<Board />
 	<Controls />
-	<Timer secs={secsRemained()} />
 	<!-- <Prompt/> -->
 	<Toolbar />
 </div>
