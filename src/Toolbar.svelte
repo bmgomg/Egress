@@ -1,17 +1,9 @@
 <script>
-	import Home from '$lib/images/Home.webp';
-	import MusicOff from '$lib/images/Music Off.webp';
-	import MusicOn from '$lib/images/Music On.webp';
-	import Stats from '$lib/images/Reset Stats.webp';
-	import SoundOff from '$lib/images/Sound Off.webp';
-	import SoundOn from '$lib/images/Sound On.webp';
-	import Surrender from '$lib/images/Surrender.webp';
 	import { PROMPT_RESET_STATS } from './const';
 	import { isAnimated, isInitial, isSolved, onSetToInitial, persist, showIntro } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { _prompt, _stats, ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
-	import ToolButton from './Tool Button.svelte';
 	import { post } from './utils';
 
 	const onHome = () => {

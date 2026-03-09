@@ -64,8 +64,8 @@
 	.control {
 		display: grid;
 		justify-items: center;
-		font-size: 18px;
-		font-family: EBG;
+		font-size: 16px;
+		/* font-family: EBG; */
 		color: var(--text-dim);
 	}
 </style>
