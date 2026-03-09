@@ -86,7 +86,7 @@ const makeCells = (grid) => {
 const doMakePuzzle = () => {
     // const { grid, door, solution } = generatePuzzle(SIZE);
     const grid = [['B', 'B', 'B',], ['O', 'O', 'O',], ['O', 'O', 'B',]];
-    const door = { side: 'top', index: 0 };
+    const door = { side: 'left', index: 0 };
     const solution = ['CW', 'CCW', 'CCW', 'CW'];
 
     console.log(grid);
@@ -94,10 +94,10 @@ const doMakePuzzle = () => {
     console.log(solution);
 
     let cells = makeCells(grid);
-    ss.door = door.side[0] + door.index;
+    ss.door = door;
     ss.solution = solution;
 
-    ss.initial = [...cells];
+    ss.initial = { cells: [...cells], door: { ...ss.door } };
     ss.cells = cells;
 };
 
@@ -134,7 +134,17 @@ export const onHomePlay = () => {
 
 export const spaceCell = (cells = ss.cells) => cells?.find((cob) => cob.weight === 0);
 
-export const isInitial = () => ss.cells?.every((c, i) => c.id === ss.initial[i].id);
+export const isInitial = () => {
+    if (!ss.cells?.every((c, i) => c.id === ss.initial.cells[i].id)) {
+        return false;
+    }
+
+    if (ss.door?.side !== ss.initial.door.side || ss.door.index !== ss.initial.door.index) {
+        return false;
+    }
+
+    return true;
+};
 
 export const onSetToInitial = () => {
     if (isInitial()) {
@@ -143,17 +153,18 @@ export const onSetToInitial = () => {
 
     for (let i = 0; i < CELL_COUNT; i++) {
         const cell = ss.cells[i];
-        const cob = ss.initial.find((c) => c.id === cell.id);
+        const cob = ss.initial.cells.find((c) => c.id === cell.id);
         cell.newRow = cob.row;
         cell.newCol = cob.col;
     }
 
     post(() => {
         _sound.play('score2');
+        ss.door = { ...ss.initial.door };
 
         post(() => {
             // don't inline
-            ss.cells = [...ss.initial];
+            ss.cells = [...ss.initial.cells];
         }, 250);
     }, 100);
 };

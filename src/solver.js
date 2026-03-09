@@ -158,7 +158,8 @@ const randomDoor = (size) => {
     const sides = ['left', 'right', 'top', 'bottom'];
     return {
         side: sides[Math.floor(Math.random() * sides.length)],
-        index: Math.floor(Math.random() * size)
+        // index: Math.floor(Math.random() * size)
+        index: 1 + ((Date.now() % 2) ? 1 : -1)
     };
 };
 
@@ -175,6 +176,32 @@ const randomGrid = (size) => {
 };
 
 const isStableStart = (grid, door) => {
+    if (door.side === 'left' || door.side === 'right') {
+        return true;
+    }
+
+    const col = door.index;
+
+    if (door.side === 'top') {
+        if (grid[0][col] === 'O') {
+            return false;
+        }
+
+        if (grid[1][col] === 0 && grid[2][col] === 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    if (door.side === 'bottom') {
+        if (grid[1][col] === 'B' || grid[2][col] === 'B') {
+            return false;
+        }
+
+        return true;
+    }
+
     const N = grid.length;
     const dirs = ['CW', 'CCW'];
     for (const m of dirs) {

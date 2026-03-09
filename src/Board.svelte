@@ -25,59 +25,58 @@
 		};
 
 		const handleSpace = () => {
-			// const cells = [...ss.cells];
-			// const space = spaceCell(cells);
-			// const { row: srow, col: scol } = space;
-			// const stack = cells.filter((cell) => cell.col === scol);
-			// const brow = stack.find((cell) => cell.weight > 0)?.row;
+			post(() => {
+				let sounded;
+				const plop = (chime) => {
+					if (!sounded) {
+						_sound.play(chime);
+						sounded = true;
+					}
+				};
+				for (let i = 0; i < CELL_COUNT; i++) {
+					const cell = ss.cells[i];
+					if (cell.newRow && cell.newRow !== cell.row) {
+						cell.row = cell.newRow;
+						plop(cell.row === SIZE && cell.weight ? 'drop' : 'plop');
+					}
+					delete cell.newRow;
+				}
+				if (isSolved()) {
+					post(() => _sound.play('won'), 150);
+					persist();
+				}
+				delete ss.delay;
+			}, 350);
+		};
 
-			// if (brow + 1 && brow < srow) {
-			// 	space.newRow = brow;
+		const moveDoor = () => {
+			const cw = ss.spin === 1;
 
-			// 	for (let row = brow; row < srow; row++) {
-			// 		const cell = cells.find((c) => c.row === row && c.col === scol);
-			// 		cell.newRow = cell.row + 1;
-			// 	}
-			// } else if (srow < SIZE) {
-			// 	const base = brow + 1 ? brow : SIZE + 1;
-			// 	space.newRow = base - 1;
+			if (ss.door.side === 'top') {
+				ss.door.side = cw ? 'right' : 'left';
 
-			// 	for (let row = srow + 1; row < base; row++) {
-			// 		const cell = cells.find((c) => c.row === row && c.col === scol);
-			// 		cell.newRow = cell.row - 1;
-			// 	}
-			// }
+				if (!cw) {
+					ss.door.index = SIZE - 1 - ss.door.index;
+				}
+			} else if (ss.door.side === 'right') {
+				ss.door.side = cw ? 'bottom' : 'top';
 
-			// ss.cells = cells;
+				if (cw) {
+					ss.door.index = SIZE - 1 - ss.door.index;
+				}
+			} else if (ss.door.side === 'bottom') {
+				ss.door.side = cw ? 'left' : 'right';
 
-			// post(() => {
-			// 	let sounded;
+				if (!cw) {
+					ss.door.index = SIZE - 1 - ss.door.index;
+				}
+			} else if (ss.door.side === 'left') {
+				ss.door.side = cw ? 'top' : 'bottom';
 
-			// 	const plop = (chime) => {
-			// 		if (!sounded) {
-			// 			_sound.play(chime);
-			// 			sounded = true;
-			// 		}
-			// 	};
-
-			// 	for (let i = 0; i < CELL_COUNT; i++) {
-			// 		const cell = ss.cells[i];
-
-			// 		if (cell.newRow && cell.newRow !== cell.row) {
-			// 			cell.row = cell.newRow;
-			// 			plop(cell.row === SIZE && cell.weight ? 'drop' : 'plop');
-			// 		}
-
-			// 		delete cell.newRow;
-			// 	}
-
-			// 	if (isSolved()) {
-			// 		post(() => _sound.play('won'), 150);
-			// 		persist();
-			// 	}
-
-			// 	delete ss.delay;
-			// }, 350);
+				if (cw) {
+					ss.door.index = SIZE - 1 - ss.door.index;
+				}
+			}
 		};
 
 		const handleSpin = () => {
@@ -98,6 +97,8 @@
 				const ix = indexOf(row, col);
 				cells[ix] = cell;
 			}
+
+			moveDoor();
 
 			ss.spin = 0;
 			ss.cells = cells;
@@ -132,9 +133,9 @@
 {#if ss.cells && (ss.practice || !ss.levelPrompt)}
 	{@const sz = (CELL_SIZE + CELL_MARGIN * 2) * SIZE + CELL_MARGIN * 4}
 	{@const th = 10}
-	<div bind:this={_this} class="board" style="rotate: {rotate}; transition-duration: {duration}s;" in:fade>
-		<div bind:this={inner} class="inner {ss.swirl ? 'swirl' : ''}" style="width: {sz + th * 2}px;">
-			<Box {sz} {th} />
+	<div bind:this={_this} class="board" style="rotate: {rotate}; transition-duration: {duration}s; width: {sz + th * 2}px;" in:fade>
+		<div class="box"><Box {sz} {th} /></div>
+		<div bind:this={inner} class="inner {ss.swirl ? 'swirl' : ''}">
 			<div class="cells">
 				{#each ss.cells as cell, i (cell.id)}
 					<Cell bind:cell={ss.cells[i]} />
@@ -155,6 +156,7 @@
 	}
 
 	.inner {
+		grid-area: 1/1;
 		display: grid;
 		aspect-ratio: 1;
 		transition: transform 0.5s linear;
@@ -170,5 +172,10 @@
 		place-self: center;
 		display: grid;
 		place-content: center;
+	}
+
+	.box {
+		grid-area: 1/1;
+		display: grid;
 	}
 </style>
