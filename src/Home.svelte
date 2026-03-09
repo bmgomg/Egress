@@ -3,6 +3,7 @@
 	import { ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
 	import { onSize } from './shared.svelte';
+	import { SIZE } from './const';
 
 	const ul = '<ul style="margin: 0;">';
 	const li = '<li style="margin: 10px 0 0 -20px;">';
@@ -32,9 +33,10 @@
 		</div>
 		<div class="divider"></div>
 		<div class="buttons">
-			{#each [2, 3] as size (size)}
+			<!-- {#each [2, 3] as size (size)}
 				<TextButton id={'tb-size-' + size} framed text={[size + ' × ' + size]} onClick={() => onSize(size)} />
-			{/each}
+			{/each} -->
+			<TextButton id={'tb-size-' + SIZE} framed text={['Play']} onClick={() => onSize(SIZE)} />
 		</div>
 	</div>
 {/if}

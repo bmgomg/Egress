@@ -50,11 +50,10 @@
 <style>
 	.controls {
 		grid-area: 4/1;
-		height: 64px;
 		place-self: center;
 		display: grid;
 		grid-auto-flow: column;
-		gap: 30px;
+		gap: 40px;
 	}
 
 	.hidden {
@@ -65,7 +64,6 @@
 		display: grid;
 		justify-items: center;
 		font-size: 16px;
-		/* font-family: EBG; */
 		color: var(--text-dim);
 	}
 </style>

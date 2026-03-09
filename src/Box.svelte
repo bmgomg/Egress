@@ -1,18 +1,22 @@
 <script>
-	import BoxTL from '$lib/images/Box TL.webp';
-	import BoxT from '$lib/images/Box T.webp';
-	import BoxTR from '$lib/images/Box TR.webp';
-	import BoxR from '$lib/images/Box R.webp';
-	import BoxBR from '$lib/images/Box BR.webp';
 	import BoxB from '$lib/images/Box B.webp';
 	import BoxBL from '$lib/images/Box BL.webp';
+	import BoxBR from '$lib/images/Box BR.webp';
 	import BoxL from '$lib/images/Box L.webp';
+	import BoxR from '$lib/images/Box R.webp';
+	import BoxT from '$lib/images/Box T.webp';
+	import BoxTL from '$lib/images/Box TL.webp';
+	import BoxTR from '$lib/images/Box TR.webp';
+	import { CELL_MARGIN, CELL_SIZE } from './const';
 
     const { sz, th } = $props();
+    const dsz = $derived(CELL_SIZE + CELL_MARGIN * 6);
+    const wsz = $derived(sz - dsz);
+    const off = $derived(dsz / 2);
 </script>
 
 <img class="box-tl" src={BoxTL} alt="" style="width: {th}px;" />
-<img class="box-top" src={BoxT} alt="" style="width: {sz}px; height: {th}px;" />
+<img class="box-top" src={BoxT} alt="" style="width: {wsz}px; height: {th}px; translate: {off}px 0;" />
 <img class="box-tr" src={BoxTR} alt="" style="width: {th}px;" />
 <img class="box-right" src={BoxR} alt="" style="height: {sz}px; width: {th}px;" />
 <img class="box-br" src={BoxBR} alt="" style="width: {th}px;" />
