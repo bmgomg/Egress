@@ -11,13 +11,13 @@
 	const space = $derived(weight === 0);
 
 	const off = $derived.by(() => {
-		if ((!newRow && !newCol)) {
+		if (!newRow && !newCol) {
 			return { x: 0, y: 0 };
 		}
 
 		const sz = CELL_SIZE + CELL_MARGIN * 2;
 		const x = ((newCol || col) - col) * sz;
-		const y = ((newRow || row) - row) * sz;
+		const y = ((newRow < 0 ? newRow : newRow || row) - row) * sz;
 
 		return { x, y };
 	});
@@ -25,17 +25,14 @@
 	const style = $derived(`grid-area: ${row}/${col}; width: ${CELL_SIZE}px; margin: ${CELL_MARGIN}px; translate: ${off.x}px ${off.y}px;`);
 </script>
 
-{#if !space}
-	<div id="cell-{cell.id}" class="cell {weight > 0 ? '' : 'bubble'} {newCol || newRow ? '' : 'instant'}" {style}>
+<div id="cell-{cell.id}" class="cell {weight >= 0 ? '' : 'bubble'} {newCol || newRow ? '' : 'instant'}" {style}>
+	{#if !space}
 		<span class="content {ss.spin ? '' : 'instant'}" style="rotate: {ss.spin * -90}deg;">
 			<img src={weight < 0 ? Bubble : Block} alt="" width="100%" />
 		</span>
-		<span class="id">{cell.id}</span>
-	</div>
-{:else if isSolved() && !isAnimated()}
-	<div id="cell-{cell.id}" class="cell" {style} in:fade>
-	</div>
-{/if}
+	{/if}
+	<span class="id">{cell.id}</span>
+</div>
 
 <style>
 	.cell {

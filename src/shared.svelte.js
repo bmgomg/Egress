@@ -1,10 +1,8 @@
-import { sample } from 'lodash-es';
-import { APP_STATE, CELL_COUNT, LEVELS, SIZE } from './const';
+import { APP_STATE, CELL_COUNT, SIZE } from './const';
 // import { solve } from './solver';
 import { _sound } from './sound.svelte';
 import { _prompt, _stats, ss } from './state.svelte';
 import { post } from './utils';
-import { generatePuzzle } from './solver';
 
 export const _log = (value) => console.log($state.snapshot(value));
 
@@ -56,16 +54,7 @@ export const showIntro = (value, plop = true) => {
     ss.home = true;
 };
 
-export const isSolved = () => {
-    const space = spaceCell();
-
-    if (!space) {
-        return false;
-    }
-
-    const center = (SIZE + 1) / 2;
-    return space.row === center && space.col === center;
-};
+export const isSolved = () => ss.cells?.every(c => c.weight === 0);
 
 export const indexOf = (row, col) => (row - 1) * SIZE + col - 1;
 
@@ -85,7 +74,7 @@ const makeCells = (grid) => {
 
 const doMakePuzzle = () => {
     // const { grid, door, solution } = generatePuzzle(SIZE);
-    const grid = [['B', 'B', 'B',], ['O', 'O', 'O',], ['O', 'O', 'B',]];
+    const grid = [['B', 'O', 'O',], ['O', 'O', 'O',], ['O', 'O', 'B',]];
     const door = { side: 'left', index: 0 };
     const solution = ['CW', 'CCW', 'CCW', 'CW'];
 
@@ -132,8 +121,6 @@ export const onHomePlay = () => {
     delete ss.home;
 };
 
-export const spaceCell = (cells = ss.cells) => cells?.find((cob) => cob.weight === 0);
-
 export const isInitial = () => {
     if (!ss.cells?.every((c, i) => c.id === ss.initial.cells[i].id)) {
         return false;
@@ -170,3 +157,5 @@ export const onSetToInitial = () => {
 };
 
 export const isAnimated = () => ss.delay || ss.spin || ss.cells?.some((c) => c.newRow || c.newCol);
+
+export const findCell = (cells, row, col) => cells.find((c) => c.row === row && c.col === col);

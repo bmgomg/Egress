@@ -3,7 +3,7 @@
 	import Box from './Box.svelte';
 	import Cell from './Cell.svelte';
 	import { CELL_COUNT, CELL_MARGIN, CELL_SIZE, SIZE } from './const';
-	import { indexOf, isSolved, makePuzzle, persist } from './shared.svelte';
+	import { findCell, indexOf, isSolved, makePuzzle, persist } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
 	import { post } from './utils';
@@ -24,27 +24,77 @@
 			}
 		};
 
+		const handleExit = (cells) => {
+			if (ss.door.side === 'left' || ss.door.side === 'right') {
+				return;
+			}
+
+			const col = ss.door.index + 1;
+			const cob1 = findCell(cells, 1, col);
+			const cob2 = findCell(cells, 2, col);
+			const cob3 = findCell(cells, 3, col);
+
+			if (ss.door.side === 'top') {
+				if (cob2.weight <= 0 && cob3.weight < 0) {
+					if (cob1.weight) {
+						cob1.newRow = cob1.row - 3.5;
+					}
+
+					if (cob2.weight) {
+						cob2.newRow = cob2.row - 3.5;
+					}
+
+					cob3.newRow = cob3.row - 3.5;
+				} else if (cob1.weight <= 0 && cob2.weight < 0) {
+					if (cob1.weight) {
+						cob1.newRow = cob1.row - 2.5;
+					}
+
+					cob2.newRow = cob2.row - 2.5;
+				} else if (cob1.weight < 0) {
+					cob1.newRow = cob1.row - 1.5;
+				}
+
+				return;
+			}
+
+			// ss.door.side === bottom
+		};
+
 		const handleSpace = () => {
+			const cells = [...ss.cells];
+			handleExit(cells);
+
+			ss.cells = cells;
+
 			post(() => {
 				let sounded;
+
 				const plop = (chime) => {
 					if (!sounded) {
 						_sound.play(chime);
 						sounded = true;
 					}
 				};
+
 				for (let i = 0; i < CELL_COUNT; i++) {
 					const cell = ss.cells[i];
-					if (cell.newRow && cell.newRow !== cell.row) {
+
+					if (cell.newRow <= 0) {
+						cell.weight = 0;
+					} else if (cell.newRow && cell.newRow !== cell.row) {
 						cell.row = cell.newRow;
 						plop(cell.row === SIZE && cell.weight ? 'drop' : 'plop');
 					}
+
 					delete cell.newRow;
 				}
+
 				if (isSolved()) {
 					post(() => _sound.play('won'), 150);
 					persist();
 				}
+
 				delete ss.delay;
 			}, 350);
 		};
@@ -153,6 +203,7 @@
 		display: grid;
 		transition: rotate 0.5s linear;
 		z-index: 1;
+		overflow: hidden;
 	}
 
 	.inner {
