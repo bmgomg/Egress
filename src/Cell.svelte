@@ -11,7 +11,7 @@
 	const space = $derived(weight === 0);
 
 	const off = $derived.by(() => {
-		if ((!newRow && !newCol) || ss.fail) {
+		if ((!newRow && !newCol)) {
 			return { x: 0, y: 0 };
 		}
 

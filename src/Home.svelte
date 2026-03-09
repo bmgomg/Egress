@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import { ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
-	import { onSize } from './shared.svelte';
+	import { onHomePlay } from './shared.svelte';
 	import { SIZE } from './const';
 
 	const ul = '<ul style="margin: 0;">';
@@ -33,10 +33,7 @@
 		</div>
 		<div class="divider"></div>
 		<div class="buttons">
-			<!-- {#each [2, 3] as size (size)}
-				<TextButton id={'tb-size-' + size} framed text={[size + ' × ' + size]} onClick={() => onSize(size)} />
-			{/each} -->
-			<TextButton id={'tb-size-' + SIZE} framed text={['Play']} onClick={() => onSize(SIZE)} />
+			<TextButton id={'tb-size-' + SIZE} framed text={['Play']} onClick={onHomePlay} />
 		</div>
 	</div>
 {/if}

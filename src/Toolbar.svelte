@@ -28,14 +28,14 @@
 
 		post(
 			() => {
-				for (let i = 0; i < ss.steps.length; i++) {
-					const spin = ss.steps[i] === 'CW' ? 1 : -1;
+				for (let i = 0; i < ss.solution.length; i++) {
+					const spin = ss.solution[i] === 'CW' ? 1 : -1;
 
 					post(() => {
 						_sound.play('click');
 						ss.spin = spin;
 
-						if (i === ss.steps.length - 1) {
+						if (i === ss.solution.length - 1) {
 							post(() => delete ss.surrender, 1000);
 						}
 					}, i * 1500);

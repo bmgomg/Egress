@@ -3,7 +3,7 @@
 	import CW from '$lib/images/CW.webp';
 	import Reset from '$lib/images/Restart.webp';
 	import { fade } from 'svelte/transition';
-	import { isAnimated, isInitial, isSolved, onSetToInitial, startTimer } from './shared.svelte';
+	import { isAnimated, isInitial, isSolved, onSetToInitial } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
 	import ToolButton from './Tool Button.svelte';
@@ -11,22 +11,14 @@
 	const onSpin = (cw) => {
 		_sound.play('click');
 		ss.spin = cw ? 1 : -1;
-
-		if (!ss.timer) {
-			startTimer();
-		}
 	};
 
 	const onReset = () => {
 		onSetToInitial();
-
-		if (!ss.timer) {
-			startTimer();
-		}
 	};
 
 	const solved = $derived(isSolved());
-	const canRotate = $derived(!isAnimated() && (ss.practice ? !ss.surrender && !ss.delay : !solved && !ss.fail && ss.timer));
+	const canRotate = $derived(!isAnimated() && (ss.practice ? !ss.surrender && !ss.delay : !solved));
 	const canReset = $derived(!isInitial() && canRotate);
 </script>
 

@@ -1,9 +1,10 @@
 import { sample } from 'lodash-es';
-import { APP_STATE, CELL_COUNT, LEVELS, MAX_STRIKES, PROMPT_PLAY_AGAIN, SIZE, TASKS_PER_LEVEL, TICK_MS } from './const';
+import { APP_STATE, CELL_COUNT, LEVELS, SIZE } from './const';
 // import { solve } from './solver';
 import { _sound } from './sound.svelte';
 import { _prompt, _stats, ss } from './state.svelte';
 import { post } from './utils';
+import { generatePuzzle } from './solver';
 
 export const _log = (value) => console.log($state.snapshot(value));
 
@@ -38,25 +39,12 @@ const loadGame = () => {
         _stats.total = job.total;
         _stats.best = job.best;
 
-        const over = job.over;
-        const levelComplete = job.levelComplete;
-
-        ss.level = over ? 1 : job.level;
-        ss.ticks = over || levelComplete ? 0 : -job.ticks;
-        ss.tasks = over ? 0 : job.tasks;
-        ss.points = over ? 0 : job.points;
-        ss.strikes = over || levelComplete ? 0 : job.strikes;
-        ss.cells = over || levelComplete ? null : job.cells;
-        ss.initial = over || levelComplete ? null : job.initial;
+        ss.cells = job.cells;
+        ss.initial = job.initial;
     } else {
         _stats.plays = 0;
         _stats.total = 0;
         _stats.best = 0;
-        ss.level = 1;
-        ss.ticks = 0;
-        ss.tasks = 0;
-        ss.points = 0;
-        ss.strikes = 0;
 
         delete ss.cells;
         delete ss.iniital;
@@ -66,7 +54,6 @@ const loadGame = () => {
 export const showIntro = (value, plop = true) => {
     plop && _sound.play('plop');
     ss.home = true;
-    stopTimer();
 };
 
 export const isSolved = () => {
@@ -82,159 +69,45 @@ export const isSolved = () => {
 
 export const indexOf = (row, col) => (row - 1) * SIZE + col - 1;
 
-const makeCells = () => {
+const makeCells = (grid) => {
     const cells = Array(CELL_COUNT);
-    const [srow, scol] = sample([[1, 1], [1, SIZE], [SIZE, SIZE], [SIZE, 1]]);
 
-    for (let i = 0; i < CELL_COUNT; i++) {
-        const row = Math.floor(i / SIZE) + 1;
-        const col = i % SIZE + 1;
-        const cell = { id: i + 1, row, col };
-
-        cell.weight = Math.random() < 0.5 ? 1 : -1;
-
-        if (cell.col === scol) {
-            if (cell.row < srow) {
-                cell.weight = -1;
-            } else if (row === srow) {
-                cell.weight = 0;
-            } else if (row === srow + 1) {
-                cell.weight = 1;
-            }
+    for (let row = 1, i = 0; row <= SIZE; row++) {
+        for (let col = 1; col <= SIZE; col++, i++) {
+            const ob = grid[row - 1][col - 1];
+            const cell = { id: i + 1, row, col, weight: ob === 'B' ? 1 : -1 };
+            cells[i] = cell;
         }
-
-        cells[i] = cell;
     }
 
     return cells;
 };
 
 const doMakePuzzle = () => {
-    let cells = makeCells();
-    let steps;
+    // const { grid, door, solution } = generatePuzzle(SIZE);
+    const grid = [['B', 'B', 'B',], ['O', 'O', 'O',], ['O', 'O', 'B',]];
+    const door = { side: 'top', index: 0 };
+    const solution = ['CW', 'CCW', 'CCW', 'CW'];
 
-    const acceptable = () => {
-        if (steps === null) {
-            // no solution
-            return false;
-        }
+    console.log(grid);
+    console.log(door);
+    console.log(solution);
 
-        const level = Math.min(ss.level, LEVELS.length);
-        const moves = steps.length;
-
-        switch (level) {
-            case 1:
-                return moves >= 2 && moves <= 3;
-            case 2:
-                return moves >= 2 && moves <= 4;
-            case 3:
-                return moves >= 2 && moves <= 5;
-            case 4:
-                return moves >= 3;
-            default:
-                return true;
-        }
-    };
-
-    do {
-        cells = makeCells();
-        // steps = solve(cells);
-        steps = 1;
-    // } while (!acceptable());
-    } while (false);
-
-    // _log(steps);
-    ss.steps = steps;
+    let cells = makeCells(grid);
+    ss.door = door.side[0] + door.index;
+    ss.solution = solution;
 
     ss.initial = [...cells];
     ss.cells = cells;
 };
 
-export const startTimer = () => {
-    ss.timer = setInterval(onTick, TICK_MS);
-};
-
-export const stopTimer = () => {
-    clearInterval(ss.timer);
-    delete ss.timer;
-};
-
-const onTick = () => {
-    if (isAnimated()) {
-        return;
-    }
-
-    ss.ticks++;
-
-    if (secsRemained() <= 0) {
-        stopTimer();
-        onFail();
-    }
-
-    persist();
-};
-
-const onFail = () => {
-    _sound.play('lost');
-
-    ss.fail = true;
-    ss.strikes++;
-
-    onTaskCompleted();
-
-    persist();
-
-    if (ss.strikes === MAX_STRIKES) {
-        _prompt.set(PROMPT_PLAY_AGAIN);
-    } else {
-        post(() => (ss.swirl = true), 1000);
-    }
-};
-
-export const onTaskCompleted = () => {
-    ss.tasks++;
-
-    if (ss.strikes === MAX_STRIKES) {
-        ss.over = true;
-
-        _stats.plays++;
-        _stats.total += ss.points;
-
-        if (ss.points > _stats.best) {
-            _stats.best = ss.points;
-        }
-
-        return;
-    }
-
-    if (levelComplete()) {
-        ss.levelComplete = true;
-        ss.level++;
-    }
-};
-
-const levelComplete = () => ss.tasks % TASKS_PER_LEVEL === 0;
-
-export const calcPoints = () => LEVELS[0].secs - elapsedSecs();
-
-export const elapsedSecs = () => Math.round(((ss.ticks || 0) * TICK_MS) / 1000);
-
-export const secsRemained = () => {
-    const maxSecs = 60;
-    const elapsed = elapsedSecs();
-    return Math.max(0, maxSecs - elapsed);
-};
-
 export const makePuzzle = () => {
-    delete ss.fail;
-
     doMakePuzzle();
     onStart();
 };
 
-export const onStart = (chime = 'dice') => {
-    stopTimer();
-    _sound.play(chime);
+const onStart = () => {
+    _sound.play('dice');
 
     if (!_sound.musicPlayed) {
         post(() => _sound.playMusic(), 1000);
@@ -243,27 +116,17 @@ export const onStart = (chime = 'dice') => {
     delete ss.over;
 
     persist();
-
-    ss.ticks = ss.ticks < 0 ? -ss.ticks : 0;
-    ss.delay = true;
-
-    post(() => {
-        startTimer();
-        post(() => delete ss.delay, 500);
-    }, 500);
 };
 
-export const onSize = (size) => {
+export const onHomePlay = () => {
     _prompt.opacity = 0;
-
-    ss.size = size;
 
     _sound.play('plop');
 
     loadGame();
 
     if (!ss.cells) {
-        doMakePuzzle();
+        makePuzzle();
     }
 
     delete ss.home;
@@ -295,4 +158,4 @@ export const onSetToInitial = () => {
     }, 100);
 };
 
-export const isAnimated = () => ss.delay || ss.flip || ss.spin || ss.cells?.some((c) => c.newRow || c.newCol);
+export const isAnimated = () => ss.delay || ss.spin || ss.cells?.some((c) => c.newRow || c.newCol);
