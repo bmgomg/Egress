@@ -13,6 +13,7 @@
 
 <div class="game-page {hidden ? 'hidden' : ''}">
 	<Stats />
+	<div class="divider"></div>
 	<Scoreboard />
 	<Board />
 	<Controls />
@@ -40,7 +41,7 @@
 
 	.divider {
 		place-self: center;
-		width: 350px;
+		width: 300px;
 		height: 1px;
 		background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
 	}

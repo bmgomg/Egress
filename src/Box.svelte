@@ -28,16 +28,30 @@
 
 		return `width: ${width}px; height: ${th}px; translate: ${dx}px 0;`;
 	});
+
+	const leftStyle = $derived.by(() => {
+		const height = ss.door.startsWith('l') ? wsz : sz;
+		const dy = height < sz ? ss.door.endsWith('t') ? off : -off : 0;
+
+		return `width: ${th}px; height: ${height}px; translate: 0 ${dy}px;`;
+	});
+
+	const rightStyle = $derived.by(() => {
+		const height = ss.door.startsWith('r') ? wsz : sz;
+		const dy = height < sz ? ss.door.endsWith('t') ? off : -off : 0;
+
+		return `width: ${th}px; height: ${height}px; translate: 0 ${dy}px;`;
+	});
 </script>
 
 <img class="box-tl" src={BoxTL} alt="" style="width: {th}px;" />
 <img class="box-top" src={BoxT} alt="" style={topStyle} />
 <img class="box-tr" src={BoxTR} alt="" style="width: {th}px;" />
-<img class="box-right" src={BoxR} alt="" style="height: {sz}px; width: {th}px;" />
+<img class="box-right" src={BoxR} alt="" style={rightStyle} />
 <img class="box-br" src={BoxBR} alt="" style="width: {th}px;" />
 <img class="box-bottom" src={BoxB} alt="" style={bottomStyle} />
 <img class="box-bl" src={BoxBL} alt="" style="width: {th}px;" />
-<img class="box-left" src={BoxL} alt="" style="height: {sz}px; width: {th}px;" />
+<img class="box-left" src={BoxL} alt="" style={leftStyle} />
 
 <style>
 	.box-tl {
