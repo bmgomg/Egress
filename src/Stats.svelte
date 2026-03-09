@@ -41,6 +41,6 @@
 	}
 
 	.value {
-		color: var(--gold);
+		color: var(--gold-lit);
 	}
 </style>
