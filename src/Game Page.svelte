@@ -17,6 +17,7 @@
 	<Board />
 	<Controls />
 	<!-- <Prompt/> -->
+	<div class="divider"></div>
 	<Toolbar />
 </div>
 
@@ -24,7 +25,6 @@
 	.game-page {
 		grid-area: 1/1;
 		display: grid;
-		grid: 0.3fr 1fr auto 0.3fr 1fr auto / auto;
 		gap: 20px;
 		width: 100%;
 		transition: opacity 0.2s;
@@ -36,5 +36,12 @@
 	.hidden {
 		opacity: 0;
 		pointer-events: none;
+	}
+
+	.divider {
+		place-self: center;
+		width: 350px;
+		height: 1px;
+		background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
 	}
 </style>

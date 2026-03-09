@@ -4,7 +4,7 @@ import { post } from './utils';
 export const ss = $state({
     home: true,
     spin: 0,
-    door: 'tl'
+    door: 'bl'
 });
 
 export const _prompt = $state({

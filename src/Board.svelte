@@ -182,7 +182,6 @@
 
 <style>
 	.board {
-		grid-area: 3/1;
 		place-self: center;
 		display: grid;
 		transition: rotate 0.5s linear;

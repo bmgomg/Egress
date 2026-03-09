@@ -26,9 +26,7 @@
 
 <style>
 	.stats {
-		grid-area: 1/1;
-		place-content: end center;
-		/* font-size: 24px; */
+		place-content: center;
 		display: grid;
 		grid-auto-flow: column;
 		align-items: baseline;

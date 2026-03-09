@@ -49,7 +49,6 @@
 
 <style>
 	.controls {
-		grid-area: 4/1;
 		place-self: center;
 		display: grid;
 		grid-auto-flow: column;
