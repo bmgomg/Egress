@@ -1,8 +1,8 @@
 <script>
 	import { fade } from 'svelte/transition';
-	// import { onMode } from './shared.svelte';
 	import { ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
+	import { onSize } from './shared.svelte';
 
 	const ul = '<ul style="margin: 0;">';
 	const li = '<li style="margin: 10px 0 0 -20px;">';
@@ -33,7 +33,7 @@
 		<div class="divider"></div>
 		<div class="buttons">
 			{#each [2, 3] as size (size)}
-				<TextButton id={'tb-size-' + size} text={[size + ' × ' + size]} onClick={() => {}} />
+				<TextButton id={'tb-size-' + size} framed text={[size + ' × ' + size]} onClick={() => onSize(size)} />
 			{/each}
 		</div>
 	</div>
@@ -54,11 +54,10 @@
 		letter-spacing: 0.6em;
 		color: var(--gold-dim);
 		text-transform: uppercase;
-		font-family: var(--cinzel);
 	}
 
 	.title {
-		font-family: 'Cinzel Decorative', serif;
+		font-family: CD;
 		font-size: clamp(42px, 12vw, 64px);
 		font-weight: 700;
 		color: var(--gold);
@@ -71,7 +70,8 @@
 	}
 
 	.tagline {
-		font-size: 16px;
+		font-size: 16.5px;
+		font-family: EBG;
 		font-style: italic;
 		color: var(--text-dim);
 		letter-spacing: 0.08em;
@@ -84,8 +84,9 @@
 		display: grid;
 		align-content: start;
 		width: 360px;
-		font-size: 19px;
+		font-size: 19.5px;
 		color: var(--text-dim);
+		font-family: EBG;
 		font-style: italic;
 	}
 
@@ -93,7 +94,6 @@
 		display: grid;
 		grid-auto-flow: column;
 		gap: 30px;
-		font-family: EBG;
 		font-size: 30px;
 	}
 

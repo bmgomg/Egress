@@ -1,5 +1,5 @@
 <script>
-	// import GamePage from '../Game Page.svelte';
+	import GamePage from '../Game Page.svelte';
 	import Home from '../Home.svelte';
 	import Splash from '../Splash.svelte';
 	import { ss } from '../state.svelte';
@@ -18,8 +18,8 @@
 
 			const r = clientRect('.app');
 
-			if (r.width < 470) {
-				scx = r.width / 470;
+			if (r.width < 450) {
+				scx = r.width / 450;
 			}
 
 			if (r.height < 800) {
@@ -51,8 +51,7 @@
 		<Splash />
 	{:else}
 		<div class="content bg" style="scale: {scale};">
-			<!-- <img class="frame" src={Frame} alt="" /> -->
-			<!-- <GamePage /> -->
+			<GamePage />
 			<Home />
 			{#if ss.home}
 				<div class="disclaimer no-highlight">
@@ -80,7 +79,7 @@
 		place-self: center;
 		display: grid;
 		touch-action: none;
-		width: 470px;
+		width: 450px;
 		height: 800px;
 		box-sizing: border-box;
 		/* border: 1px dotted var(--text); */

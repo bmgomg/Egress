@@ -1,6 +1,6 @@
 import { sample } from 'lodash-es';
-import { APP_STATE, CELL_COUNT, LEVELS, MAX_STRIKES, MODE_PRACITCE, PROMPT_PLAY_AGAIN, SIZE, TASKS_PER_LEVEL, TICK_MS } from './const';
-import { solve } from './solver';
+import { APP_STATE, CELL_COUNT, LEVELS, MAX_STRIKES, PROMPT_PLAY_AGAIN, SIZE, TASKS_PER_LEVEL, TICK_MS } from './const';
+// import { solve } from './solver';
 import { _sound } from './sound.svelte';
 import { _prompt, _stats, ss } from './state.svelte';
 import { post } from './utils';
@@ -13,10 +13,8 @@ export const persist = () => {
     let json = JSON.stringify({ sfx: _sound.sfx, music: _sound.music });
     localStorage.setItem(APP_STATE, json);
 
-    if (!ss.practice) {
-        json = JSON.stringify({ ..._stats, level: ss.level, cells: ss.cells, initial: ss.initial, ticks: ss.ticks, tasks: ss.tasks, points: ss.points, strikes: ss.strikes, over: ss.over, levelComplete: ss.levelComplete });
-        localStorage.setItem(appKey(), json);
-    }
+    json = JSON.stringify({ ..._stats, level: ss.level, cells: ss.cells, initial: ss.initial, ticks: ss.ticks, tasks: ss.tasks, points: ss.points, strikes: ss.strikes, over: ss.over, levelComplete: ss.levelComplete });
+    localStorage.setItem(appKey(), json);
 };
 
 const loadCommon = () => {
@@ -121,11 +119,6 @@ const doMakePuzzle = () => {
             return false;
         }
 
-        if (ss.practice) {
-            // any number of steps is ok
-            return true;
-        }
-
         const level = Math.min(ss.level, LEVELS.length);
         const moves = steps.length;
 
@@ -145,8 +138,10 @@ const doMakePuzzle = () => {
 
     do {
         cells = makeCells();
-        steps = solve(cells);
-    } while (!acceptable());
+        // steps = solve(cells);
+        steps = 1;
+    // } while (!acceptable());
+    } while (false);
 
     // _log(steps);
     ss.steps = steps;
@@ -171,14 +166,12 @@ const onTick = () => {
 
     ss.ticks++;
 
-    if (!ss.practice) {
-        if (secsRemained() <= 0) {
-            stopTimer();
-            onFail();
-        }
-
-        persist();
+    if (secsRemained() <= 0) {
+        stopTimer();
+        onFail();
     }
+
+    persist();
 };
 
 const onFail = () => {
@@ -227,13 +220,7 @@ export const calcPoints = () => LEVELS[0].secs - elapsedSecs();
 export const elapsedSecs = () => Math.round(((ss.ticks || 0) * TICK_MS) / 1000);
 
 export const secsRemained = () => {
-    const level = Math.min(ss.level - (ss.levelComplete ? 1 : 0), LEVELS.length);
-    const maxSecs = LEVELS[level - 1].secs;
-
-    if (ss.levelPrompt) {
-        return maxSecs;
-    }
-
+    const maxSecs = 60;
     const elapsed = elapsedSecs();
     return Math.max(0, maxSecs - elapsed);
 };
@@ -242,14 +229,7 @@ export const makePuzzle = () => {
     delete ss.fail;
 
     doMakePuzzle();
-
-    if (!ss.practice && ss.tasks % TASKS_PER_LEVEL === 0) {
-        _sound.play('won');
-        ss.levelPrompt = true;
-        ss.strikes = 0;
-    } else {
-        onStart();
-    }
+    onStart();
 };
 
 export const onStart = (chime = 'dice') => {
@@ -260,14 +240,11 @@ export const onStart = (chime = 'dice') => {
         post(() => _sound.playMusic(), 1000);
     }
 
-    if (!ss.practice) {
-        delete ss.over;
-        delete ss.levelComplete;
+    delete ss.over;
 
-        persist();
-    }
+    persist();
 
-    ss.ticks = !ss.practice && ss.ticks < 0 ? -ss.ticks : 0;
+    ss.ticks = ss.ticks < 0 ? -ss.ticks : 0;
     ss.delay = true;
 
     post(() => {
@@ -276,26 +253,17 @@ export const onStart = (chime = 'dice') => {
     }, 500);
 };
 
-export const onMode = (mode) => {
+export const onSize = (size) => {
     _prompt.opacity = 0;
 
-    ss.mode = mode;
-    ss.practice = mode === MODE_PRACITCE;
+    ss.size = size;
 
     _sound.play('plop');
 
-    if (ss.practice) {
-        loadCommon();
-        delete ss.over;
-        makePuzzle();
-    } else {
-        loadGame();
+    loadGame();
 
-        if (!ss.cells) {
-            doMakePuzzle();
-        }
-
-        ss.levelPrompt = true;
+    if (!ss.cells) {
+        doMakePuzzle();
     }
 
     delete ss.home;

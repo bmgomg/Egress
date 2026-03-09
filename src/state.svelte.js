@@ -3,7 +3,6 @@ import { post } from './utils';
 
 export const ss = $state({
     home: true,
-    level: 1,
     spin: 0,
 });
 

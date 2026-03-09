@@ -2,12 +2,12 @@
 	import { ss } from './state.svelte';
 	import { post } from './utils';
 
-	const { id, text, selected, style, disabled, onClick } = $props();
+	const { id, text, framed, style, disabled, onClick } = $props();
 
 	let scale = $state(1);
 	let timer = $state(false);
 
-	const classes = $derived(['button-base no-highlight button' + (selected ? ' selected' : ''), { disabled }]);
+	const classes = $derived(['button-base no-highlight button ' + (framed ? 'framed' : 'text-only'), { disabled }]);
 	const _style = $derived(`${style}; transform: scale(${scale})`);
 
 	$effect(() => {
@@ -62,19 +62,26 @@
 			transform 0.1s,
 			color 0.3s;
 		cursor: pointer;
-		color: var(--gold);
+		box-sizing: border-box;
+	}
+
+	.text-only:hover {
+		filter: sepia(1);
+	}
+
+	.framed {
 		border: 1px solid var(--gold-dim);
 		padding: 0.25em 1.25em;
 	}
 
-	.button:hover {
+	.framed:hover {
 		background: #c8a84a0f;
 		border-color: var(--gold);
 		box-shadow: 0 0 20px #c8a84a26;
 	}
 
-	.button::before,
-	.button::after {
+	.framed::before,
+	.framed::after {
 		content: '';
 		position: absolute;
 		width: 0.3em;
@@ -84,14 +91,14 @@
 		transition: all 0.2s;
 	}
 
-	.button::before {
+	.framed::before {
 		left: 0;
 		top: 0;
 		translate: -1px -1px;
 		border-width: 1px 0 0 1px;
 	}
 
-	.button::after {
+	.framed::after {
 		right: 0;
 		bottom: 0;
 		translate: 1px 1px;
@@ -106,9 +113,5 @@
 
 	.button:focus {
 		outline: none !important;
-	}
-
-	.selected {
-		text-decoration: underline;
 	}
 </style>

@@ -33,11 +33,10 @@
 			--door: #50d090;
 			--door-dim: #1a4a30;
 			--text: #c0b090;
-			/* --text-dim: #4a4030; */
 			--text-dim: #c0b09090;
 			background: var(--bg);
 			color: var(--text);
-			font-family: EBG;
+			font-family: Cinzel;
 			place-content: center;
 		}
 
@@ -76,6 +75,11 @@
 		@font-face {
 			font-family: EBG;
 			src: url('$lib/fonts/EB Garamond.ttf');
+		}
+
+		@font-face {
+			font-family: Florentina;
+			src: url('$lib/fonts/Florentina.ttf');
 		}
 	}
 </style>

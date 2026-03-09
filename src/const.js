@@ -1,4 +1,4 @@
-export const APP_STATE = 'THIS SIDE UP V2';
+export const APP_STATE = 'EGRESS V1';
 export const PROMPT_TRANSITION = 300;
 export const PROMPT_PLAY_AGAIN = 'Play again?';
 export const PROMPT_RESET_STATS = 'Reset stats?';

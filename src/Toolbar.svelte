@@ -2,26 +2,21 @@
 	import Home from '$lib/images/Home.webp';
 	import MusicOff from '$lib/images/Music Off.webp';
 	import MusicOn from '$lib/images/Music On.webp';
-	import Pause from '$lib/images/Pause.webp';
 	import Stats from '$lib/images/Reset Stats.webp';
 	import SoundOff from '$lib/images/Sound Off.webp';
 	import SoundOn from '$lib/images/Sound On.webp';
 	import Surrender from '$lib/images/Surrender.webp';
-	import { MODE_CHALLENGE, PROMPT_RESET_STATS } from './const';
-	import { isAnimated, isInitial, isSolved, onMode, onSetToInitial, persist, showIntro, stopTimer } from './shared.svelte';
+	import { PROMPT_RESET_STATS } from './const';
+	import { isAnimated, isInitial, isSolved, onSetToInitial, persist, showIntro } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { _prompt, _stats, ss } from './state.svelte';
+	import TextButton from './Text Button.svelte';
 	import ToolButton from './Tool Button.svelte';
 	import { post } from './utils';
 
 	const onHome = () => {
 		showIntro(true);
 		_prompt.id = null;
-	};
-
-	const onPause = () => {
-		stopTimer();
-		onMode(MODE_CHALLENGE);
 	};
 
 	const onResetStats = () => {
@@ -85,17 +80,11 @@
 </script>
 
 <div class="toolbar">
-	<ToolButton id="tb-home" src={Home} disabled={!canHome} onClick={onHome} />
-	{#if !ss.practice}
-		<ToolButton id="tb-pause" src={Pause} onClick={onPause} disabled={!ss.timer} />
-		<ToolButton id="tb-stats" src={Stats} onClick={onResetStats} disabled={_stats.plays === 0 || (!ss.levelPrompt && !ss.over)} />
-	{:else}
-		<div class="pulse">
-			<ToolButton id="tb-surrender" src={Surrender} disabled={!canSurrender} onClick={onSurrender} />
-		</div>
-	{/if}
-	<ToolButton id="tb-sfx" src={_sound.sfx ? SoundOn : SoundOff} onClick={onSound} />
-	<ToolButton id="tb-music" src={_sound.music ? MusicOn : MusicOff} onClick={onMusic} />
+	<TextButton id="tb-home" text={['Home']} disabled={!canHome} onClick={onHome} />
+	<TextButton id="tb-stats" text={['Reset', 'Stats']} onClick={onResetStats} disabled={_stats.plays === 0} />
+	<TextButton id="tb-surrender" text={['Give', 'Up']} disabled={!canSurrender} onClick={onSurrender} />
+	<TextButton id="tb-sfx" text={['Sound', _sound.sfx ? 'On' : 'Off']} onClick={onSound} />
+	<TextButton id="tb-music" text={['Music', _sound.music ? 'On' : 'Off']} onClick={onMusic} />
 </div>
 
 <style>
@@ -105,19 +94,6 @@
 		grid-auto-flow: column;
 		place-content: center;
 		align-items: center;
-		gap: 15px;
-	}
-
-	.pulse {
-		animation: pulse 0.2s alternate 8 0.7s ease-in-out;
-	}
-
-	@keyframes pulse {
-		from {
-			transform: scale(1);
-		}
-		to {
-			transform: scale(0.7);
-		}
+		gap: 25px;
 	}
 </style>

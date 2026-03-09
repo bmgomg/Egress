@@ -1,17 +1,17 @@
 <script>
-	import LevelPrompt from './Level Prompt.svelte';
-	import Board from './Board.svelte';
 	import { ss } from './state.svelte';
 	import Toolbar from './Toolbar.svelte';
-	import Controls from './Controls.svelte';
-	import Next from './Next.svelte';
-	import PracticeInfo from './Practice Info.svelte';
-	import Timer from './Timer.svelte';
+	// import LevelPrompt from './Level Prompt.svelte';
+	// import Board from './Board.svelte';
+	// import Controls from './Controls.svelte';
+	// import Next from './Next.svelte';
+	// import PracticeInfo from './Practice Info.svelte';
+	import Scoreboard from './Scoreboard.svelte';
 	import { secsRemained } from './shared.svelte';
 	import Stats from './Stats.svelte';
-	import Scoreboard from './Scoreboard.svelte';
-	import Prompt from './Prompt.svelte';
-	import GameOver from './Game Over.svelte';
+	import Timer from './Timer.svelte';
+	// import Prompt from './Prompt.svelte';
+	// import GameOver from './Game Over.svelte';
 
 	const hidden = $derived(ss.home);
 </script>
@@ -19,14 +19,10 @@
 <div class="game-page {hidden ? 'hidden' : ''}">
 	<Stats />
 	<Scoreboard />
-	<LevelPrompt/>
-	<PracticeInfo/>
-	<Board />
-	<GameOver />
-	<Controls />
-	<Next/>
+	<!-- <Board /> -->
+	<!-- <Controls /> -->
 	<Timer secs={secsRemained()} />
-	<Prompt/>
+	<!-- <Prompt/> -->
 	<Toolbar />
 </div>
 
