@@ -64,7 +64,7 @@ const makeCells = (grid) => {
     for (let row = 1, i = 0; row <= SIZE; row++) {
         for (let col = 1; col <= SIZE; col++, i++) {
             const ob = grid[row - 1][col - 1];
-            const cell = { id: i + 1, row, col, weight: ob === 'B' ? 1 : -1 };
+            const cell = { id: i + 1, row, col, weight: ob === 'B' ? 1 : ob === '.' ? 0 : -1 };
             cells[i] = cell;
         }
     }
@@ -74,7 +74,7 @@ const makeCells = (grid) => {
 
 const doMakePuzzle = () => {
     // const { grid, door, solution } = generatePuzzle(SIZE);
-    const grid = [['B', 'O', 'O',], ['O', 'O', 'O',], ['O', 'O', 'B',]];
+    const grid = [['B', '.', 'O',], ['O', 'O', 'B',], ['O', 'O', 'B',]];
     const door = { side: 'left', index: 0 };
     const solution = ['CW', 'CCW', 'CCW', 'CW'];
 

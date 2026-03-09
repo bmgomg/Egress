@@ -24,18 +24,14 @@
 			}
 		};
 
-		const handleExit = (cells) => {
-			if (ss.door.side === 'left' || ss.door.side === 'right') {
-				return;
-			}
-
+		const handleExit = (cells, side) => {
 			const col = ss.door.index + 1;
 			const cob1 = findCell(cells, 1, col);
 			const cob2 = findCell(cells, 2, col);
 			const cob3 = findCell(cells, 3, col);
 
-			if (ss.door.side === 'top') {
-				if (cob2.weight <= 0 && cob3.weight < 0) {
+			if (side === 'top') {
+				if (cob2.weight < 0 && cob3.weight < 0) {
 					if (cob1.weight) {
 						cob1.newRow = cob1.row - 3.5;
 					}
@@ -58,12 +54,27 @@
 				return;
 			}
 
-			// ss.door.side === bottom
+			// side === bottom
+
+			// if (cob1.weight > 0 && (cob2.weight >= 0 || cob3.weight >= 0)) {
+			// 	if (cob3.weight) {
+			// 		cob3.newRow = cob3.row + 3.5;
+			// 	}
+
+			// 	if (cob2.weight) {
+			// 		cob2.newRow = cob2.row + 3.5;
+			// 	}
+
+			// 	cob1.newRow = cob1.row + 3.5;
+			// }
 		};
 
 		const handleSpace = () => {
 			const cells = [...ss.cells];
-			handleExit(cells);
+
+			if (ss.door.side === 'top') {
+				handleExit(cells, 'top');
+			}
 
 			ss.cells = cells;
 
@@ -96,6 +107,10 @@
 				}
 
 				delete ss.delay;
+
+				if (ss.door.side === 'bottom') {
+					handleExit(cells, 'bottom');
+				}
 			}, 350);
 		};
 
