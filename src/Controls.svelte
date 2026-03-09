@@ -3,7 +3,7 @@
 	import CW from '$lib/images/CW.webp';
 	import Reset from '$lib/images/Restart.webp';
 	import { fade } from 'svelte/transition';
-	import { calcPoints, isAnimated, isInitial, isSolved, onSetToInitial, startTimer } from './shared.svelte';
+	import { isAnimated, isInitial, isSolved, onSetToInitial, startTimer } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
 	import ToolButton from './Tool Button.svelte';
@@ -54,7 +54,7 @@
 		place-self: center;
 		display: grid;
 		grid-auto-flow: column;
-		gap: 25px;
+		gap: 30px;
 	}
 
 	.hidden {

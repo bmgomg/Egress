@@ -38,7 +38,7 @@
 	}
 
 	.flow {
-		font-size: 48px;
+		font-size: 36px;
 		font-family: Florentina;
 	}
 
