@@ -1,11 +1,8 @@
 <script>
 	import { ss } from './state.svelte';
 	import Toolbar from './Toolbar.svelte';
-	// import LevelPrompt from './Level Prompt.svelte';
 	// import Board from './Board.svelte';
-	// import Controls from './Controls.svelte';
-	// import Next from './Next.svelte';
-	// import PracticeInfo from './Practice Info.svelte';
+	import Controls from './Controls.svelte';
 	import Scoreboard from './Scoreboard.svelte';
 	import { secsRemained } from './shared.svelte';
 	import Stats from './Stats.svelte';
@@ -20,7 +17,7 @@
 	<Stats />
 	<Scoreboard />
 	<!-- <Board /> -->
-	<!-- <Controls /> -->
+	<Controls />
 	<Timer secs={secsRemained()} />
 	<!-- <Prompt/> -->
 	<Toolbar />
