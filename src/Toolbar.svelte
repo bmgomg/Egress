@@ -1,6 +1,6 @@
 <script>
 	import { PROMPT_RESET_STATS } from './const';
-	import { isAnimated, isInitial, isSolved, onSetToInitial, persist, showIntro } from './shared.svelte';
+	import { isAnimated, isInitial, isSolved, setToInitial, persist, showIntro } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { _prompt, _stats, ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
@@ -24,7 +24,7 @@
 	const onSurrender = () => {
 		ss.surrender = true;
 
-		onSetToInitial();
+		setToInitial();
 
 		post(
 			() => {

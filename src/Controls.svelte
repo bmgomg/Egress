@@ -3,7 +3,7 @@
 	import CW from '$lib/images/CW.webp';
 	import Reset from '$lib/images/Restart.webp';
 	import { fade } from 'svelte/transition';
-	import { isAnimated, isInitial, isSolved, onSetToInitial } from './shared.svelte';
+	import { isAnimated, isInitial, isSolved, persist, setToInitial } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
 	import ToolButton from './Tool Button.svelte';
@@ -14,16 +14,17 @@
 	};
 
 	const onReset = () => {
-		onSetToInitial();
+		ss.moves++;
+		setToInitial();
+		persist();
 	};
-
 	const solved = $derived(isSolved());
 	const canRotate = $derived(!isAnimated() && (ss.practice ? !ss.surrender && !ss.delay : !solved));
 	const canReset = $derived(!isInitial() && canRotate);
 </script>
 
 {#if ss.practice || !ss.levelPrompt}
-	<div class="controls {ss.over ? 'hidden' : ''}">
+	<div class="controls {isSolved() ? 'hidden' : ''}">
 		<div class="control" in:fade>
 			<ToolButton id="tb-ccw" src={CCW} disabled={!canRotate} opaque={true} showDisabled={solved} onClick={() => onSpin(false)} />
 			<span>turn</span>

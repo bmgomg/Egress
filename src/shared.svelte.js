@@ -13,7 +13,7 @@ export const persist = () => {
     let json = JSON.stringify({ sfx: _sound.sfx, music: _sound.music });
     localStorage.setItem(APP_STATE, json);
 
-    json = JSON.stringify({ ..._stats, level: ss.level, cells: ss.cells, initial: ss.initial, ticks: ss.ticks, tasks: ss.tasks, points: ss.points, strikes: ss.strikes, over: ss.over, levelComplete: ss.levelComplete });
+    json = JSON.stringify({ ..._stats, cells: ss.cells, door: ss.door, initial: ss.initial, solution: ss.solution, moves: ss.moves });
     localStorage.setItem(appKey(), json);
 };
 
@@ -40,13 +40,13 @@ const loadGame = () => {
 
         ss.cells = job.cells;
         ss.initial = job.initial;
+        ss.door = job.door;
+        ss.solution = job.solution;
+        ss.moves = job.moves;
     } else {
         _stats.plays = 0;
         _stats.total = 0;
         _stats.best = 0;
-
-        delete ss.cells;
-        delete ss.iniital;
     }
 };
 
@@ -73,15 +73,8 @@ const makeCells = (grid) => {
     return cells;
 };
 
-const doMakePuzzle = () => {
-    const { grid, door, solution } = generatePuzzle(SIZE, 2, 20);
-    // const grid = [[BLOCK, EMPTY, BUBBLE], [BUBBLE, BUBBLE, BLOCK], [BUBBLE, BUBBLE, BLOCK]];
-    // const door = { wall: LEFT, corner: 0 };
-    // const solution = ['CW', 'CCW', 'CCW', 'CW'];
-
-    console.log(grid);
-    console.log(door);
-    console.log(solution);
+export const makePuzzle = () => {
+    const { grid, door, solution } = generatePuzzle(SIZE, 2, 10);
 
     let cells = makeCells(grid);
     ss.door = door;
@@ -89,10 +82,10 @@ const doMakePuzzle = () => {
 
     ss.initial = { cells: [...cells], door: { ...ss.door } };
     ss.cells = cells;
-};
+    ss.moves = 0;
 
-export const makePuzzle = () => {
-    doMakePuzzle();
+    persist();
+
     onStart();
 };
 
@@ -102,10 +95,6 @@ const onStart = () => {
     if (!_sound.musicPlayed) {
         post(() => _sound.playMusic(), 1000);
     }
-
-    delete ss.over;
-
-    persist();
 };
 
 export const onHomePlay = () => {
@@ -115,7 +104,9 @@ export const onHomePlay = () => {
 
     loadGame();
 
-    if (!ss.cells) {
+    if (ss.cells) {
+        onStart();
+    } else {
         makePuzzle();
     }
 
@@ -134,7 +125,7 @@ export const isInitial = () => {
     return true;
 };
 
-export const onSetToInitial = () => {
+export const setToInitial = () => {
     if (isInitial()) {
         return;
     }

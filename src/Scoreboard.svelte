@@ -1,6 +1,10 @@
 <script>
 	import NumberFlow from '@number-flow/svelte';
 	import { ss } from './state.svelte';
+	import { isSolved } from './shared.svelte';
+
+	const par = $derived(ss.solution?.length);
+	const over = $derived(isSolved());
 </script>
 
 {#if !ss.practice}
@@ -10,16 +14,16 @@
 				<span class="label">{label}</span>
 				{#if label === 'Rating'}
 					{@const d = value || 0}
-					{@const stars = !ss.over ? '☆☆☆☆☆' : d < 1 ? '★★★★★' : d < 2 ? '★★★★☆' : d < 3 ? '★★★☆☆' : d < 4 ? '★★☆☆☆' : '★☆☆☆☆'}
-					<div class="rating {ss.over ? '' : 'no-rating'}">{stars}</div>
+					{@const stars = !over ? '☆☆☆☆☆' : d < 1 ? '★★★★★' : d < 2 ? '★★★★☆' : d < 3 ? '★★★☆☆' : d < 4 ? '★★☆☆☆' : '★☆☆☆☆'}
+					<div class="rating {over ? '' : 'no-rating'}">{stars}</div>
 				{:else}
 					<div class="flow"><NumberFlow value={value || 0} format={{ useGrouping: false }} /></div>
 				{/if}
 			</div>
 		{/snippet}
-		{@render item(ss.par, 'Par')}
+		{@render item(par, 'Par')}
 		{@render item(ss.moves, 'Moves')}
-		{@render item(ss.moves - ss.par, 'Rating')}
+		{@render item(ss.moves - par, 'Rating')}
 	</div>
 {/if}
 

@@ -17,7 +17,6 @@
 			if (e.propertyName === 'transform') {
 				if (ss.swirl) {
 					delete ss.swirl;
-					ss.ticks = 0;
 					makePuzzle();
 				}
 
@@ -102,16 +101,8 @@
 					delete cell.newRow;
 				}
 
-				if (isSolved()) {
-					post(() => _sound.play('won'), 150);
-					persist();
-				}
-
 				delete ss.delay;
-
-				if (ss.door.wall === BOT) {
-					handleExit(cells, BOT);
-				}
+				persist();
 			}, 350);
 		};
 
@@ -166,6 +157,7 @@
 
 			moveDoor();
 
+			ss.moves++;
 			ss.spin = 0;
 			ss.cells = cells;
 

@@ -123,7 +123,7 @@ export const generatePuzzle = (N, minMoves, maxMoves, seed = Date.now()) => {
             }
             for (const mask of order) {
                 const flat = Array.from({ length: totalCells }, (_, i) => (mask >> i) & 1 ? BLOCK : BUBBLE);
-                if (!flat.some(x => x === BLOCK) || !flat.some(x => x === BUBBLE)) continue;
+                if (flat.filter(x => x === BLOCK).length < 2 || flat.filter(x => x === BUBBLE).length < 2) continue;
                 const grid = Array.from({ length: N }, (_, r) => flat.slice(r * N, r * N + N));
                 yield grid;
             }
@@ -132,7 +132,7 @@ export const generatePuzzle = (N, minMoves, maxMoves, seed = Date.now()) => {
             let yielded = 0;
             while (yielded < SAMPLE_SIZE) {
                 const flat = Array.from({ length: totalCells }, () => rand() < 0.5 ? BLOCK : BUBBLE);
-                if (!flat.some(x => x === BLOCK) || !flat.some(x => x === BUBBLE)) continue;
+                if (flat.filter(x => x === BLOCK).length < 2 || flat.filter(x => x === BUBBLE).length < 2) continue;
                 const key = flat.join('');
                 if (seen.has(key)) continue;
                 seen.add(key);
