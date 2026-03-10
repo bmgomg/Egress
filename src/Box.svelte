@@ -8,6 +8,7 @@
 	import BoxTL from '$lib/images/Box TL.webp';
 	import BoxTR from '$lib/images/Box TR.webp';
 	import { CELL_MARGIN, CELL_SIZE } from './const';
+	import { BOT, LEFT, RIGHT, TOP } from './solver';
 	import { ss } from './state.svelte';
 
 	const { sz, th } = $props();
@@ -16,29 +17,29 @@
 	const off = $derived(dsz / 2);
 
 	const topStyle = $derived.by(() => {
-		const width = ss.door.side === 'top' ? wsz : sz;
-		const dx = width < sz ? ss.door.index === 0 ? off : -off : 0;
+		const width = ss.door.wall === TOP ? wsz : sz;
+		const dx = width < sz ? ss.door.corner === 0 ? off : -off : 0;
 
 		return `width: ${width}px; height: ${th}px; translate: ${dx}px 0;`;
 	});
 
 	const bottomStyle = $derived.by(() => {
-		const width = ss.door.side === 'bottom' ? wsz : sz;
-		const dx = width < sz ? ss.door.index === 0 ? off : -off : 0;
+		const width = ss.door.wall === BOT ? wsz : sz;
+		const dx = width < sz ? ss.door.corner === 0 ? off : -off : 0;
 
 		return `width: ${width}px; height: ${th}px; translate: ${dx}px 0;`;
 	});
 
 	const leftStyle = $derived.by(() => {
-		const height = ss.door.side === 'left' ? wsz : sz;
-		const dy = height < sz ? ss.door.index === 0 ? off : -off : 0;
+		const height = ss.door.wall === LEFT ? wsz : sz;
+		const dy = height < sz ? ss.door.corner === 0 ? off : -off : 0;
 
 		return `width: ${th}px; height: ${height}px; translate: 0 ${dy}px;`;
 	});
 
 	const rightStyle = $derived.by(() => {
-		const height = ss.door.side === 'right' ? wsz : sz;
-		const dy = height < sz ? ss.door.index === 0 ? off : -off : 0;
+		const height = ss.door.wall === RIGHT ? wsz : sz;
+		const dy = height < sz ? ss.door.corner === 0 ? off : -off : 0;
 
 		return `width: ${th}px; height: ${height}px; translate: 0 ${dy}px;`;
 	});

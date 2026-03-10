@@ -1,4 +1,5 @@
 import { APP_STATE, CELL_COUNT, SIZE } from './const';
+import { BLOCK, EMPTY, generatePuzzle } from './solver';
 // import { solve } from './solver';
 import { _sound } from './sound.svelte';
 import { _prompt, _stats, ss } from './state.svelte';
@@ -64,7 +65,7 @@ const makeCells = (grid) => {
     for (let row = 1, i = 0; row <= SIZE; row++) {
         for (let col = 1; col <= SIZE; col++, i++) {
             const ob = grid[row - 1][col - 1];
-            const cell = { id: i + 1, row, col, weight: ob === 'B' ? 1 : ob === '.' ? 0 : -1 };
+            const cell = { id: i + 1, row, col, weight: ob === BLOCK ? 1 : ob === EMPTY ? 0 : -1 };
             cells[i] = cell;
         }
     }
@@ -73,10 +74,10 @@ const makeCells = (grid) => {
 };
 
 const doMakePuzzle = () => {
-    // const { grid, door, solution } = generatePuzzle(SIZE);
-    const grid = [['B', '.', 'O',], ['O', 'O', 'B',], ['O', 'O', 'B',]];
-    const door = { side: 'left', index: 0 };
-    const solution = ['CW', 'CCW', 'CCW', 'CW'];
+    const { grid, door, solution } = generatePuzzle(SIZE, 2, 20);
+    // const grid = [[BLOCK, EMPTY, BUBBLE], [BUBBLE, BUBBLE, BLOCK], [BUBBLE, BUBBLE, BLOCK]];
+    // const door = { wall: LEFT, corner: 0 };
+    // const solution = ['CW', 'CCW', 'CCW', 'CW'];
 
     console.log(grid);
     console.log(door);
@@ -126,7 +127,7 @@ export const isInitial = () => {
         return false;
     }
 
-    if (ss.door?.side !== ss.initial.door.side || ss.door.index !== ss.initial.door.index) {
+    if (ss.door?.wall !== ss.initial.door.wall || ss.door.corner !== ss.initial.door.corner) {
         return false;
     }
 

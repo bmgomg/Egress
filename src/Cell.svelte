@@ -1,9 +1,7 @@
 <script>
 	import Block from '$lib/images/Block.webp';
 	import Bubble from '$lib/images/Bubble.webp';
-	import { fade } from 'svelte/transition';
 	import { CELL_MARGIN, CELL_SIZE } from './const';
-	import { isAnimated, isSolved } from './shared.svelte';
 	import { ss } from './state.svelte';
 
 	const { cell } = $props();

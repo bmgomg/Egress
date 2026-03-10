@@ -1,239 +1,194 @@
-// ------------------------------------------------------------
-// Constants
-// ------------------------------------------------------------
-const BLOCK = 'B';
-const BUBBLE = 'O';
-const EMPTY = '.';
+export const EMPTY = 0, BLOCK = 1, BUBBLE = 2;
+export const TOP = 0, RIGHT = 1, BOT = 2, LEFT = 3;
 
-const MOVES = ['CW', 'CCW'];
+// ── Door rotation (uses physical corners: TL=0,TR=1,BR=2,BL=3) ──
+const toPhysCorner = (wall, corner) => [[0, 1], [1, 2], [3, 2], [0, 3]][wall][corner];
+const fromPhysCorner = (phys, wall) => ({ 0: { 0: 0, 3: 0 }, 1: { 0: 1, 1: 0 }, 2: { 1: 1, 2: 1 }, 3: { 2: 0, 3: 1 } })[phys][wall];
+const rotateDoorCW = (d) => { const np = (toPhysCorner(d.wall, d.corner) + 1) % 4, nw = (d.wall + 1) % 4; return { wall: nw, corner: fromPhysCorner(np, nw) }; };
+const rotateDoorCCW = (d) => { const np = (toPhysCorner(d.wall, d.corner) + 3) % 4, nw = (d.wall + 3) % 4; return { wall: nw, corner: fromPhysCorner(np, nw) }; };
 
-// ------------------------------------------------------------
-// Helpers
-// ------------------------------------------------------------
-const cloneGrid = (g) => {
-    return g.map(r => r.slice());
-};
+// ── Grid rotation ──
+const rotateGridCW = (g, N) => { const ng = Array.from({ length: N }, () => Array(N).fill(0)); for (let r = 0; r < N; r++)for (let c = 0; c < N; c++)ng[c][N - 1 - r] = g[r][c]; return ng; };
+const rotateGridCCW = (g, N) => { const ng = Array.from({ length: N }, () => Array(N).fill(0)); for (let r = 0; r < N; r++)for (let c = 0; c < N; c++)ng[N - 1 - c][r] = g[r][c]; return ng; };
 
-const gridToString = (g) => {
-    return g.map(r => r.join('')).join('\n');
-};
+// ── Physics ──
+const getExitCol = (door, N) => { if (door.wall === 0 || door.wall === 2) return door.corner === 0 ? 0 : N - 1; return null; };
 
-const isEmptyGrid = (g) => {
-    return g.every(row => row.every(c => c === EMPTY));
-};
-
-const rotateCW = (g) => {
-    const N = g.length;
-    const r = Array.from({ length: N }, () => Array(N).fill(EMPTY));
-    for (let y = 0; y < N; y++)
-        for (let x = 0; x < N; x++)
-            r[x][N - 1 - y] = g[y][x];
-    return r;
-};
-
-const rotateCCW = (g) => {
-    const N = g.length;
-    const r = Array.from({ length: N }, () => Array(N).fill(EMPTY));
-    for (let y = 0; y < N; y++)
-        for (let x = 0; x < N; x++)
-            r[N - 1 - x][y] = g[y][x];
-    return r;
-};
-
-// ------------------------------------------------------------
-// Gravity + door exit (gravity always DOWN in world coords)
-// ------------------------------------------------------------
-const applyGravityWithDoor = (grid, door) => {
-    const N = grid.length;
-    const g = cloneGrid(grid);
-
-    const isHeavy = c => c === BLOCK;
-    const isLight = c => c === BUBBLE;
-
-    const isDoorExit = (y, x, dy, dx) => {
-        const ny = y + dy;
-        const nx = x + dx;
-
-        if (door.side === 'left' && nx < 0 && y === door.index) return true;
-        if (door.side === 'right' && nx >= N && y === door.index) return true;
-        if (door.side === 'top' && ny < 0 && x === door.index) return true;
-        if (door.side === 'bottom' && ny >= N && x === door.index) return true;
-
-        return false;
-    };
-
-    const moveCell = (y, x, dy, dx) => {
-        const c = g[y][x];
-        if (c === EMPTY) return;
-
-        let cy = y, cx = x;
-
-        while (true) {
-            const ny = cy + dy;
-            const nx = cx + dx;
-
-            if (ny < 0 || ny >= N || nx < 0 || nx >= N) {
-                if (isDoorExit(cy, cx, dy, dx)) g[cy][cx] = EMPTY;
-                break;
+const settleColumn = (col, topExit, botExit) => {
+    let c = [...col]; const N = c.length; let ch = true;
+    while (ch) {
+        ch = false;
+        for (let r = 0; r < N; r++) {
+            if (c[r] !== BLOCK) continue;
+            let nB = 0; for (let i = r + 1; i < N && c[i] === BUBBLE; i++)nB++;
+            if (nB >= 2) {
+                if (r > 0 && c[r - 1] === EMPTY) { c[r - 1] = BLOCK; c[r] = BUBBLE; c[r + nB] = EMPTY; ch = true; break; }
+                else if (r === 0 && topExit) { c[r] = EMPTY; ch = true; break; }
+            } else if (nB === 1) {
+                if (r + 2 < N && c[r + 2] === EMPTY) { c[r + 2] = BUBBLE; c[r + 1] = BLOCK; c[r] = EMPTY; ch = true; break; }
+                else if (r + 1 === N - 1 && botExit) { c[r + 1] = EMPTY; c[r] = EMPTY; ch = true; break; }
             }
-
-            if (g[ny][nx] !== EMPTY) break;
-
-            cy = ny;
-            cx = nx;
         }
+        if (ch) continue;
+        for (let r = 1; r < N; r++) { if (c[r] === BUBBLE && c[r - 1] === EMPTY) { c[r - 1] = BUBBLE; c[r] = EMPTY; ch = true; break; } }
+        if (ch) continue;
+        if (topExit && c[0] === BUBBLE) { c[0] = EMPTY; ch = true; continue; }
+        for (let r = N - 2; r >= 0; r--) { if (c[r] === BLOCK && c[r + 1] === EMPTY) { c[r + 1] = BLOCK; c[r] = EMPTY; ch = true; break; } }
+        if (ch) continue;
+        if (botExit && c[N - 1] === BLOCK) { c[N - 1] = EMPTY; ch = true; continue; }
+    }
+    return c;
+};
 
-        if (cy !== y || cx !== x) {
-            g[cy][cx] = c;
-            g[y][x] = EMPTY;
-        }
-    };
-
-    // Heavy moves down, light moves up
-    for (let y = N - 2; y >= 0; y--)
-        for (let x = 0; x < N; x++)
-            if (isHeavy(g[y][x])) moveCell(y, x, +1, 0);
-
-    for (let y = 1; y < N; y++)
-        for (let x = 0; x < N; x++)
-            if (isLight(g[y][x])) moveCell(y, x, -1, 0);
-
+const applyPhysics = (grid, door, N) => {
+    const exitCol = getExitCol(door, N), topExit = door.wall === 0, botExit = door.wall === 2;
+    let g = grid.map(r => [...r]);
+    for (let c = 0; c < N; c++) {
+        const colOut = settleColumn(g.map(r => r[c]), topExit && exitCol === c, botExit && exitCol === c);
+        for (let r = 0; r < N; r++)g[r][c] = colOut[r];
+    }
     return g;
 };
 
-// ------------------------------------------------------------
-// Apply a rotation move (CW or CCW) + gravity
-// ------------------------------------------------------------
-const applyMove = (grid, orientation, move, door) => {
-    let newOrientation = orientation;
-    let rotated = grid;
+const countPieces = (grid) => grid.flat().filter(x => x !== EMPTY).length;
+const gridKey = (grid, door) => grid.flat().join('') + '|' + door.wall + door.corner;
+const isStable = (grid, door, N) => JSON.stringify(grid) === JSON.stringify(applyPhysics(grid, door, N));
 
-    if (move === 'CW') {
-        rotated = rotateCW(rotated);
-        newOrientation = (orientation + 1) % 4;
-    } else {
-        rotated = rotateCCW(rotated);
-        newOrientation = (orientation + 3) % 4;
+// BFS solver — returns shortest move sequence, or null if none within maxDepth
+const solve = (grid, door, N, maxDepth) => {
+    const initial = applyPhysics(grid, door, N);
+    if (countPieces(initial) === 0) return [];
+    const queue = [{ grid: initial, door, moves: [] }];
+    const visited = new Set([gridKey(initial, door)]);
+    while (queue.length > 0) {
+        const { grid: g, door: d, moves } = queue.shift();
+        if (moves.length >= maxDepth) continue;
+        for (const cw of [true, false]) {
+            const nd = cw ? rotateDoorCW(d) : rotateDoorCCW(d);
+            const rg = cw ? rotateGridCW(g, N) : rotateGridCCW(g, N);
+            const sg = applyPhysics(rg, nd, N);
+            const nm = [...moves, cw ? 'CW' : 'CCW'];
+            if (countPieces(sg) === 0) return nm;
+            const key = gridKey(sg, nd);
+            if (!visited.has(key)) { visited.add(key); queue.push({ grid: sg, door: nd, moves: nm }); }
+        }
     }
-
-    const afterGravity = applyGravityWithDoor(rotated, door);
-    return { grid: afterGravity, orientation: newOrientation };
+    return null;
 };
 
-// ------------------------------------------------------------
-// BFS solver (minimal CW/CCW sequence)
-// ------------------------------------------------------------
-const solveMinimal = (grid, door) => {
-    const startKey = gridToString(grid) + '|0';
-    const visited = new Set([startKey]);
-    const queue = [{ grid, orientation: 0, path: [] }];
+// Seeded LCG
+const makeLCG = (seed) => {
+    let s = seed >>> 0;
+    return () => { s = (Math.imul(1664525, s) + 1013904223) >>> 0; return s / 0x100000000; };
+};
 
-    while (queue.length) {
-        const { grid: g, orientation, path } = queue.shift();
+const ALL_DOORS = [];
+for (let wall = 0; wall < 4; wall++)for (let corner = 0; corner < 2; corner++)ALL_DOORS.push({ wall, corner });
 
-        if (isEmptyGrid(g)) return path;
+/**
+ * Generate a puzzle with a verified minimal solution in [minMoves, maxMoves].
+ *
+ * @param {number} N         - Grid size: 2, 3, or 4
+ * @param {number} minMoves  - Minimum solution length (inclusive)
+ * @param {number} maxMoves  - Maximum solution length (inclusive)
+ * @param {number} [seed]    - RNG seed (default: Date.now())
+ * @returns {{
+ *   grid:     number[][],              // N×N grid, 1=BLOCK, 2=BUBBLE
+ *   door:     {wall:number, corner:number},  // wall: 0=top,1=right,2=bottom,3=left; corner: 0=left/top-end, 1=right/bottom-end
+ *   solution: string[],                // optimal sequence of 'CW'/'CCW'
+ *   par:      number                   // solution.length
+ * } | null}  null if no valid puzzle found within search budget
+ */
+export const generatePuzzle = (N, minMoves, maxMoves, seed = Date.now()) => {
+    if (N < 2 || N > 4) throw new Error('N must be 2, 3, or 4');
+    if (minMoves < 1) throw new Error('minMoves must be >= 1');
+    if (maxMoves < minMoves) throw new Error('maxMoves must be >= minMoves');
 
-        for (const move of MOVES) {
-            const next = applyMove(g, orientation, move, door);
-            const key = gridToString(next.grid) + '|' + next.orientation;
+    const rand = makeLCG(seed);
+    const totalCells = N * N;
 
-            if (visited.has(key)) continue;
-            visited.add(key);
+    // For N=2,3 enumerate all grids (shuffled). For N=4 sample randomly.
+    const ENUMERATE = N <= 3;
+    const SAMPLE_SIZE = 5000; // N=4 random candidates to try
 
-            queue.push({
-                grid: next.grid,
-                orientation: next.orientation,
-                path: [...path, move]
-            });
+    // Produce a shuffled array of all grid bitmasks (N<=3) or random flat arrays (N=4)
+    const gridCandidates = function* () {
+        if (ENUMERATE) {
+            const total = 1 << totalCells;
+            const order = Array.from({ length: total }, (_, i) => i);
+            // Fisher-Yates shuffle
+            for (let i = order.length - 1; i > 0; i--) {
+                const j = Math.floor(rand() * (i + 1));
+                [order[i], order[j]] = [order[j], order[i]];
+            }
+            for (const mask of order) {
+                const flat = Array.from({ length: totalCells }, (_, i) => (mask >> i) & 1 ? BLOCK : BUBBLE);
+                if (!flat.some(x => x === BLOCK) || !flat.some(x => x === BUBBLE)) continue;
+                const grid = Array.from({ length: N }, (_, r) => flat.slice(r * N, r * N + N));
+                yield grid;
+            }
+        } else {
+            const seen = new Set();
+            let yielded = 0;
+            while (yielded < SAMPLE_SIZE) {
+                const flat = Array.from({ length: totalCells }, () => rand() < 0.5 ? BLOCK : BUBBLE);
+                if (!flat.some(x => x === BLOCK) || !flat.some(x => x === BUBBLE)) continue;
+                const key = flat.join('');
+                if (seen.has(key)) continue;
+                seen.add(key);
+                const grid = Array.from({ length: N }, (_, r) => flat.slice(r * N, r * N + N));
+                yield grid;
+                yielded++;
+            }
+        }
+    };
+
+    // Shuffle door order independently per candidate
+    const shuffledDoors = () => {
+        const doors = [...ALL_DOORS];
+        for (let i = doors.length - 1; i > 0; i--) {
+            const j = Math.floor(rand() * (i + 1));
+            [doors[i], doors[j]] = [doors[j], doors[i]];
+        }
+        return doors;
+    };
+
+    for (const grid of gridCandidates()) {
+        for (const door of shuffledDoors()) {
+            if (!isStable(grid, door, N)) continue;
+            const sol = solve(grid, door, N, Math.min(maxMoves, 15));
+            if (!sol || sol.length < minMoves) continue;
+            // sol.length <= maxMoves is guaranteed by solve's maxDepth
+            return { grid, door, solution: sol, par: sol.length };
         }
     }
 
     return null;
 };
 
-// ------------------------------------------------------------
-// Random grid + door
-// ------------------------------------------------------------
-const randomDoor = (size) => {
-    const sides = ['left', 'right', 'top', 'bottom'];
-    return {
-        side: sides[Math.floor(Math.random() * sides.length)],
-        // index: Math.floor(Math.random() * size)
-        index: 1 + ((Date.now() % 2) ? 1 : -1)
-    };
-};
+// ── Tests ──
+// const wallNames = ['TOP', 'RIGHT', 'BOT', 'LEFT'];
 
-const randomGrid = (size) => {
-    const g = [];
-    for (let y = 0; y < size; y++) {
-        const row = [];
-        for (let x = 0; x < size; x++) {
-            row.push(Math.random() < 0.5 ? BLOCK : BUBBLE);
-        }
-        g.push(row);
-    }
-    return g;
-};
+// const test = (N, min, max, seed) => {
+//     const t0 = Date.now();
+//     const result = generatePuzzle(N, min, max, seed);
+//     const ms = Date.now() - t0;
+//     if (!result) {
+//         console.log(`${N}x${N} [${min}-${max}] seed=${seed}: NO RESULT (${ms}ms)`);
+//         return;
+//     }
+//     const { grid, door, solution, par } = result;
+//     console.log(`${N}x${N} [${min}-${max}] seed=${seed}: par=${par} door=${wallNames[door.wall]}-${door.corner} sol=[${solution.join(',')}] (${ms}ms)`);
+//     grid.forEach(row => process.stdout.write('  ' + row.map(x => x === BLOCK ? 'B' : 'o').join(' ') + '\n'));
+//     console.log();
+// };
 
-const isStableStart = (grid, door) => {
-    if (door.side === 'left' || door.side === 'right') {
-        return true;
-    }
-
-    const col = door.index;
-
-    if (door.side === 'top') {
-        if (grid[0][col] === 'O') {
-            return false;
-        }
-
-        if (grid[1][col] === 0 && grid[2][col] === 0) {
-            return false;
-        }
-
-        return true;
-    }
-
-    if (door.side === 'bottom') {
-        if (grid[1][col] === 'B' || grid[2][col] === 'B') {
-            return false;
-        }
-
-        return true;
-    }
-
-    const N = grid.length;
-    const dirs = ['CW', 'CCW'];
-    for (const m of dirs) {
-        const next = applyMove(grid, 0, m, door).grid;
-        if (gridToString(next) !== gridToString(grid)) return false;
-    }
-    return true;
-};
-
-// ------------------------------------------------------------
-// Main generator for SIZE = 2, 3, or 4
-// ------------------------------------------------------------
-export const generatePuzzle = (size) => {
-    if (size < 2 || size > 4) throw new Error('SIZE must be 2, 3, or 4');
-
-    while (true) {
-        const grid = randomGrid(size);
-        const door = randomDoor(size);
-
-        if (!isStableStart(grid, door)) continue;
-
-        const solution = solveMinimal(grid, door);
-        if (!solution || solution.length === 0) continue;
-
-        return { size, grid, door, solution };
-    }
-};
-
-// ------------------------------------------------------------
-// Example
-// ------------------------------------------------------------
-// const puzzle = generatePuzzle(4);
-// console.log("Door:", puzzle.door);
-// console.log("Solution (CW/CCW):", puzzle.solution);
-// console.table(puzzle.grid);
+// test(2, 1, 2, 1);
+// test(2, 3, 5, 2);
+// test(2, 5, 7, 3);
+// test(3, 5, 6, 10);
+// test(3, 6, 8, 20);
+// test(3, 8, 10, 30);
+// test(4, 5, 7, 100);
+// test(4, 7, 9, 200);
+// test(4, 9, 11, 300);

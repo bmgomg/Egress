@@ -7,6 +7,7 @@
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
 	import { post } from './utils';
+	import { BOT, LEFT, RIGHT, TOP } from './solver';
 
 	let _this = $state(null);
 	let inner = $state(null);
@@ -24,13 +25,13 @@
 			}
 		};
 
-		const handleExit = (cells, side) => {
-			const col = ss.door.index + 1;
+		const handleExit = (cells, wall) => {
+			const col = ss.door.corner ? 3 : 1;
 			const cob1 = findCell(cells, 1, col);
 			const cob2 = findCell(cells, 2, col);
 			const cob3 = findCell(cells, 3, col);
 
-			if (side === 'top') {
+			if (wall === TOP) {
 				if (cob2.weight < 0 && cob3.weight < 0) {
 					if (cob1.weight) {
 						cob1.newRow = cob1.row - 3.5;
@@ -72,8 +73,8 @@
 		const handleSpace = () => {
 			const cells = [...ss.cells];
 
-			if (ss.door.side === 'top') {
-				handleExit(cells, 'top');
+			if (ss.door.wall === TOP) {
+				handleExit(cells, TOP);
 			}
 
 			ss.cells = cells;
@@ -108,8 +109,8 @@
 
 				delete ss.delay;
 
-				if (ss.door.side === 'bottom') {
-					handleExit(cells, 'bottom');
+				if (ss.door.wall === BOT) {
+					handleExit(cells, BOT);
 				}
 			}, 350);
 		};
@@ -117,29 +118,29 @@
 		const moveDoor = () => {
 			const cw = ss.spin === 1;
 
-			if (ss.door.side === 'top') {
-				ss.door.side = cw ? 'right' : 'left';
+			if (ss.door.wall === TOP) {
+				ss.door.wall = cw ? RIGHT : LEFT;
 
 				if (!cw) {
-					ss.door.index = SIZE - 1 - ss.door.index;
+					ss.door.corner = 1 - ss.door.corner;
 				}
-			} else if (ss.door.side === 'right') {
-				ss.door.side = cw ? 'bottom' : 'top';
+			} else if (ss.door.wall === RIGHT) {
+				ss.door.wall = cw ? BOT : TOP;
 
 				if (cw) {
-					ss.door.index = SIZE - 1 - ss.door.index;
+					ss.door.corner = 1 - ss.door.corner;
 				}
-			} else if (ss.door.side === 'bottom') {
-				ss.door.side = cw ? 'left' : 'right';
+			} else if (ss.door.wall === BOT) {
+				ss.door.wall = cw ? LEFT : RIGHT;
 
 				if (!cw) {
-					ss.door.index = SIZE - 1 - ss.door.index;
+					ss.door.corner = 1 - ss.door.corner;
 				}
-			} else if (ss.door.side === 'left') {
-				ss.door.side = cw ? 'top' : 'bottom';
+			} else if (ss.door.wall === LEFT) {
+				ss.door.wall = cw ? TOP : BOT;
 
 				if (cw) {
-					ss.door.index = SIZE - 1 - ss.door.index;
+					ss.door.corner = 1 - ss.door.corner;
 				}
 			}
 		};
