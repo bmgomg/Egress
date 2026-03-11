@@ -62,11 +62,12 @@
 	}
 
 	.id {
-		display: none;
+		display: grid;
 		grid-area: 1/1;
 		place-self: center;
-		font-size: 22px;
-		text-shadow: 1px 1px 1px black;
+		font-size: 28px;
+		font-family: Roboto;
+		color: black;
 		z-index: 1;
 	}
 </style>

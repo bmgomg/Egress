@@ -6,7 +6,7 @@ import { post } from './utils';
 
 export const _log = (value) => console.log($state.snapshot(value));
 
-export const appKey = () => `${APP_STATE} • ${ss.mode}`;
+export const appKey = () => `${APP_STATE} • ${SIZE}`;
 
 export const persist = () => {
     let json = JSON.stringify({ sfx: _sound.sfx, music: _sound.music });

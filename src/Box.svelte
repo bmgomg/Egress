@@ -16,32 +16,34 @@
 	const wsz = $derived(sz - dsz);
 	const off = $derived(dsz / 2);
 
+	const filter = (on) => on ? 'hue-rotate(-90deg)' : 'none';
+
 	const topStyle = $derived.by(() => {
 		const width = ss.door.wall === TOP ? wsz : sz;
 		const dx = width < sz ? ss.door.corner === 0 ? off : -off : 0;
 
-		return `width: ${width}px; height: ${th}px; translate: ${dx}px 0;`;
+		return `width: ${width}px; height: ${th}px; translate: ${dx}px 0; filter: ${filter(width < sz)};`;
 	});
 
 	const bottomStyle = $derived.by(() => {
 		const width = ss.door.wall === BOT ? wsz : sz;
 		const dx = width < sz ? ss.door.corner === 0 ? off : -off : 0;
 
-		return `width: ${width}px; height: ${th}px; translate: ${dx}px 0;`;
+		return `width: ${width}px; height: ${th}px; translate: ${dx}px 0; filter: ${filter(width < sz)};`;
 	});
 
 	const leftStyle = $derived.by(() => {
 		const height = ss.door.wall === LEFT ? wsz : sz;
 		const dy = height < sz ? ss.door.corner === 0 ? off : -off : 0;
 
-		return `width: ${th}px; height: ${height}px; translate: 0 ${dy}px;`;
+		return `width: ${th}px; height: ${height}px; translate: 0 ${dy}px; filter: ${filter(height < sz)};`;
 	});
 
 	const rightStyle = $derived.by(() => {
 		const height = ss.door.wall === RIGHT ? wsz : sz;
 		const dy = height < sz ? ss.door.corner === 0 ? off : -off : 0;
 
-		return `width: ${th}px; height: ${height}px; translate: 0 ${dy}px;`;
+		return `width: ${th}px; height: ${height}px; translate: 0 ${dy}px; filter: ${filter(height < sz)};`;
 	});
 </script>
 

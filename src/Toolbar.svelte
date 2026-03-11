@@ -74,7 +74,7 @@
 <div class="toolbar">
 	<TextButton id="tb-home" text={['Home']} disabled={!canHome} onClick={onHome} />
 	<TextButton id="tb-stats" text={['Reset', 'Stats']} onClick={onResetStats} disabled={_stats.plays === 0} />
-	<TextButton id="tb-surrender" text={['Solve']} disabled={!canSurrender} onClick={onSurrender} />
+	<TextButton id="tb-surrender" text={['Give', 'Up']} disabled={!canSurrender} onClick={onSurrender} />
 	<TextButton id="tb-sfx" text={['Sound', _sound.sfx ? 'On' : 'Off']} onClick={onSound} />
 	<TextButton id="tb-music" text={['Music', _sound.music ? 'On' : 'Off']} onClick={onMusic} />
 </div>

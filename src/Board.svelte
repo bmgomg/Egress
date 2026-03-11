@@ -3,11 +3,12 @@
 	import Box from './Box.svelte';
 	import Cell from './Cell.svelte';
 	import { CELL_COUNT, CELL_MARGIN, CELL_SIZE, SIZE } from './const';
-	import { findCell, indexOf, makePuzzle, persist } from './shared.svelte';
+	import { _log, findCell, indexOf, makePuzzle, persist } from './shared.svelte';
 	import { applyPhysics, BLOCK, BOT, BUBBLE, EMPTY, LEFT, RIGHT, TOP } from './solver';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
 	import { post } from './utils';
+	import { COL_TRANSITIONS } from './col_transitions';
 
 	let _this = $state(null);
 	let inner = $state(null);
@@ -24,60 +25,7 @@
 			}
 		};
 
-		const handleExit = (cells, wall) => {
-			const col = ss.door.corner ? 3 : 1;
-			const cob1 = findCell(cells, 1, col);
-			const cob2 = findCell(cells, 2, col);
-			const cob3 = findCell(cells, 3, col);
-
-			if (wall === TOP) {
-				if (cob2.weight < 0 && cob3.weight < 0) {
-					if (cob1.weight) {
-						cob1.newRow = cob1.row - 3.5;
-					}
-
-					if (cob2.weight) {
-						cob2.newRow = cob2.row - 3.5;
-					}
-
-					cob3.newRow = cob3.row - 3.5;
-				} else if (cob1.weight <= 0 && cob2.weight < 0) {
-					if (cob1.weight) {
-						cob1.newRow = cob1.row - 2.5;
-					}
-
-					cob2.newRow = cob2.row - 2.5;
-				} else if (cob1.weight < 0) {
-					cob1.newRow = cob1.row - 1.5;
-				}
-
-				return;
-			}
-
-			// side === bottom
-
-			// if (cob1.weight > 0 && (cob2.weight >= 0 || cob3.weight >= 0)) {
-			// 	if (cob3.weight) {
-			// 		cob3.newRow = cob3.row + 3.5;
-			// 	}
-
-			// 	if (cob2.weight) {
-			// 		cob2.newRow = cob2.row + 3.5;
-			// 	}
-
-			// 	cob1.newRow = cob1.row + 3.5;
-			// }
-		};
-
 		const handleSpace = () => {
-			const cells = [...ss.cells];
-
-			if (ss.door.wall === TOP) {
-				handleExit(cells, TOP);
-			}
-
-			ss.cells = cells;
-
 			post(() => {
 				let sounded;
 
@@ -88,10 +36,12 @@
 					}
 				};
 
-				for (let i = 0; i < CELL_COUNT; i++) {
-					const cell = ss.cells[i];
+				const cells = [...ss.cells];
 
-					if (cell.newRow <= 0) {
+				for (let i = 0; i < CELL_COUNT; i++) {
+					const cell = cells[i];
+
+					if (cell.newRow < 0 || cell.newRow > SIZE) {
 						cell.weight = 0;
 					} else if (cell.newRow && cell.newRow !== cell.row) {
 						cell.row = cell.newRow;
@@ -100,6 +50,8 @@
 
 					delete cell.newRow;
 				}
+
+				ss.cells = cells;
 
 				delete ss.delay;
 				persist();
@@ -136,6 +88,54 @@
 			}
 		};
 
+		const applyGravity = () => {
+			_log(ss.cells);
+			const newCells = [...ss.cells];
+
+			for (let c = 0; c < SIZE; c++) {
+				const colKey = newCells
+					.filter((cob) => cob.col === c + 1).sort((a, b) => a.row - b.row)
+					.map((cob) => (cob.weight > 0 ? '🟨' : cob.weight < 0 ? '🔵' : '❌'))
+					.join('');
+
+				console.log(colKey);
+
+				let exit;
+				const inExitCol = (ss.door.corner === 0 && c === 0) || (ss.door.corner === 1 && c === SIZE - 1);
+
+				if (ss.door.wall === TOP && inExitCol) {
+					exit = 0;
+				} else if (ss.door.wall === BOT && inExitCol) {
+					exit = 2;
+				} else {
+					exit = 1;
+				}
+
+				const offs = COL_TRANSITIONS[colKey][exit];
+				console.log(offs.join('•'));
+
+				for (let r = 0; r < SIZE; r++) {
+					const off = offs[r];
+
+					if (off === 0) {
+						continue;
+					}
+
+					const cell = findCell(newCells, r + 1, c + 1);
+					cell.newRow = cell.row + off;
+
+					if (cell.newRow === 0) {
+						cell.newRow = -0.5;
+					} else if (cell.newRow === SIZE + 1) {
+						cell.newRow += 0.5;
+					}
+				}
+			}
+
+			ss.cells = newCells;
+			handleSpace();
+		};
+
 		const handleSpin = () => {
 			_sound.play('cluck');
 
@@ -145,7 +145,13 @@
 			const cells = Array(CELL_COUNT);
 
 			for (let i = 0; i < CELL_COUNT; i++) {
-				const cell = { ...ss.cells[i] };
+				// const cell = { ...ss.cells[i] };
+				const cell = {};
+				cell.id = ss.cells[i].id;
+				cell.row = ss.cells[i].row;
+				cell.col = ss.cells[i].col;
+				cell.weight = ss.cells[i].weight;
+				
 				const { row, col } = newRowCol(cell.row, cell.col, cw);
 
 				cell.row = row;
@@ -156,12 +162,15 @@
 			}
 
 			moveDoor();
+			_log(ss.door);
 
 			ss.moves++;
 			ss.spin = 0;
 			ss.cells = cells;
 
-			// create a matrix (grid) from the cells
+			post(applyGravity);
+
+			/*
 			const g = Array.from({ length: SIZE }, () => Array(SIZE).fill(null));
 
 			for (const cell of cells) {
@@ -178,102 +187,10 @@
 					cell.weight = ob === BLOCK ? 1 : ob === EMPTY ? 0 : -1;
 				}
 			}, 500);
+*/
 
 			// ss.delay = true;
 			// post(handleSpace);
-		};
-
-		const settleColumn = (col, topExit, botExit) => {
-			let c = [...col];
-			const N = c.length;
-			let ch = true;
-
-			while (ch) {
-				ch = false;
-
-				for (let r = 0; r < N; r++) {
-					if (c[r] !== BLOCK) {
-						continue;
-					}
-
-					let nB = 0;
-
-					for (let i = r + 1; i < N && c[i] === BUBBLE; i++) {
-						nB++;
-					}
-
-					if (nB >= 2) {
-						if (r > 0 && c[r - 1] === EMPTY) {
-							c[r - 1] = BLOCK;
-							c[r] = BUBBLE;
-							c[r + nB] = EMPTY;
-							ch = true;
-							break;
-						} else if (r === 0 && topExit) {
-							c[r] = EMPTY;
-							ch = true;
-							break;
-						}
-					} else if (nB === 1) {
-						if (r + 2 < N && c[r + 2] === EMPTY) {
-							c[r + 2] = BUBBLE;
-							c[r + 1] = BLOCK;
-							c[r] = EMPTY;
-							ch = true;
-							break;
-						} else if (r + 1 === N - 1 && botExit) {
-							c[r + 1] = EMPTY;
-							c[r] = EMPTY;
-							ch = true;
-							break;
-						}
-					}
-				}
-
-				if (ch) {
-					continue;
-				}
-
-				for (let r = 1; r < N; r++) {
-					if (c[r] === BUBBLE && c[r - 1] === EMPTY) {
-						c[r - 1] = BUBBLE;
-						c[r] = EMPTY;
-						ch = true;
-						break;
-					}
-				}
-
-				if (ch) {
-					continue;
-				}
-
-				if (topExit && c[0] === BUBBLE) {
-					c[0] = EMPTY;
-					ch = true;
-					continue;
-				}
-
-				for (let r = N - 2; r >= 0; r--) {
-					if (c[r] === BLOCK && c[r + 1] === EMPTY) {
-						c[r + 1] = BLOCK;
-						c[r] = EMPTY;
-						ch = true;
-						break;
-					}
-				}
-
-				if (ch) {
-					continue;
-				}
-
-				if (botExit && c[N - 1] === BLOCK) {
-					c[N - 1] = EMPTY;
-					ch = true;
-					continue;
-				}
-			}
-
-			return c;
 		};
 
 		const onTransitionEnd = (e) => {
