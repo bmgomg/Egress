@@ -73,7 +73,7 @@ const makeCells = (grid) => {
 };
 
 export const makePuzzle = () => {
-    const { grid, door, solution } = generatePuzzle(SIZE, 2, 10);
+    const { grid, door, solution } = generatePuzzle(SIZE, 2, 15);
 
     let cells = makeCells(grid);
     ss.door = door;
