@@ -3,7 +3,7 @@
 	import Box from './Box.svelte';
 	import Cell from './Cell.svelte';
 	import { CELL_COUNT, CELL_MARGIN, CELL_SIZE, SIZE, COLUMN_TRANSITIONS } from './const';
-	import { findCell, indexOf, makePuzzle, persist } from './shared.svelte';
+	import { _log, findCell, indexOf, makePuzzle, persist } from './shared.svelte';
 	import { BOT, LEFT, RIGHT, TOP } from './solver';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
@@ -137,6 +137,8 @@
 
 			const cw = ss.spin > 0;
 			const cells = Array(CELL_COUNT);
+
+			_log(ss.cells);
 
 			for (let i = 0; i < CELL_COUNT; i++) {
 				const cell = { ...ss.cells[i] };

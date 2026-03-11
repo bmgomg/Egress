@@ -3,18 +3,19 @@
 	import CW from '$lib/images/CW.webp';
 	import Reset from '$lib/images/Restart.webp';
 	import { fade } from 'svelte/transition';
-	import { isAnimated, isInitial, isSolved, persist, setToInitial } from './shared.svelte';
+	import { _log, isAnimated, isInitial, isSolved, persist, setToInitial } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
 	import ToolButton from './Tool Button.svelte';
 
 	const onSpin = (cw) => {
+		_log(ss.cells);
 		_sound.play('click');
 		ss.spin = cw ? 1 : -1;
 	};
 
 	const onReset = () => {
-		ss.moves++;
+		ss.moves = 0;
 		setToInitial();
 		persist();
 	};
