@@ -4,7 +4,7 @@
 	import Cell from './Cell.svelte';
 	import { CELL_COUNT, CELL_MARGIN, CELL_SIZE, SIZE } from './const';
 	import { findCell, indexOf, makePuzzle, persist } from './shared.svelte';
-	import { BOT, LEFT, RIGHT, TOP } from './solver';
+	import { applyPhysics, BLOCK, BOT, BUBBLE, EMPTY, LEFT, RIGHT, TOP } from './solver';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
 	import { post } from './utils';
@@ -161,8 +161,119 @@
 			ss.spin = 0;
 			ss.cells = cells;
 
-			ss.delay = true;
-			post(handleSpace);
+			// create a matrix (grid) from the cells
+			const g = Array.from({ length: SIZE }, () => Array(SIZE).fill(null));
+
+			for (const cell of cells) {
+				g[cell.row - 1][cell.col - 1] = cell.weight > 0 ? BLOCK : cell.weight < 0 ? BUBBLE : EMPTY;
+			}
+
+			const ng = applyPhysics(g, ss.door, SIZE);
+			const flat = ng.flat();
+
+			post(() => {
+				for (let i = 0; i < CELL_COUNT; i++) {
+					const cell = ss.cells[i];
+					const ob = flat[i];
+					cell.weight = ob === BLOCK ? 1 : ob === EMPTY ? 0 : -1;
+				}
+			}, 500);
+
+			// ss.delay = true;
+			// post(handleSpace);
+		};
+
+		const settleColumn = (col, topExit, botExit) => {
+			let c = [...col];
+			const N = c.length;
+			let ch = true;
+
+			while (ch) {
+				ch = false;
+
+				for (let r = 0; r < N; r++) {
+					if (c[r] !== BLOCK) {
+						continue;
+					}
+
+					let nB = 0;
+
+					for (let i = r + 1; i < N && c[i] === BUBBLE; i++) {
+						nB++;
+					}
+
+					if (nB >= 2) {
+						if (r > 0 && c[r - 1] === EMPTY) {
+							c[r - 1] = BLOCK;
+							c[r] = BUBBLE;
+							c[r + nB] = EMPTY;
+							ch = true;
+							break;
+						} else if (r === 0 && topExit) {
+							c[r] = EMPTY;
+							ch = true;
+							break;
+						}
+					} else if (nB === 1) {
+						if (r + 2 < N && c[r + 2] === EMPTY) {
+							c[r + 2] = BUBBLE;
+							c[r + 1] = BLOCK;
+							c[r] = EMPTY;
+							ch = true;
+							break;
+						} else if (r + 1 === N - 1 && botExit) {
+							c[r + 1] = EMPTY;
+							c[r] = EMPTY;
+							ch = true;
+							break;
+						}
+					}
+				}
+
+				if (ch) {
+					continue;
+				}
+
+				for (let r = 1; r < N; r++) {
+					if (c[r] === BUBBLE && c[r - 1] === EMPTY) {
+						c[r - 1] = BUBBLE;
+						c[r] = EMPTY;
+						ch = true;
+						break;
+					}
+				}
+
+				if (ch) {
+					continue;
+				}
+
+				if (topExit && c[0] === BUBBLE) {
+					c[0] = EMPTY;
+					ch = true;
+					continue;
+				}
+
+				for (let r = N - 2; r >= 0; r--) {
+					if (c[r] === BLOCK && c[r + 1] === EMPTY) {
+						c[r + 1] = BLOCK;
+						c[r] = EMPTY;
+						ch = true;
+						break;
+					}
+				}
+
+				if (ch) {
+					continue;
+				}
+
+				if (botExit && c[N - 1] === BLOCK) {
+					c[N - 1] = EMPTY;
+					ch = true;
+					continue;
+				}
+			}
+
+			return c;
 		};
 
 		const onTransitionEnd = (e) => {

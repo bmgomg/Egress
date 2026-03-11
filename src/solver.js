@@ -40,7 +40,7 @@ const settleColumn = (col, topExit, botExit) => {
     return c;
 };
 
-const applyPhysics = (grid, door, N) => {
+export const applyPhysics = (grid, door, N) => {
     const exitCol = getExitCol(door, N), topExit = door.wall === 0, botExit = door.wall === 2;
     let g = grid.map(r => [...r]);
     for (let c = 0; c < N; c++) {
