@@ -34,14 +34,22 @@
 
 	const leftStyle = $derived.by(() => {
 		const height = ss.door.wall === LEFT ? wsz : sz;
-		const dy = height < sz ? ss.door.corner === 0 ? off : -off : 0;
+		let dy = height < sz ? ss.door.corner === 0 ? off : -off : 0;
+
+		if (dy && ss.door.drop) {
+			dy += dsz;
+		}
 
 		return `width: ${th}px; height: ${height}px; translate: 0 ${dy}px; filter: ${filter(height < sz)};`;
 	});
 
 	const rightStyle = $derived.by(() => {
 		const height = ss.door.wall === RIGHT ? wsz : sz;
-		const dy = height < sz ? ss.door.corner === 0 ? off : -off : 0;
+		let dy = height < sz ? ss.door.corner === 0 ? off : -off : 0;
+
+		if (dy && ss.door.drop) {
+			dy += dsz;
+		}
 
 		return `width: ${th}px; height: ${height}px; translate: 0 ${dy}px; filter: ${filter(height < sz)};`;
 	});
@@ -50,13 +58,17 @@
 <img class="box-tl" src={BoxTL} alt="" style="width: {th}px;" />
 <img class="box-top" src={BoxT} alt="" style={topStyle} />
 <img class="box-tr" src={BoxTR} alt="" style="width: {th}px;" />
-<img class="box-right" src={BoxR} alt="" style={rightStyle} />
+<img class="box-right {ss.door.drop ? 'drop' : ''}" src={BoxR} alt="" style={rightStyle} />
 <img class="box-br" src={BoxBR} alt="" style="width: {th}px;" />
 <img class="box-bottom" src={BoxB} alt="" style={bottomStyle} />
 <img class="box-bl" src={BoxBL} alt="" style="width: {th}px;" />
-<img class="box-left" src={BoxL} alt="" style={leftStyle} />
+<img class="box-left {ss.door.drop ? 'drop' : ''}" src={BoxL} alt="" style={leftStyle} />
 
 <style>
+	.drop {
+		transition: translate 0.3s cubic-bezier(0.15, 0.055, 0.675, 0.19);
+	}
+
 	.box-tl {
 		grid-area: 1/1;
 		aspect-ratio: 1;

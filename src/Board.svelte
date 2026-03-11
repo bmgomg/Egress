@@ -156,7 +156,14 @@
 			ss.spin = 0;
 
 			if ((ss.door.wall === LEFT || ss.door.wall === RIGHT) && ss.door.corner === 1) {
-				ss.door.drop = true;
+				post(() => {
+					ss.door.drop = true;
+
+					post(() => {
+						delete ss.door.drop;
+						ss.door.corner = 0;
+					}, 500);
+				});
 			}
 
 			post(applyGravity);
