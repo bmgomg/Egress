@@ -1,6 +1,5 @@
 import { APP_STATE, CELL_COUNT, SIZE } from './const';
 import { BLOCK, EMPTY, generatePuzzle } from './solver';
-// import { solve } from './solver';
 import { _sound } from './sound.svelte';
 import { _prompt, _stats, ss } from './state.svelte';
 import { post } from './utils';
