@@ -145,13 +145,7 @@
 			const cells = Array(CELL_COUNT);
 
 			for (let i = 0; i < CELL_COUNT; i++) {
-				// const cell = { ...ss.cells[i] };
-				const cell = {};
-				cell.id = ss.cells[i].id;
-				cell.row = ss.cells[i].row;
-				cell.col = ss.cells[i].col;
-				cell.weight = ss.cells[i].weight;
-				
+				const cell = { ...ss.cells[i] };
 				const { row, col } = newRowCol(cell.row, cell.col, cw);
 
 				cell.row = row;
