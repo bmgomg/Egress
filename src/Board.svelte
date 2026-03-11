@@ -2,13 +2,12 @@
 	import { fade } from 'svelte/transition';
 	import Box from './Box.svelte';
 	import Cell from './Cell.svelte';
-	import { CELL_COUNT, CELL_MARGIN, CELL_SIZE, SIZE } from './const';
-	import { _log, findCell, indexOf, makePuzzle, persist } from './shared.svelte';
-	import { applyPhysics, BLOCK, BOT, BUBBLE, EMPTY, LEFT, RIGHT, TOP } from './solver';
+	import { CELL_COUNT, CELL_MARGIN, CELL_SIZE, SIZE, COLUMN_TRANSITIONS } from './const';
+	import { findCell, indexOf, makePuzzle, persist } from './shared.svelte';
+	import { BOT, LEFT, RIGHT, TOP } from './solver';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
 	import { post } from './utils';
-	import { COL_TRANSITIONS } from './col_transitions';
 
 	let _this = $state(null);
 	let inner = $state(null);
@@ -23,39 +22,6 @@
 
 				return;
 			}
-		};
-
-		const handleSpace = () => {
-			post(() => {
-				let sounded;
-
-				const plop = (chime) => {
-					if (!sounded) {
-						_sound.play(chime);
-						sounded = true;
-					}
-				};
-
-				const cells = [...ss.cells];
-
-				for (let i = 0; i < CELL_COUNT; i++) {
-					const cell = cells[i];
-
-					if (cell.newRow < 0 || cell.newRow > SIZE) {
-						cell.weight = 0;
-					} else if (cell.newRow && cell.newRow !== cell.row) {
-						cell.row = cell.newRow;
-						plop(cell.row === SIZE && cell.weight ? 'drop' : 'plop');
-					}
-
-					delete cell.newRow;
-				}
-
-				ss.cells = cells;
-
-				delete ss.delay;
-				persist();
-			}, 350);
 		};
 
 		const moveDoor = () => {
@@ -89,16 +55,14 @@
 		};
 
 		const applyGravity = () => {
-			_log(ss.cells);
 			const newCells = [...ss.cells];
 
 			for (let c = 0; c < SIZE; c++) {
 				const colKey = newCells
-					.filter((cob) => cob.col === c + 1).sort((a, b) => a.row - b.row)
+					.filter((cob) => cob.col === c + 1)
+					.sort((a, b) => a.row - b.row)
 					.map((cob) => (cob.weight > 0 ? '🟨' : cob.weight < 0 ? '🔵' : '❌'))
 					.join('');
-
-				console.log(colKey);
 
 				let exit;
 				const inExitCol = (ss.door.corner === 0 && c === 0) || (ss.door.corner === 1 && c === SIZE - 1);
@@ -111,8 +75,7 @@
 					exit = 1;
 				}
 
-				const offs = COL_TRANSITIONS[colKey][exit];
-				console.log(offs.join('•'));
+				const offs = COLUMN_TRANSITIONS[colKey][exit];
 
 				for (let r = 0; r < SIZE; r++) {
 					const off = offs[r];
@@ -133,7 +96,38 @@
 			}
 
 			ss.cells = newCells;
-			handleSpace();
+			post(onGravityEnd, 350);
+		};
+
+		const onGravityEnd = () => {
+			let sounded;
+
+			const plop = (chime) => {
+				if (!sounded) {
+					_sound.play(chime);
+					sounded = true;
+				}
+			};
+
+			const cells = [...ss.cells];
+
+			for (let i = 0; i < CELL_COUNT; i++) {
+				const cell = cells[i];
+
+				if (cell.newRow < 0 || cell.newRow > SIZE) {
+					cell.weight = 0;
+				} else if (cell.newRow && cell.newRow !== cell.row) {
+					cell.row = cell.newRow;
+					plop(cell.row === SIZE && cell.weight ? 'drop' : 'plop');
+				}
+
+				delete cell.newRow;
+			}
+
+			ss.cells = cells;
+
+			delete ss.delay;
+			persist();
 		};
 
 		const handleSpin = () => {
@@ -155,36 +149,17 @@
 				cells[ix] = cell;
 			}
 
-			moveDoor();
-			_log(ss.door);
-
 			ss.moves++;
-			ss.spin = 0;
 			ss.cells = cells;
 
-			post(applyGravity);
+			moveDoor();
+			ss.spin = 0;
 
-			/*
-			const g = Array.from({ length: SIZE }, () => Array(SIZE).fill(null));
-
-			for (const cell of cells) {
-				g[cell.row - 1][cell.col - 1] = cell.weight > 0 ? BLOCK : cell.weight < 0 ? BUBBLE : EMPTY;
+			if ((ss.door.wall === LEFT || ss.door.wall === RIGHT) && ss.door.corner === 1) {
+				ss.door.drop = true;
 			}
 
-			const ng = applyPhysics(g, ss.door, SIZE);
-			const flat = ng.flat();
-
-			post(() => {
-				for (let i = 0; i < CELL_COUNT; i++) {
-					const cell = ss.cells[i];
-					const ob = flat[i];
-					cell.weight = ob === BLOCK ? 1 : ob === EMPTY ? 0 : -1;
-				}
-			}, 500);
-*/
-
-			// ss.delay = true;
-			// post(handleSpace);
+			post(applyGravity);
 		};
 
 		const onTransitionEnd = (e) => {
