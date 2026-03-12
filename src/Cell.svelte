@@ -38,7 +38,7 @@
 		aspect-ratio: 1;
 		box-sizing: border-box;
 		place-content: center;
-		transition: translate 0.3s  cubic-bezier(0.15, 0.055, 0.675, 0.19);
+		transition: translate 0.3s cubic-bezier(0.15, 0.055, 0.675, 0.19);
 		z-index: 1;
 	}
 

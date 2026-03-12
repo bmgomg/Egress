@@ -147,6 +147,6 @@ export const setToInitial = () => {
     }, 100);
 };
 
-export const isAnimated = () => ss.delay || ss.spin || ss.door.drop || ss.cells?.some((c) => c.newRow || c.newCol);
+export const isAnimated = () => ss.delay || ss.spin || ss.door?.drop || ss.cells?.some((c) => c.newRow || c.newCol);
 
 export const findCell = (cells, row, col) => cells.find((c) => c.row === row && c.col === col);
