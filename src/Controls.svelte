@@ -19,29 +19,28 @@
 		persist();
 	};
 	const solved = $derived(isSolved());
-	const canRotate = $derived(!isAnimated() && (!solved));
+	const canRotate = $derived(!isAnimated() && !solved);
 	const canReset = $derived(!isInitial() && canRotate);
 </script>
 
-{#if ss.practice || !ss.levelPrompt}
-	<div class="controls {isSolved() ? 'hidden' : ''}">
-		<div class="control" in:fade>
-			<ToolButton id="tb-ccw" src={CCW} disabled={!canRotate} opaque={true} showDisabled={solved} onClick={() => onSpin(false)} />
-			<span>turn</span>
-		</div>
-		<div class="control" in:fade>
-			<ToolButton id="tb-reset" src={Reset} disabled={!canReset} opaque={true} onClick={onReset} />
-			<span>reset</span>
-		</div>
-		<div class="control" in:fade>
-			<ToolButton id="tb-cw" src={CW} disabled={!canRotate} opaque={true} showDisabled={solved} onClick={() => onSpin(true)} />
-			<span>turn</span>
-		</div>
+<div class="controls {isSolved() ? 'hidden' : ''}">
+	<div class="control" in:fade>
+		<ToolButton id="tb-ccw" src={CCW} disabled={!canRotate} opaque={true} showDisabled={solved} onClick={() => onSpin(false)} />
+		<span>turn</span>
 	</div>
-{/if}
+	<div class="control" in:fade>
+		<ToolButton id="tb-reset" src={Reset} disabled={!canReset} opaque={true} onClick={onReset} />
+		<span>reset</span>
+	</div>
+	<div class="control" in:fade>
+		<ToolButton id="tb-cw" src={CW} disabled={!canRotate} opaque={true} showDisabled={solved} onClick={() => onSpin(true)} />
+		<span>turn</span>
+	</div>
+</div>
 
 <style>
 	.controls {
+		grid-area: 5/1;
 		place-self: center;
 		display: grid;
 		grid-auto-flow: column;

@@ -5,8 +5,7 @@
 	import Controls from './Controls.svelte';
 	import Scoreboard from './Scoreboard.svelte';
 	import Stats from './Stats.svelte';
-	// import Prompt from './Prompt.svelte';
-	// import GameOver from './Game Over.svelte';
+	import Prompts from './Prompts.svelte';
 
 	const hidden = $derived(ss.home);
 </script>
@@ -17,7 +16,7 @@
 	<Scoreboard />
 	<Board />
 	<Controls />
-	<!-- <Prompt/> -->
+	<Prompts/>
 	<div class="divider"></div>
 	<Toolbar />
 </div>
