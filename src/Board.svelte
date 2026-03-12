@@ -11,6 +11,155 @@
 
 	let _this = $state(null);
 	let inner = $state(null);
+	let dance = $state();
+
+	const moveDoor = () => {
+		const cw = ss.spin === 1;
+
+		if (ss.door.wall === TOP) {
+			ss.door.wall = cw ? RIGHT : LEFT;
+
+			if (!cw) {
+				ss.door.corner = 1 - ss.door.corner;
+			}
+		} else if (ss.door.wall === RIGHT) {
+			ss.door.wall = cw ? BOT : TOP;
+
+			if (cw) {
+				ss.door.corner = 1 - ss.door.corner;
+			}
+		} else if (ss.door.wall === BOT) {
+			ss.door.wall = cw ? LEFT : RIGHT;
+
+			if (!cw) {
+				ss.door.corner = 1 - ss.door.corner;
+			}
+		} else if (ss.door.wall === LEFT) {
+			ss.door.wall = cw ? TOP : BOT;
+
+			if (cw) {
+				ss.door.corner = 1 - ss.door.corner;
+			}
+		}
+	};
+
+	const applyGravity = () => {
+		const newCells = [...ss.cells];
+
+		for (let c = 0; c < ss.size; c++) {
+			const colKey = newCells
+				.filter((cob) => cob.col === c + 1)
+				.sort((a, b) => a.row - b.row)
+				.map((cob) => (cob.weight > 0 ? '🟨' : cob.weight < 0 ? '🔵' : '❌'))
+				.join('');
+
+			let exit;
+			const inExitCol = (ss.door.corner === 0 && c === 0) || (ss.door.corner === 1 && c === ss.size - 1);
+
+			if (ss.door.wall === TOP && inExitCol) {
+				exit = 0;
+			} else if (ss.door.wall === BOT && inExitCol) {
+				exit = 2;
+			} else {
+				exit = 1;
+			}
+
+			const offs = COLUMN_TRANSITIONS[colKey][exit];
+
+			for (let r = 0; r < ss.size; r++) {
+				const off = offs[r];
+
+				if (off === 0) {
+					continue;
+				}
+
+				const cell = findCell(newCells, r + 1, c + 1);
+				cell.newRow = cell.row + off;
+
+				if (cell.newRow === 0) {
+					cell.newRow -= 0.5;
+				} else if (cell.newRow === ss.size + 1) {
+					cell.newRow += 0.5;
+				}
+			}
+		}
+
+		ss.cells = newCells;
+
+		if (ss.cells.some((c) => c.newRow < 1 || c.newRow > ss.size)) {
+			_sound.play('link2', { rate: 0.9 });
+		}
+
+		post(onGravityEnd, 650);
+	};
+
+	const onGravityEnd = () => {
+		const cells = [...ss.cells];
+		const count = ss.size * ss.size;
+
+		for (let i = 0; i < count; i++) {
+			const cell = cells[i];
+
+			if (cell.newRow < 0 || cell.newRow > ss.size) {
+				cell.weight = 0;
+			} else if (cell.newRow && cell.newRow !== cell.row) {
+				cell.row = cell.newRow;
+			}
+
+			delete cell.newRow;
+		}
+
+		ss.cells = cells;
+
+		if (isSolved()) {
+			_sound.play('won');
+			dance = true;
+		}
+
+		delete ss.noui;
+		persist();
+	};
+
+	const handleSpin = () => {
+		_sound.play('cluck');
+
+		const newRowCol = (row, col, cw) => (cw ? { row: col, col: ss.size + 1 - row } : { row: ss.size + 1 - col, col: row });
+
+		const cw = ss.spin > 0;
+		const count = ss.size * ss.size;
+		const cells = Array(count);
+
+		for (let i = 0; i < count; i++) {
+			const cell = { ...ss.cells[i] };
+			const { row, col } = newRowCol(cell.row, cell.col, cw);
+
+			cell.row = row;
+			cell.col = col;
+
+			const ix = indexOf(row, col);
+			cells[ix] = cell;
+		}
+
+		ss.moves++;
+		ss.cells = cells;
+
+		moveDoor();
+		ss.spin = 0;
+
+		if ((ss.door.wall === LEFT || ss.door.wall === RIGHT) && ss.door.corner === 1) {
+			post(() => {
+				ss.door.drop = true;
+				post(() => _sound.play('drop'), 280);
+
+				post(() => {
+					delete ss.door.drop;
+					ss.door.corner = 0;
+				}, 350);
+			});
+		}
+
+		post(applyGravity);
+	};
 
 	$effect(() => {
 		const onInnerTransitionEnd = (e) => {
@@ -32,157 +181,12 @@
 			}
 		};
 
-		const moveDoor = () => {
-			const cw = ss.spin === 1;
-
-			if (ss.door.wall === TOP) {
-				ss.door.wall = cw ? RIGHT : LEFT;
-
-				if (!cw) {
-					ss.door.corner = 1 - ss.door.corner;
-				}
-			} else if (ss.door.wall === RIGHT) {
-				ss.door.wall = cw ? BOT : TOP;
-
-				if (cw) {
-					ss.door.corner = 1 - ss.door.corner;
-				}
-			} else if (ss.door.wall === BOT) {
-				ss.door.wall = cw ? LEFT : RIGHT;
-
-				if (!cw) {
-					ss.door.corner = 1 - ss.door.corner;
-				}
-			} else if (ss.door.wall === LEFT) {
-				ss.door.wall = cw ? TOP : BOT;
-
-				if (cw) {
-					ss.door.corner = 1 - ss.door.corner;
-				}
-			}
-		};
-
-		const applyGravity = () => {
-			const newCells = [...ss.cells];
-
-			for (let c = 0; c < ss.size; c++) {
-				const colKey = newCells
-					.filter((cob) => cob.col === c + 1)
-					.sort((a, b) => a.row - b.row)
-					.map((cob) => (cob.weight > 0 ? '🟨' : cob.weight < 0 ? '🔵' : '❌'))
-					.join('');
-
-				let exit;
-				const inExitCol = (ss.door.corner === 0 && c === 0) || (ss.door.corner === 1 && c === ss.size - 1);
-
-				if (ss.door.wall === TOP && inExitCol) {
-					exit = 0;
-				} else if (ss.door.wall === BOT && inExitCol) {
-					exit = 2;
-				} else {
-					exit = 1;
-				}
-
-				const offs = COLUMN_TRANSITIONS[colKey][exit];
-
-				for (let r = 0; r < ss.size; r++) {
-					const off = offs[r];
-
-					if (off === 0) {
-						continue;
-					}
-
-					const cell = findCell(newCells, r + 1, c + 1);
-					cell.newRow = cell.row + off;
-
-					if (cell.newRow === 0) {
-						cell.newRow -= 0.5;
-					} else if (cell.newRow === ss.size + 1) {
-						cell.newRow += 0.5;
-					}
-				}
-			}
-
-			ss.cells = newCells;
-
-			if (ss.cells.some((c) => c.newRow < 1 || c.newRow > ss.size)) {
-				_sound.play('link2', { rate: 0.9 });
-			}
-
-			post(onGravityEnd, 650);
-		};
-
-		const onGravityEnd = () => {
-			const cells = [...ss.cells];
-			const count = ss.size * ss.size;
-
-			for (let i = 0; i < count; i++) {
-				const cell = cells[i];
-
-				if (cell.newRow < 0 || cell.newRow > ss.size) {
-					cell.weight = 0;
-				} else if (cell.newRow && cell.newRow !== cell.row) {
-					cell.row = cell.newRow;
-				}
-
-				delete cell.newRow;
-			}
-
-			ss.cells = cells;
-
-			if (isSolved()) {
-				_sound.play('won');
-			}
-
-			delete ss.noui;
-			persist();
-		};
-
-		const handleSpin = () => {
-			_sound.play('cluck');
-
-			const newRowCol = (row, col, cw) => (cw ? { row: col, col: ss.size + 1 - row } : { row: ss.size + 1 - col, col: row });
-
-			const cw = ss.spin > 0;
-			const count = ss.size * ss.size;
-			const cells = Array(count);
-
-			for (let i = 0; i < count; i++) {
-				const cell = { ...ss.cells[i] };
-				const { row, col } = newRowCol(cell.row, cell.col, cw);
-
-				cell.row = row;
-				cell.col = col;
-
-				const ix = indexOf(row, col);
-				cells[ix] = cell;
-			}
-
-			ss.moves++;
-			ss.cells = cells;
-
-			moveDoor();
-			ss.spin = 0;
-
-			if ((ss.door.wall === LEFT || ss.door.wall === RIGHT) && ss.door.corner === 1) {
-				post(() => {
-					ss.door.drop = true;
-					post(() => _sound.play('drop'), 280);
-
-					post(() => {
-						delete ss.door.drop;
-						ss.door.corner = 0;
-					}, 350);
-				});
-			}
-
-			post(applyGravity);
-		};
-
 		const onTransitionEnd = (e) => {
 			if (e.propertyName === 'rotate') {
 				if (ss.spin) {
 					handleSpin();
+				} else if (dance) {
+					dance = false;
 				}
 
 				return;
@@ -198,14 +202,20 @@
 		};
 	});
 
-	const rotate = $derived(`${ss.spin * 90}deg`);
-	const duration = $derived(ss.spin ? 0.5 : 0);
+	const rotate = $derived(`${dance ? 360 : ss.spin * 90}deg`);
+	const duration = $derived(dance ? 1 : ss.spin ? 0.5 : 0);
+	const tfn = $derived(ss.spin ? 'linear' : 'ease-in-out');
 </script>
 
 {#if ss.cells && (ss.practice || !ss.levelPrompt)}
 	{@const sz = (CELL_SIZE + CELL_MARGIN * 2) * ss.size + CELL_MARGIN * 4}
 	{@const th = 10}
-	<div bind:this={_this} class="board" style="rotate: {rotate}; transition-duration: {duration}s; width: {sz + th * 2}px;" in:fade>
+	<div
+		bind:this={_this}
+		class="board"
+		style="rotate: {rotate}; transition-duration: {duration}s; width: {sz + th * 2}px; transition-timing-function: {tfn};"
+		in:fade
+	>
 		<div class="box {ss.flip ? 'flip' : ''}"><Box {sz} {th} /></div>
 		<div bind:this={inner} class="inner {ss.flip ? 'flip' : ''}">
 			<div class="cells">
