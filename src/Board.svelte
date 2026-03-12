@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import Box from './Box.svelte';
 	import Cell from './Cell.svelte';
-	import { CELL_COUNT, CELL_MARGIN, CELL_SIZE, COLUMN_TRANSITIONS, SIZE } from './const';
+	import { CELL_MARGIN, CELL_SIZE, COLUMN_TRANSITIONS } from './const';
 	import { findCell, indexOf, makePuzzle, persist } from './shared.svelte';
 	import { BOT, LEFT, RIGHT, TOP } from './generator';
 	import { _sound } from './sound.svelte';
@@ -57,7 +57,7 @@
 		const applyGravity = () => {
 			const newCells = [...ss.cells];
 
-			for (let c = 0; c < SIZE; c++) {
+			for (let c = 0; c < ss.size; c++) {
 				const colKey = newCells
 					.filter((cob) => cob.col === c + 1)
 					.sort((a, b) => a.row - b.row)
@@ -65,7 +65,7 @@
 					.join('');
 
 				let exit;
-				const inExitCol = (ss.door.corner === 0 && c === 0) || (ss.door.corner === 1 && c === SIZE - 1);
+				const inExitCol = (ss.door.corner === 0 && c === 0) || (ss.door.corner === 1 && c === ss.size - 1);
 
 				if (ss.door.wall === TOP && inExitCol) {
 					exit = 0;
@@ -77,7 +77,7 @@
 
 				const offs = COLUMN_TRANSITIONS[colKey][exit];
 
-				for (let r = 0; r < SIZE; r++) {
+				for (let r = 0; r < ss.size; r++) {
 					const off = offs[r];
 
 					if (off === 0) {
@@ -89,7 +89,7 @@
 
 					if (cell.newRow === 0) {
 						cell.newRow -= 0.5;
-					} else if (cell.newRow === SIZE + 1) {
+					} else if (cell.newRow === ss.size + 1) {
 						cell.newRow += 0.5;
 					}
 				}
@@ -110,15 +110,16 @@
 			};
 
 			const cells = [...ss.cells];
+			const count = ss.size * ss.size;
 
-			for (let i = 0; i < CELL_COUNT; i++) {
+			for (let i = 0; i < count; i++) {
 				const cell = cells[i];
 
-				if (cell.newRow < 0 || cell.newRow > SIZE) {
+				if (cell.newRow < 0 || cell.newRow > ss.size) {
 					cell.weight = 0;
 				} else if (cell.newRow && cell.newRow !== cell.row) {
 					cell.row = cell.newRow;
-					plop(cell.row === SIZE && cell.weight ? 'drop' : 'plop');
+					plop(cell.row === ss.size && cell.weight ? 'drop' : 'plop');
 				}
 
 				delete cell.newRow;
@@ -134,12 +135,13 @@
 		const handleSpin = () => {
 			_sound.play('cluck');
 
-			const newRowCol = (row, col, cw) => (cw ? { row: col, col: SIZE + 1 - row } : { row: SIZE + 1 - col, col: row });
+			const newRowCol = (row, col, cw) => (cw ? { row: col, col: ss.size + 1 - row } : { row: ss.size + 1 - col, col: row });
 
 			const cw = ss.spin > 0;
-			const cells = Array(CELL_COUNT);
+			const count = ss.size * ss.size;
+			const cells = Array(count);
 
-			for (let i = 0; i < CELL_COUNT; i++) {
+			for (let i = 0; i < count; i++) {
 				const cell = { ...ss.cells[i] };
 				const { row, col } = newRowCol(cell.row, cell.col, cw);
 
@@ -194,7 +196,7 @@
 </script>
 
 {#if ss.cells && (ss.practice || !ss.levelPrompt)}
-	{@const sz = (CELL_SIZE + CELL_MARGIN * 2) * SIZE + CELL_MARGIN * 4}
+	{@const sz = (CELL_SIZE + CELL_MARGIN * 2) * ss.size + CELL_MARGIN * 4}
 	{@const th = 10}
 	<div bind:this={_this} class="board" style="rotate: {rotate}; transition-duration: {duration}s; width: {sz + th * 2}px;" in:fade>
 		<div class="box"><Box {sz} {th} /></div>
@@ -207,7 +209,7 @@
 		</div>
 	</div>
 {:else}
-	<div style="grid-area: 3/1; height: {(CELL_SIZE + CELL_MARGIN * 2) * SIZE}px;"></div>
+	<div style="grid-area: 3/1; height: {(CELL_SIZE + CELL_MARGIN * 2) * ss.size}px;"></div>
 {/if}
 
 <style>

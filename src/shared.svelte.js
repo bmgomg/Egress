@@ -1,4 +1,4 @@
-import { APP_STATE, CELL_COUNT, SIZE } from './const';
+import { APP_STATE } from './const';
 import { BLOCK, EMPTY, generatePuzzle } from './generator';
 import { _sound } from './sound.svelte';
 import { _prompt, _stats, ss } from './state.svelte';
@@ -6,7 +6,7 @@ import { post } from './utils';
 
 export const _log = (value) => console.log($state.snapshot(value));
 
-export const appKey = () => `${APP_STATE} • ${SIZE}`;
+export const appKey = () => `${APP_STATE} • ${ss.size}`;
 
 export const persist = () => {
     let json = JSON.stringify({ sfx: _sound.sfx, music: _sound.music });
@@ -46,6 +46,8 @@ const loadGame = () => {
         _stats.plays = 0;
         _stats.total = 0;
         _stats.best = 0;
+
+        delete ss.cells;
     }
 };
 
@@ -56,13 +58,13 @@ export const showIntro = (value, plop = true) => {
 
 export const isSolved = () => ss.cells?.every(c => c.weight === 0);
 
-export const indexOf = (row, col) => (row - 1) * SIZE + col - 1;
+export const indexOf = (row, col) => (row - 1) * ss.size + col - 1;
 
 const makeCells = (grid) => {
-    const cells = Array(CELL_COUNT);
+    const cells = Array(ss.size * ss.size);
 
-    for (let row = 1, i = 0; row <= SIZE; row++) {
-        for (let col = 1; col <= SIZE; col++, i++) {
+    for (let row = 1, i = 0; row <= ss.size; row++) {
+        for (let col = 1; col <= ss.size; col++, i++) {
             const ob = grid[row - 1][col - 1];
             const cell = { id: i + 1, row, col, weight: ob === BLOCK ? 1 : ob === EMPTY ? 0 : -1 };
             cells[i] = cell;
@@ -73,7 +75,7 @@ const makeCells = (grid) => {
 };
 
 export const makePuzzle = () => {
-    const { grid, door, solution } = generatePuzzle(SIZE, 2, 15);
+    const { grid, door, solution } = generatePuzzle(ss.size, 2, 15);
 
     let cells = makeCells(grid);
     ss.door = door;
@@ -96,11 +98,12 @@ const onStart = () => {
     }
 };
 
-export const onHomePlay = () => {
+export const onHomePlay = (size) => {
     _prompt.opacity = 0;
 
     _sound.play('plop');
 
+    ss.size = size;
     loadGame();
 
     if (ss.cells) {
@@ -129,7 +132,9 @@ export const setToInitial = () => {
         return;
     }
 
-    for (let i = 0; i < CELL_COUNT; i++) {
+    const count = ss.size * ss.size;
+
+    for (let i = 0; i < count; i++) {
         const cell = ss.cells[i];
         const cob = ss.initial.cells.find((c) => c.id === cell.id);
         cell.newRow = cob.row;

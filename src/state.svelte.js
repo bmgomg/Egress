@@ -3,7 +3,6 @@ import { post } from './utils';
 
 export const ss = $state({
     home: true,
-    spin: 0,
 });
 
 export const _prompt = $state({

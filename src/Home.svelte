@@ -1,9 +1,8 @@
 <script>
 	import { fade } from 'svelte/transition';
+	import { onHomePlay } from './shared.svelte';
 	import { ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
-	import { onHomePlay } from './shared.svelte';
-	import { SIZE } from './const';
 
 	const ul = '<ul style="margin: 0;">';
 	const li = '<li style="margin: 10px 0 0 -20px;">';
@@ -33,7 +32,8 @@
 		</div>
 		<div class="divider"></div>
 		<div class="buttons">
-			<TextButton id={'tb-size-' + SIZE} framed text={['Play']} onClick={onHomePlay} />
+			<TextButton id='tb-size-2' framed text={['Easy']} onClick={() => onHomePlay(2)} />
+			<TextButton id='tb-size-3' framed text={['Not So Easy']} onClick={() => onHomePlay(3)} />
 		</div>
 	</div>
 {/if}
@@ -93,7 +93,7 @@
 		display: grid;
 		grid-auto-flow: column;
 		gap: 30px;
-		font-size: 30px;
+		font-size: 20px;
 	}
 
 	.divider {
