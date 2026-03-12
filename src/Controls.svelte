@@ -3,7 +3,7 @@
 	import CW from '$lib/images/CW.webp';
 	import Reset from '$lib/images/Restart.webp';
 	import { fade } from 'svelte/transition';
-	import { _log, isAnimated, isInitial, isSolved, persist, setToInitial } from './shared.svelte';
+	import { isAnimated, isInitial, isSolved, persist, setToInitial } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
 	import ToolButton from './Tool Button.svelte';
