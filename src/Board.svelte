@@ -164,7 +164,7 @@
 					post(() => {
 						delete ss.door.drop;
 						ss.door.corner = 0;
-					}, 500);
+					}, 350);
 				});
 			}
 
