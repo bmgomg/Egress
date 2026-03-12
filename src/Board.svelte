@@ -2,8 +2,8 @@
 	import { fade } from 'svelte/transition';
 	import Box from './Box.svelte';
 	import Cell from './Cell.svelte';
-	import { CELL_COUNT, CELL_MARGIN, CELL_SIZE, SIZE, COLUMN_TRANSITIONS } from './const';
-	import { _log, findCell, indexOf, makePuzzle, persist } from './shared.svelte';
+	import { CELL_COUNT, CELL_MARGIN, CELL_SIZE, COLUMN_TRANSITIONS, SIZE } from './const';
+	import { findCell, indexOf, makePuzzle, persist } from './shared.svelte';
 	import { BOT, LEFT, RIGHT, TOP } from './solver';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
@@ -88,7 +88,7 @@
 					cell.newRow = cell.row + off;
 
 					if (cell.newRow === 0) {
-						cell.newRow = -0.5;
+						cell.newRow -= 0.5;
 					} else if (cell.newRow === SIZE + 1) {
 						cell.newRow += 0.5;
 					}
@@ -96,7 +96,7 @@
 			}
 
 			ss.cells = newCells;
-			post(onGravityEnd, 350);
+			post(onGravityEnd, 650);
 		};
 
 		const onGravityEnd = () => {
@@ -122,6 +122,7 @@
 				}
 
 				delete cell.newRow;
+				delete cell.duration;
 			}
 
 			ss.cells = cells;
@@ -137,8 +138,6 @@
 
 			const cw = ss.spin > 0;
 			const cells = Array(CELL_COUNT);
-
-			_log(ss.cells);
 
 			for (let i = 0; i < CELL_COUNT; i++) {
 				const cell = { ...ss.cells[i] };

@@ -9,7 +9,6 @@
 	import ToolButton from './Tool Button.svelte';
 
 	const onSpin = (cw) => {
-		_log(ss.cells);
 		_sound.play('click');
 		ss.spin = cw ? 1 : -1;
 	};

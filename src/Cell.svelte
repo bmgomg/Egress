@@ -20,7 +20,14 @@
 		return { x, y };
 	});
 
-	const style = $derived(`grid-area: ${row}/${col}; width: ${CELL_SIZE}px; margin: ${CELL_MARGIN}px; translate: ${off.x}px ${off.y}px;`);
+	const dur = $derived.by(() => {
+		const d = Math.floor(Math.abs((newRow || row) - row));
+		return d * 0.2;
+	});
+
+	const style = $derived(
+		`grid-area: ${row}/${col}; width: ${CELL_SIZE}px; margin: ${CELL_MARGIN}px; translate: ${off.x}px ${off.y}px; transition-duration: ${dur}s;`
+	);
 </script>
 
 <div id="cell-{cell.id}" class="cell {weight >= 0 ? '' : 'bubble'} {newCol || newRow ? '' : 'instant'}" {style}>
@@ -38,7 +45,8 @@
 		aspect-ratio: 1;
 		box-sizing: border-box;
 		place-content: center;
-		transition: translate 0.3s cubic-bezier(0.15, 0.055, 0.675, 0.19);
+		/* transition: translate 0.3s cubic-bezier(0.15, 0.055, 0.675, 0.19); */
+		transition: translate 0.3s linear;
 		z-index: 1;
 	}
 
