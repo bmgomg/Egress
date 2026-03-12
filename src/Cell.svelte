@@ -15,7 +15,7 @@
 
 		const sz = CELL_SIZE + CELL_MARGIN * 2;
 		const x = ((newCol || col) - col) * sz;
-		const y = ((newRow < 0 ? newRow : newRow || row) - row) * sz;
+		const y = ((newRow || row) - row) * sz;
 
 		return { x, y };
 	});

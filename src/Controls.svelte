@@ -20,7 +20,7 @@
 		persist();
 	};
 	const solved = $derived(isSolved());
-	const canRotate = $derived(!isAnimated() && (ss.practice ? !ss.surrender && !ss.delay : !solved));
+	const canRotate = $derived(!isAnimated() && (!solved));
 	const canReset = $derived(!isInitial() && canRotate);
 </script>
 
