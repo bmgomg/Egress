@@ -33,7 +33,7 @@
 		<div class="divider"></div>
 		<div class="buttons">
 			<TextButton id='tb-size-2' framed text={['Easy']} onClick={() => onHomePlay(2)} />
-			<TextButton id='tb-size-3' framed text={['Not So Easy']} onClick={() => onHomePlay(3)} />
+			<TextButton id='tb-size-3' framed text={['Not Easy']} onClick={() => onHomePlay(3)} />
 		</div>
 	</div>
 {/if}

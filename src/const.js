@@ -1,16 +1,6 @@
 export const APP_STATE = 'EGRESS V1';
-export const PROMPT_TRANSITION = 300;
-export const PROMPT_PLAY_AGAIN = 'Play again?';
-export const PROMPT_RESET_STATS = 'Reset stats?';
-export const PROMPT_NO = 'No';
-export const MODE_PRACITCE = 'PRACTICE';
-export const MODE_CHALLENGE = 'CHALLENGE';
 export const CELL_SIZE = 80;
 export const CELL_MARGIN = 5;
-export const TICK_MS = 500;
-export const LEVELS = [{ secs: 30 }, { secs: 30 }, { secs: 30 }, { secs: 20 }, { secs: 10 },];
-export const TASKS_PER_LEVEL = 10;
-export const MAX_STRIKES = 3;
 
 export const COLUMN_TRANSITIONS =
 {   //  DOOR AT:   TOP           SIDE        BOTTOM

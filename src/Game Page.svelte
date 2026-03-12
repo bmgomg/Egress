@@ -5,7 +5,7 @@
 	import Controls from './Controls.svelte';
 	import Scoreboard from './Scoreboard.svelte';
 	import Stats from './Stats.svelte';
-	import Prompts from './Prompts.svelte';
+	import OverPanel from './Over Panel.svelte';
 
 	const hidden = $derived(ss.home);
 </script>
@@ -16,7 +16,7 @@
 	<Scoreboard />
 	<Board />
 	<Controls />
-	<Prompts/>
+	<OverPanel/>
 	<div class="divider"></div>
 	<Toolbar />
 </div>

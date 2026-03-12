@@ -1,7 +1,7 @@
 import { APP_STATE } from './const';
 import { BLOCK, EMPTY, generatePuzzle } from './generator';
 import { _sound } from './sound.svelte';
-import { _prompt, _stats, ss } from './state.svelte';
+import { _stats, ss } from './state.svelte';
 import { post } from './utils';
 
 export const _log = (value) => console.log($state.snapshot(value));
@@ -75,6 +75,8 @@ const makeCells = (grid) => {
 };
 
 export const makePuzzle = () => {
+    delete ss.fail;
+
     const { grid, door, solution } = generatePuzzle(ss.size, 2, 15);
 
     let cells = makeCells(grid);
@@ -87,11 +89,11 @@ export const makePuzzle = () => {
 
     persist();
 
+    _sound.play('dice');
     onStart();
 };
 
 const onStart = () => {
-    _sound.play('dice');
 
     if (!_sound.musicPlayed) {
         post(() => _sound.playMusic(), 1000);
@@ -99,8 +101,6 @@ const onStart = () => {
 };
 
 export const onHomePlay = (size) => {
-    _prompt.opacity = 0;
-
     _sound.play('plop');
 
     ss.size = size;
@@ -116,11 +116,11 @@ export const onHomePlay = (size) => {
 };
 
 export const isInitial = () => {
-    if (!ss.cells?.every((c, i) => c.id === ss.initial.cells[i].id)) {
+    if (JSON.stringify(ss.door) !== JSON.stringify(ss.initial?.door)) {
         return false;
     }
 
-    if (ss.door?.wall !== ss.initial.door.wall || ss.door.corner !== ss.initial.door.corner) {
+    if (JSON.stringify(ss.cells) !== JSON.stringify(ss.initial?.cells)) {
         return false;
     }
 
@@ -132,26 +132,25 @@ export const setToInitial = () => {
         return;
     }
 
-    const count = ss.size * ss.size;
-
-    for (let i = 0; i < count; i++) {
-        const cell = ss.cells[i];
-        const cob = ss.initial.cells.find((c) => c.id === cell.id);
-        cell.newRow = cob.row;
-        cell.newCol = cob.col;
-    }
-
-    post(() => {
-        _sound.play('score2');
-        ss.door = { ...ss.initial.door };
-
-        post(() => {
-            // don't inline
-            ss.cells = [...ss.initial.cells];
-        }, 250);
-    }, 100);
+    ss.cells = [...ss.initial.cells];
+    ss.door = { ...ss.initial.door };
 };
 
-export const isAnimated = () => ss.delay || ss.spin || ss.door?.drop || ss.cells?.some((c) => c.newRow || c.newCol);
+export const isAnimated = () => ss.noui || ss.surrender;
 
 export const findCell = (cells, row, col) => cells.find((c) => c.row === row && c.col === col);
+
+export const playSolution = () => {
+    for (let i = 0; i < ss.solution.length; i++) {
+        const spin = ss.solution[i] === 'CW' ? 1 : -1;
+
+        post(() => {
+            _sound.play('click');
+            ss.spin = spin;
+
+            if (i === ss.solution.length - 1) {
+                post(() => delete ss.surrender, 1000);
+            }
+        }, i * 1500);
+    }
+};

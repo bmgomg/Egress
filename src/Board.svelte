@@ -3,7 +3,7 @@
 	import Box from './Box.svelte';
 	import Cell from './Cell.svelte';
 	import { CELL_MARGIN, CELL_SIZE, COLUMN_TRANSITIONS } from './const';
-	import { findCell, indexOf, makePuzzle, persist } from './shared.svelte';
+	import { findCell, indexOf, makePuzzle, persist, playSolution, setToInitial } from './shared.svelte';
 	import { BOT, LEFT, RIGHT, TOP } from './generator';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
@@ -15,8 +15,16 @@
 	$effect(() => {
 		const onInnerTransitionEnd = (e) => {
 			if (e.propertyName === 'transform') {
-				if (ss.swirl) {
-					delete ss.swirl;
+				if (ss.flip === 'reset') {
+					delete ss.flip;
+					setToInitial();
+					persist();
+				} else if (ss.flip === 'surrender') {
+					delete ss.flip;
+					setToInitial();
+					post(playSolution, 1000);
+				} else if (ss.flip) {
+					delete ss.flip;
 					makePuzzle();
 				}
 
@@ -100,15 +108,6 @@
 		};
 
 		const onGravityEnd = () => {
-			let sounded;
-
-			const plop = (chime) => {
-				if (!sounded) {
-					_sound.play(chime);
-					sounded = true;
-				}
-			};
-
 			const cells = [...ss.cells];
 			const count = ss.size * ss.size;
 
@@ -119,16 +118,14 @@
 					cell.weight = 0;
 				} else if (cell.newRow && cell.newRow !== cell.row) {
 					cell.row = cell.newRow;
-					plop(cell.row === ss.size && cell.weight ? 'drop' : 'plop');
 				}
 
 				delete cell.newRow;
-				delete cell.duration;
 			}
 
 			ss.cells = cells;
 
-			delete ss.delay;
+			delete ss.noui;
 			persist();
 		};
 
@@ -161,6 +158,7 @@
 			if ((ss.door.wall === LEFT || ss.door.wall === RIGHT) && ss.door.corner === 1) {
 				post(() => {
 					ss.door.drop = true;
+					post(() => _sound.play('drop'), 280);
 
 					post(() => {
 						delete ss.door.drop;
@@ -199,8 +197,8 @@
 	{@const sz = (CELL_SIZE + CELL_MARGIN * 2) * ss.size + CELL_MARGIN * 4}
 	{@const th = 10}
 	<div bind:this={_this} class="board" style="rotate: {rotate}; transition-duration: {duration}s; width: {sz + th * 2}px;" in:fade>
-		<div class="box"><Box {sz} {th} /></div>
-		<div bind:this={inner} class="inner {ss.swirl ? 'swirl' : ''}">
+		<div class="box {ss.flip ? 'flip' : ''}"><Box {sz} {th} /></div>
+		<div bind:this={inner} class="inner {ss.flip ? 'flip' : ''}">
 			<div class="cells">
 				{#each ss.cells as cell, i (cell.id)}
 					<Cell bind:cell={ss.cells[i]} />
@@ -228,8 +226,7 @@
 		transition: transform 0.5s linear;
 	}
 
-	.swirl {
-		/* transform: rotateZ(360deg) scale(0); */
+	.flip {
 		transform: rotateY(90deg);
 	}
 
@@ -243,5 +240,6 @@
 	.box {
 		grid-area: 1/1;
 		display: grid;
+		transition: transform 0.5s linear;
 	}
 </style>

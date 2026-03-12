@@ -1,48 +1,28 @@
 <script>
-	import { PROMPT_RESET_STATS } from './const';
-	import { isAnimated, isInitial, isSolved, setToInitial, persist, showIntro } from './shared.svelte';
+	import { isAnimated, isInitial, isSolved, persist, playSolution, showIntro } from './shared.svelte';
 	import { _sound } from './sound.svelte';
-	import { _prompt, _stats, ss } from './state.svelte';
+	import { _stats, ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
 	import { post } from './utils';
 
 	const onHome = () => {
 		showIntro(true);
-		_prompt.id = null;
 	};
 
 	const onResetStats = () => {
-		if (_prompt.id == PROMPT_RESET_STATS) {
-			_prompt.opacity = 0;
-			return;
-		}
-
-		_sound.play('plop');
-		_prompt.set(PROMPT_RESET_STATS);
+		//
 	};
 
 	const onSurrender = () => {
 		ss.surrender = true;
+		ss.fail = true;
+		ss.moves = 0;
 
-		setToInitial();
-
-		post(
-			() => {
-				for (let i = 0; i < ss.solution.length; i++) {
-					const spin = ss.solution[i] === 'CW' ? 1 : -1;
-
-					post(() => {
-						_sound.play('click');
-						ss.spin = spin;
-
-						if (i === ss.solution.length - 1) {
-							post(() => delete ss.surrender, 1000);
-						}
-					}, i * 1500);
-				}
-			},
-			isInitial() ? 200 : 1500
-		);
+		if (isInitial()) {
+			post(playSolution, 200);
+		} else {
+			ss.flip = 'surrender';
+		}
 	};
 
 	const onSound = () => {

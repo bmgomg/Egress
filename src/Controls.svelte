@@ -3,20 +3,25 @@
 	import CW from '$lib/images/CW.webp';
 	import Reset from '$lib/images/Restart.webp';
 	import { fade } from 'svelte/transition';
-	import { isAnimated, isInitial, isSolved, persist, setToInitial } from './shared.svelte';
+	import { isAnimated, isInitial, isSolved } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
 	import ToolButton from './Tool Button.svelte';
+	import { post } from './utils';
 
 	const onSpin = (cw) => {
 		_sound.play('click');
 		ss.spin = cw ? 1 : -1;
+		ss.noui = true;
 	};
 
 	const onReset = () => {
+		_sound.play('click');
+
 		ss.moves = 0;
-		setToInitial();
-		persist();
+		ss.flip = 'reset';
+
+		post(() => _sound.play('link1', { rate: 0.8 }), 200);
 	};
 	const solved = $derived(isSolved());
 	const canRotate = $derived(!isAnimated() && !solved);
