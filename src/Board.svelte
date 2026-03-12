@@ -4,7 +4,7 @@
 	import Cell from './Cell.svelte';
 	import { CELL_COUNT, CELL_MARGIN, CELL_SIZE, COLUMN_TRANSITIONS, SIZE } from './const';
 	import { findCell, indexOf, makePuzzle, persist } from './shared.svelte';
-	import { BOT, LEFT, RIGHT, TOP } from './solver';
+	import { BOT, LEFT, RIGHT, TOP } from './generator';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
 	import { post } from './utils';

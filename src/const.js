@@ -5,7 +5,7 @@ export const PROMPT_RESET_STATS = 'Reset stats?';
 export const PROMPT_NO = 'No';
 export const MODE_PRACITCE = 'PRACTICE';
 export const MODE_CHALLENGE = 'CHALLENGE';
-export const SIZE = 3;
+export const SIZE = 2;
 export const CELL_COUNT = SIZE * SIZE;
 export const CELL_SIZE = 80;
 export const CELL_MARGIN = 5;
@@ -15,7 +15,16 @@ export const TASKS_PER_LEVEL = 10;
 export const MAX_STRIKES = 3;
 
 export const COLUMN_TRANSITIONS =
-{   //               TOP          SIDE         BOTTOM
+{   //  DOOR AT:   TOP           SIDE        BOTTOM
+    '❌❌': [[+0, +0, +0], [+0, +0, +0], [+0, +0, +0]],
+    '❌🟨': [[+0, +0, +0], [+0, +0, +0], [+0, +0, +1]],
+    '❌🔵': [[+0, -2, +0], [+1, -1, +0], [+1, -1, +0]],
+    '🟨❌': [[+1, -1, +0], [+1, -1, +0], [+2, +0, +0]],
+    '🟨🟨': [[+0, +0, +0], [+0, +0, +0], [+2, +1, +0]],
+    '🟨🔵': [[+0, +0, +0], [+0, +0, +0], [+2, +1, +0]],
+    '🔵❌': [[-1, +0, +0], [+0, +0, +0], [+0, +0, +0]],
+    '🔵🟨': [[-1, +0, +0], [+0, +0, +0], [+0, +1, +0]],
+    '🔵🔵': [[-1, -2, +0], [+0, +0, +0], [+0, +0, +0]],
     '❌❌❌': [[+0, +0, +0], [+0, +0, +0], [+0, +0, +0]],
     '❌❌🟨': [[+0, +0, +0], [+0, +0, +0], [+0, +0, +1]],
     '❌❌🔵': [[+0, +0, -3], [+1, +1, -2], [+1, +1, -2]],

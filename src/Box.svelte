@@ -8,7 +8,7 @@
 	import BoxTL from '$lib/images/Box TL.webp';
 	import BoxTR from '$lib/images/Box TR.webp';
 	import { CELL_MARGIN, CELL_SIZE } from './const';
-	import { BOT, LEFT, RIGHT, TOP } from './solver';
+	import { BOT, LEFT, RIGHT, TOP } from './generator';
 	import { ss } from './state.svelte';
 
 	const { sz, th } = $props();
