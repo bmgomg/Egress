@@ -94,7 +94,6 @@ export const makePuzzle = () => {
 };
 
 const onStart = () => {
-
     if (!_sound.musicPlayed) {
         post(() => _sound.playMusic(), 1000);
     }
@@ -149,7 +148,7 @@ export const playSolution = () => {
             ss.spin = spin;
 
             if (i === ss.solution.length - 1) {
-                post(() => delete ss.surrender, 1000);
+                post(() => delete ss.surrender, 1500);
             }
         }, i * 1500);
     }

@@ -3,7 +3,7 @@
 	import Box from './Box.svelte';
 	import Cell from './Cell.svelte';
 	import { CELL_MARGIN, CELL_SIZE, COLUMN_TRANSITIONS } from './const';
-	import { findCell, indexOf, makePuzzle, persist, playSolution, setToInitial } from './shared.svelte';
+	import { findCell, indexOf, isSolved, makePuzzle, persist, playSolution, setToInitial } from './shared.svelte';
 	import { BOT, LEFT, RIGHT, TOP } from './generator';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
@@ -104,6 +104,11 @@
 			}
 
 			ss.cells = newCells;
+
+			if (ss.cells.some((c) => c.newRow < 1 || c.newRow > ss.size)) {
+				_sound.play('link2', { rate: 0.9 });
+			}
+
 			post(onGravityEnd, 650);
 		};
 
@@ -124,6 +129,10 @@
 			}
 
 			ss.cells = cells;
+
+			if (isSolved()) {
+				_sound.play('won');
+			}
 
 			delete ss.noui;
 			persist();

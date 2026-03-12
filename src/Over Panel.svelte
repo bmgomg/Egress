@@ -3,14 +3,18 @@
 	import { isSolved } from './shared.svelte';
 	import { ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
+	import { _sound } from './sound.svelte';
 
 	const onReplay = () => {
+		_sound.play('plop');
+
 		ss.replay = true;
 		ss.moves = 0;
 		ss.flip = 'reset';
 	};
 
 	const onPlayNew = () => {
+		_sound.play('plop');
 		ss.flip = true;
 	};
 </script>
