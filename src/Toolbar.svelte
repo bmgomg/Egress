@@ -19,6 +19,7 @@
 
 		if (!ss.over) {
 			ss.over = 'fail';
+			_stats.plays++;
 		}
 
 		persist();
@@ -54,7 +55,7 @@
 
 	const canHome = $derived(!isAnimated() && !ss.surrender);
 	const canSurrender = $derived(!isSolved() && !ss.surrender);
-	const canResetStats = _stats.wins > 0;
+	const canResetStats = _stats.plays > 0;
 </script>
 
 <div class="toolbar">

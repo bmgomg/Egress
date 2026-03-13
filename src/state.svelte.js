@@ -5,6 +5,7 @@ export const ss = $state({
 });
 
 export const _stats = $state({
+    plays: 0,
     wins: 0,
     total: 0,
 });

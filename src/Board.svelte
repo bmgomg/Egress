@@ -131,6 +131,7 @@
 
 			if (!ss.over) {
 				ss.over = 'won';
+				_stats.plays++;
 				_stats.wins++;
 				_stats.total += starRating();
 			}

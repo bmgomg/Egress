@@ -35,6 +35,7 @@ const loadGame = () => {
     delete ss.cells;
 
     if (job) {
+        _stats.plays = job.plays;
         _stats.wins = job.wins;
         _stats.total = job.total;
 
@@ -46,6 +47,7 @@ const loadGame = () => {
             ss.moves = job.moves;
         }
     } else {
+        _stats.plays = 0;
         _stats.wins = 0;
         _stats.total = 0;
     }
