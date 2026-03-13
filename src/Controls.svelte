@@ -64,7 +64,7 @@
 		color: var(--text-dim);
 	}
 
-	.pulse {
+	/* .pulse {
 		animation: pulse 0.25s alternate infinite ease-in-out;
 	}
 
@@ -75,5 +75,5 @@
 		to {
 			transform: scale(0.85);
 		}
-	}
+	} */
 </style>
