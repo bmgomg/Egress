@@ -128,6 +128,10 @@
 		if (isSolved()) {
 			_sound.play('won');
 			dance = true;
+
+			if (!ss.over) {
+				ss.over = 'won';
+			}
 		} else if (!isSolvable()) {
 			ss.deadend = true;
 		}

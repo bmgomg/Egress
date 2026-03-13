@@ -12,7 +12,7 @@ export const persist = () => {
     let json = JSON.stringify({ sfx: _sound.sfx, music: _sound.music });
     localStorage.setItem(APP_STATE, json);
 
-    json = JSON.stringify({ ..._stats, cells: ss.cells, door: ss.door, initial: ss.initial, solution: ss.solution, moves: ss.moves });
+    json = JSON.stringify({ ..._stats, cells: ss.cells, door: ss.door, initial: ss.initial, solution: ss.solution, moves: ss.moves, over: ss.over });
     localStorage.setItem(appKey(), json);
 };
 
@@ -32,26 +32,28 @@ const loadGame = () => {
     const json = localStorage.getItem(appKey());
     const job = JSON.parse(json);
 
+    delete ss.cells;
+
     if (job) {
         _stats.plays = job.plays;
         _stats.total = job.total;
         _stats.best = job.best;
 
-        ss.cells = job.cells;
-        ss.initial = job.initial;
-        ss.door = job.door;
-        ss.solution = job.solution;
-        ss.moves = job.moves;
+        if (ss.seenGame || !job.over) {
+            ss.cells = job.cells;
+            ss.initial = job.initial;
+            ss.door = job.door;
+            ss.solution = job.solution;
+            ss.moves = job.moves;
+        }
     } else {
         _stats.plays = 0;
         _stats.total = 0;
         _stats.best = 0;
-
-        delete ss.cells;
     }
 };
 
-export const showIntro = (value, plop = true) => {
+export const goHome = (value, plop = true) => {
     plop && _sound.play('plop');
     ss.home = true;
 };
@@ -90,7 +92,8 @@ const makeCells = (grid) => {
 };
 
 export const makePuzzle = () => {
-    delete ss.fail;
+    delete ss.over;
+    delete ss.deadend;
 
     const { grid, door, solution } = generatePuzzle(ss.size, 2, 15);
 
@@ -101,8 +104,6 @@ export const makePuzzle = () => {
     ss.initial = { cells: [...cells], door: { ...ss.door } };
     ss.cells = cells;
     ss.moves = 0;
-
-    delete ss.deadend;
 
     persist();
 
@@ -128,6 +129,7 @@ export const onHomePlay = (size) => {
         makePuzzle();
     }
 
+    ss.seenGame = true;
     delete ss.home;
 };
 

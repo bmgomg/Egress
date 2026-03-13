@@ -1,12 +1,12 @@
 <script>
-	import { isAnimated, isInitial, isSolved, persist, playSolution, showIntro } from './shared.svelte';
+	import { isAnimated, isInitial, isSolved, persist, playSolution, goHome } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { _stats, ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
 	import { post } from './utils';
 
 	const onHome = () => {
-		showIntro(true);
+		goHome(true);
 	};
 
 	const onResetStats = () => {
@@ -15,8 +15,13 @@
 
 	const onSurrender = () => {
 		ss.surrender = true;
-		ss.fail = true;
 		ss.moves = 0;
+
+		if (!ss.over) {
+			ss.over = 'fail';
+		}
+
+		persist();
 
 		if (isInitial()) {
 			post(playSolution, 200);
@@ -55,7 +60,7 @@
 	<TextButton id="tb-home" text={['Home']} disabled={!canHome} onClick={onHome} />
 	<TextButton id="tb-stats" text={['Reset', 'Stats']} onClick={onResetStats} disabled={_stats.plays === 0} />
 	<TextButton id="tb-surrender" text={['Give', 'Up']} disabled={!canSurrender} onClick={onSurrender} />
-	<TextButton id="tb-sfx" text={['Sound', _sound.sfx ? 'On' : 'Off']} onClick={onSound} />
+	<TextButton id="tb-sfx" text={['Sfx', _sound.sfx ? 'On' : 'Off']} onClick={onSound} />
 	<TextButton id="tb-music" text={['Music', _sound.music ? 'On' : 'Off']} onClick={onMusic} />
 </div>
 
