@@ -1,10 +1,10 @@
 <script>
 	import NumberFlow from '@number-flow/svelte';
+	import Rating from './Rating.svelte';
+	import { starRating } from './shared.svelte';
 	import { ss } from './state.svelte';
-	import { isSolved, starRating } from './shared.svelte';
 
 	const par = $derived(ss.solution?.length);
-	const over = $derived(isSolved());
 </script>
 
 {#if !ss.practice}
@@ -13,9 +13,7 @@
 			<div class="counter">
 				<span class="label">{label}</span>
 				{#if label === 'Rating'}
-					{@const v = value}
-					{@const stars = v === 0 ? '☆☆☆☆☆' : v === 5 ? '★★★★★' : v === 4 ? '★★★★☆' : v === 3 ? '★★★☆☆' : v === 2 ? '★★☆☆☆' : '★☆☆☆☆'}
-					<div class="rating {over ? '' : 'no-rating'}">{stars}</div>
+					<Rating />
 				{:else}
 					<div class="flow"><NumberFlow value={value || 0} format={{ useGrouping: false }} /></div>
 				{/if}
@@ -48,18 +46,5 @@
 	.label {
 		font-size: 16px;
 		color: var(--text-dim);
-	}
-
-	.rating {
-		font-size: 28px;
-		letter-spacing: 0.15em;
-		margin-top: -9px;
-		color: var(--gold-lt);
-		text-shadow: 0 0 20px #e8cc8080;
-	}
-
-	.no-rating {
-		color: var(--text-dim);
-		text-shadow: none;
 	}
 </style>
