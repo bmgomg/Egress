@@ -2,26 +2,20 @@
 	import NumberFlow from '@number-flow/svelte';
 	import { _stats } from './state.svelte';
 
-	const ave = $derived(_stats.plays ? (_stats.total / _stats.plays).toFixed(1) : 0);
+	const ave = $derived(_stats.wins ? (_stats.total / _stats.wins).toFixed(1) : 0);
 </script>
 
 <div class="stats">
-	<span class="label">Plays</span>
-	<div class="value"><NumberFlow value={_stats.plays} /></div>
+	<span class="label">Solved</span>
+	<div class="value"><NumberFlow value={_stats.wins} /></div>
 	<span></span>
-	<span class="label">Ave</span>
-	{#if _stats.plays}
-		<div class="value"><NumberFlow value={ave} prefix={ave < 1 ? '' : '+'} /></div>
+	<span class="label">Ave. Rating</span>
+	{#if _stats.wins}
+		<div class="value"><NumberFlow value={ave} /></div>
 	{:else}
 		<div class="bullet">•</div>
 	{/if}
 	<span></span>
-	<span class="label">Best</span>
-	{#if _stats.plays}
-		<div class="value"><NumberFlow value={_stats.best} prefix={_stats.best < 1 ? '' : '+'} /></div>
-	{:else}
-		<div>•</div>
-	{/if}
 </div>
 
 <style>

@@ -35,11 +35,10 @@ const loadGame = () => {
     delete ss.cells;
 
     if (job) {
-        _stats.plays = job.plays;
+        _stats.wins = job.wins;
         _stats.total = job.total;
-        _stats.best = job.best;
 
-        if (ss.seenGame || !job.over) {
+        if (ss.seenPage[ss.size] || !job.over) {
             ss.cells = job.cells;
             ss.initial = job.initial;
             ss.door = job.door;
@@ -47,9 +46,8 @@ const loadGame = () => {
             ss.moves = job.moves;
         }
     } else {
-        _stats.plays = 0;
+        _stats.wins = 0;
         _stats.total = 0;
-        _stats.best = 0;
     }
 };
 
@@ -95,7 +93,7 @@ export const makePuzzle = () => {
     delete ss.over;
     delete ss.deadend;
 
-    const { grid, door, solution } = generatePuzzle(ss.size, 2, 15);
+    const { grid, door, solution } = generatePuzzle(ss.size, 3, 12);
 
     let cells = makeCells(grid);
     ss.door = door;
@@ -129,7 +127,7 @@ export const onHomePlay = (size) => {
         makePuzzle();
     }
 
-    ss.seenGame = true;
+    ss.seenPage[size] = true;
     delete ss.home;
 };
 
@@ -173,4 +171,15 @@ export const playSolution = () => {
             }
         }, i * 1500);
     }
+};
+
+export const starRating = () => {
+    if (!isSolved()) {
+        return 0;
+    }
+
+    const par = ss.solution?.length || 0;
+    const d = ss.moves - par;
+
+    return d < 1 ? 5 : d < 2 ? 4 : d < 3 ? 3 : d < 4 ? 2 : 1;
 };

@@ -3,10 +3,10 @@
 	import Box from './Box.svelte';
 	import Cell from './Cell.svelte';
 	import { CELL_MARGIN, CELL_SIZE, COLUMN_TRANSITIONS } from './const';
-	import { findCell, indexOf, isSolvable, isSolved, makePuzzle, persist, playSolution, setToInitial } from './shared.svelte';
+	import { findCell, indexOf, isSolvable, isSolved, makePuzzle, persist, playSolution, setToInitial, starRating } from './shared.svelte';
 	import { BOT, LEFT, RIGHT, TOP } from './generator';
 	import { _sound } from './sound.svelte';
-	import { ss } from './state.svelte';
+	import { _stats, ss } from './state.svelte';
 	import { post } from './utils';
 
 	let _this = $state(null);
@@ -131,6 +131,8 @@
 
 			if (!ss.over) {
 				ss.over = 'won';
+				_stats.wins++;
+				_stats.total += starRating();
 			}
 		} else if (!isSolvable()) {
 			ss.deadend = true;

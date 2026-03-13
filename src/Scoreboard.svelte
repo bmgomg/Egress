@@ -1,7 +1,7 @@
 <script>
 	import NumberFlow from '@number-flow/svelte';
 	import { ss } from './state.svelte';
-	import { isSolved } from './shared.svelte';
+	import { isSolved, starRating } from './shared.svelte';
 
 	const par = $derived(ss.solution?.length);
 	const over = $derived(isSolved());
@@ -13,8 +13,8 @@
 			<div class="counter">
 				<span class="label">{label}</span>
 				{#if label === 'Rating'}
-					{@const d = value || 0}
-					{@const stars = !over ? '☆☆☆☆☆' : d < 1 ? '★★★★★' : d < 2 ? '★★★★☆' : d < 3 ? '★★★☆☆' : d < 4 ? '★★☆☆☆' : '★☆☆☆☆'}
+					{@const v = value}
+					{@const stars = v === 0 ? '☆☆☆☆☆' : v === 5 ? '★★★★★' : v === 4 ? '★★★★☆' : v === 3 ? '★★★☆☆' : v === 2 ? '★★☆☆☆' : '★☆☆☆☆'}
 					<div class="rating {over ? '' : 'no-rating'}">{stars}</div>
 				{:else}
 					<div class="flow"><NumberFlow value={value || 0} format={{ useGrouping: false }} /></div>
@@ -23,7 +23,7 @@
 		{/snippet}
 		{@render item(par, 'Par')}
 		{@render item(ss.moves, 'Moves')}
-		{@render item(ss.moves - par, 'Rating')}
+		{@render item(starRating(), 'Rating')}
 	</div>
 {/if}
 
