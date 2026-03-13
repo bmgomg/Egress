@@ -21,8 +21,8 @@
 
 <div class="buttons">
 	{#if isSolved()}
-		<div in:fade><TextButton id="tb-replay" framed text={['Replay?']} onClick={onReplay} /></div>
-		<div in:fade><TextButton id="tb-new" framed text={['Play new?']} onClick={onPlayNew} /></div>
+		<div in:fade><TextButton id="tb-replay" framed text={['Replay']} onClick={onReplay} /></div>
+		<div in:fade><TextButton id="tb-new" framed text={['Play new']} onClick={onPlayNew} /></div>
 	{/if}
 </div>
 

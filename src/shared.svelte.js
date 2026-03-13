@@ -1,5 +1,5 @@
 import { APP_STATE } from './const';
-import { BLOCK, EMPTY, generatePuzzle } from './generator';
+import { BLOCK, EMPTY, BUBBLE, generatePuzzle, canSolve } from './generator';
 import { _sound } from './sound.svelte';
 import { _stats, ss } from './state.svelte';
 import { post } from './utils';
@@ -60,6 +60,21 @@ export const isSolved = () => ss.cells?.every(c => c.weight === 0);
 
 export const indexOf = (row, col) => (row - 1) * ss.size + col - 1;
 
+export const isSolvable = () => {
+    const grid = Array.from({ length: ss.size }, () => Array(ss.size).fill(EMPTY));
+
+    for (const cell of ss.cells) {
+        if (cell.weight > 0) {
+            grid[cell.row - 1][cell.col - 1] = BLOCK;
+        } else if (cell.weight < 0) {
+            grid[cell.row - 1][cell.col - 1] = BUBBLE;
+        }
+    }
+
+    const can = canSolve(grid, ss.door);
+    return can;
+};
+
 const makeCells = (grid) => {
     const cells = Array(ss.size * ss.size);
 
@@ -86,6 +101,8 @@ export const makePuzzle = () => {
     ss.initial = { cells: [...cells], door: { ...ss.door } };
     ss.cells = cells;
     ss.moves = 0;
+
+    delete ss.deadend;
 
     persist();
 
@@ -133,6 +150,8 @@ export const setToInitial = () => {
 
     ss.cells = [...ss.initial.cells];
     ss.door = { ...ss.initial.door };
+
+    delete ss.deadend;
 };
 
 export const isAnimated = () => ss.noui || ss.surrender;

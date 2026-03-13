@@ -3,7 +3,7 @@
 	import Box from './Box.svelte';
 	import Cell from './Cell.svelte';
 	import { CELL_MARGIN, CELL_SIZE, COLUMN_TRANSITIONS } from './const';
-	import { findCell, indexOf, isSolved, makePuzzle, persist, playSolution, setToInitial } from './shared.svelte';
+	import { findCell, indexOf, isSolvable, isSolved, makePuzzle, persist, playSolution, setToInitial } from './shared.svelte';
 	import { BOT, LEFT, RIGHT, TOP } from './generator';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
@@ -114,6 +114,8 @@
 		if (isSolved()) {
 			_sound.play('won');
 			dance = true;
+		} else if (!isSolvable()) {
+			ss.deadend =true;
 		}
 
 		delete ss.noui;

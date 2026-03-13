@@ -33,7 +33,7 @@
 		<ToolButton id="tb-ccw" src={CCW} disabled={!canRotate} opaque={true} showDisabled={solved} onClick={() => onSpin(false)} />
 		<span>turn</span>
 	</div>
-	<div class="control">
+	<div class="control {ss.deadend && canReset ? 'pulse' : ''}">
 		<ToolButton id="tb-reset" src={Reset} disabled={!canReset} opaque={true} onClick={onReset} />
 		<span>reset</span>
 	</div>
@@ -62,5 +62,18 @@
 		justify-items: center;
 		font-size: 16px;
 		color: var(--text-dim);
+	}
+
+	.pulse {
+		animation: pulse 0.25s alternate infinite ease-in-out;
+	}
+
+	@keyframes pulse {
+		from {
+			transform: scale(1);
+		}
+		to {
+			transform: scale(0.85);
+		}
 	}
 </style>

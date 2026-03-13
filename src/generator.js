@@ -85,6 +85,26 @@ function makeLCG(seed) {
     return () => { s = (Math.imul(1664525, s) + 1013904223) >>> 0; return s / 0x100000000; };
 }
 
+// Dead-end detection — BFS capped at depth 20
+export function canSolve(grid,door,maxDepth=20){
+  const N=grid.length;
+  if(countPieces(grid)===0)return true;
+  const queue=[{grid,door,d:0}];
+  const visited=new Set([gridKey(grid,door)]);
+  while(queue.length){
+    const{grid:g,door:dr,d}=queue.shift();
+    if(d>=maxDepth)continue;
+    for(const cw of[true,false]){
+      const nd=cw?rotateDoorCW(dr):rotateDoorCCW(dr);
+      const ng=cw?rotateGridCW(g,N):rotateGridCCW(g,N);
+      const sg=applyPhysics(ng,nd,N);
+      if(countPieces(sg)===0)return true;
+      const key=gridKey(sg,nd);
+      if(!visited.has(key)){visited.add(key);queue.push({grid:sg,door:nd,d:d+1});}
+    }
+  }
+  return false;
+}
 const ALL_DOORS = [];
 for (let wall = 0; wall < 4; wall++)for (let corner = 0; corner < 2; corner++) { const d = normalizeDoor({ wall, corner }); if (!ALL_DOORS.some(x => x.wall === d.wall && x.corner === d.corner)) ALL_DOORS.push(d); }
 
