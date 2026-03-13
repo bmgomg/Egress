@@ -33,7 +33,7 @@
 		<ToolButton id="tb-ccw" src={CCW} disabled={!canRotate} opaque={true} showDisabled={solved} onClick={() => onSpin(false)} />
 		<span>turn</span>
 	</div>
-	<div class="control {ss.deadend && canReset ? 'pulse' : ''}">
+	<div class="control">
 		<ToolButton id="tb-reset" src={Reset} disabled={!canReset} opaque={true} onClick={onReset} />
 		<span>reset</span>
 	</div>

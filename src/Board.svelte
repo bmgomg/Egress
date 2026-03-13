@@ -90,7 +90,7 @@
 			_sound.play('link2', { rate: 0.9 });
 		}
 
-		post(onGravityEnd, 650);
+		post(onGravityEnd, 500);
 	};
 
 	const onGravityEnd = () => {

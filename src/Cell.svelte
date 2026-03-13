@@ -22,7 +22,7 @@
 
 	const dur = $derived.by(() => {
 		const d = Math.floor(Math.abs((newRow || row) - row));
-		return d * 0.2;
+		return d * 0.15;
 	});
 
 	const style = $derived(
@@ -45,7 +45,6 @@
 		aspect-ratio: 1;
 		box-sizing: border-box;
 		place-content: center;
-		/* transition: translate 0.3s cubic-bezier(0.15, 0.055, 0.675, 0.19); */
 		transition: translate 0.3s linear;
 		z-index: 1;
 	}
