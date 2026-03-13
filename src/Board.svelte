@@ -43,6 +43,20 @@
 		}
 	};
 
+	const dropDoor = () => {
+		if ((ss.door.wall === LEFT || ss.door.wall === RIGHT) && ss.door.corner === 1) {
+			post(() => {
+				ss.door.drop = true;
+				post(() => _sound.play('drop'), 280);
+
+				post(() => {
+					delete ss.door.drop;
+					ss.door.corner = 0;
+				}, 350);
+			});
+		}
+	};
+
 	const applyGravity = () => {
 		const newCells = [...ss.cells];
 
@@ -115,7 +129,7 @@
 			_sound.play('won');
 			dance = true;
 		} else if (!isSolvable()) {
-			ss.deadend =true;
+			ss.deadend = true;
 		}
 
 		delete ss.noui;
@@ -147,18 +161,7 @@
 
 		moveDoor();
 		ss.spin = 0;
-
-		if ((ss.door.wall === LEFT || ss.door.wall === RIGHT) && ss.door.corner === 1) {
-			post(() => {
-				ss.door.drop = true;
-				post(() => _sound.play('drop'), 280);
-
-				post(() => {
-					delete ss.door.drop;
-					ss.door.corner = 0;
-				}, 350);
-			});
-		}
+		dropDoor();
 
 		post(applyGravity);
 	};
