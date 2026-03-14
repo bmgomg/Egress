@@ -130,7 +130,6 @@
 		position: absolute;
 		translate: 185px -360px;
 		opacity: 0.7;
-		filter: grayscale(0.75);
 	}
 
 	.x:hover {
