@@ -1,6 +1,6 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { OP_EASY, OP_HARD, OP_NOT_EASY } from './const';
+	import { OP_EASY, OP_HARD, OP_MEDIUM } from './const';
 	import { onMode, onOptions } from './shared.svelte';
 	import { ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
@@ -33,12 +33,12 @@
 		</div>
 		<div class="divider"></div>
 		<div class="buttons">
-			<TextButton id='tb-easy' framed style='width: 105px;' text={[OP_EASY]} onClick={() => onMode(OP_EASY)} />
-			<TextButton id='tb-not-easy' framed style='width: 140px;' text={[OP_NOT_EASY]} onClick={() => onMode(OP_NOT_EASY)} />
+			<TextButton id='tb-easy' framed style='width: 125px;' text={[OP_EASY]} onClick={() => onMode(OP_EASY)} />
+			<TextButton id='tb-not-easy' framed style='width: 150px;' text={[OP_MEDIUM]} onClick={() => onMode(OP_MEDIUM)} />
 		</div>
 		<div class="buttons" style='margin-top: 15px;'>
-			<TextButton id='tb-hard' framed  style='width: 105px;' text={[OP_HARD]} onClick={() => onMode(OP_HARD)} />
-			<TextButton id='tb-ops' framed  style='width: 140px;' text={['Options']} onClick={onOptions} />
+			<TextButton id='tb-hard' framed  style='width: 125px;' text={[OP_HARD]} onClick={() => onMode(OP_HARD)} />
+			<TextButton id='tb-ops' framed  style='width: 150px;' text={['Options']} onClick={onOptions} />
 		</div>
 	</div>
 {/if}

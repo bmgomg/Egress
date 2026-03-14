@@ -1,4 +1,4 @@
-import { APP_STATE, OP_EASY, OP_NOT_EASY } from './const';
+import { APP_STATE, OP_EASY, OP_MEDIUM } from './const';
 import { BLOCK, BUBBLE, canSolve, EMPTY, generatePuzzle } from './generator';
 import { _sound } from './sound.svelte';
 import { _stats, ss } from './state.svelte';
@@ -96,7 +96,7 @@ export const makePuzzle = () => {
     delete ss.over;
     delete ss.deadend;
 
-    const steps = ss.mode === OP_EASY ? [3, 6] : ss.mode === OP_NOT_EASY ? [5, 9] : [9, 15];
+    const steps = ss.mode === OP_EASY ? [3, 6] : ss.mode === OP_MEDIUM ? [5, 9] : [9, 15];
     const { grid, door, solution } = generatePuzzle(ss.size, steps[0], steps[1], ss.slide);
 
     let cells = makeCells(grid);

@@ -7,7 +7,7 @@
 	import BoxT from '$lib/images/Box T.webp';
 	import BoxTL from '$lib/images/Box TL.webp';
 	import BoxTR from '$lib/images/Box TR.webp';
-	import { CELL_MARGIN, CELL_SIZE, BOT, LEFT, RIGHT, TOP } from './const';
+	import { CELL_MARGIN, CELL_SIZE, BOT, LEFT, RIGHT, TOP, NO_SLIDE, SLIDE_DOWN } from './const';
 	import { ss } from './state.svelte';
 
 	const { sz, th } = $props();
@@ -15,25 +15,35 @@
 	const wsz = $derived(sz - dsz);
 	const off = $derived(dsz / 2);
 
-	const filter = (on) => on ? 'hue-rotate(-90deg)' : 'none';
+	const filter = (on) => {
+		if (!on || ss.slide === NO_SLIDE) {
+			return 'none';
+		}
+
+		if (ss.slide === SLIDE_DOWN) {
+			return 'hue-rotate(-90deg)';
+		}
+
+		return 'hue-rotate(120deg) brightness(1.5)';
+	};
 
 	const topStyle = $derived.by(() => {
 		const width = ss.door.wall === TOP ? wsz : sz;
-		const dx = width < sz ? ss.door.corner === 0 ? off : -off : 0;
+		const dx = width < sz ? (ss.door.corner === 0 ? off : -off) : 0;
 
 		return `width: ${width}px; height: ${th}px; translate: ${dx}px 0; filter: ${filter(width < sz)};`;
 	});
 
 	const bottomStyle = $derived.by(() => {
 		const width = ss.door.wall === BOT ? wsz : sz;
-		const dx = width < sz ? ss.door.corner === 0 ? off : -off : 0;
+		const dx = width < sz ? (ss.door.corner === 0 ? off : -off) : 0;
 
 		return `width: ${width}px; height: ${th}px; translate: ${dx}px 0; filter: ${filter(width < sz)};`;
 	});
 
 	const leftStyle = $derived.by(() => {
 		const height = ss.door.wall === LEFT ? wsz : sz;
-		let dy = height < sz ? ss.door.corner === 0 ? off : -off : 0;
+		let dy = height < sz ? (ss.door.corner === 0 ? off : -off) : 0;
 
 		if (dy && ss.door.drop) {
 			dy += ss.door.drop * dsz;
@@ -44,7 +54,7 @@
 
 	const rightStyle = $derived.by(() => {
 		const height = ss.door.wall === RIGHT ? wsz : sz;
-		let dy = height < sz ? ss.door.corner === 0 ? off : -off : 0;
+		let dy = height < sz ? (ss.door.corner === 0 ? off : -off) : 0;
 
 		if (dy && ss.door.drop) {
 			dy += ss.door.drop * dsz;
