@@ -176,7 +176,7 @@ export const playSolution = () => {
 };
 
 export const starRating = () => {
-    if (!isSolved()) {
+    if (ss.moves === 0 || !isSolved()) {
         return 0;
     }
 

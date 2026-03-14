@@ -2,7 +2,6 @@
 	import { starRating } from './shared.svelte';
 
 	const r = $derived(starRating());
-	// const stars = r === 5 ? '★★★★★' : r === 4 ? '★★★★☆' : r === 3 ? '★★★☆☆' : r === 2 ? '★★☆☆☆' : r === 1 ? '★☆☆☆☆' : '☆☆☆☆☆';
 </script>
 
 <div class="rating">
