@@ -3,8 +3,8 @@
 	import Box from './Box.svelte';
 	import Cell from './Cell.svelte';
 	import { CELL_MARGIN, CELL_SIZE, COLUMN_TRANSITIONS } from './const';
-	import { findCell, indexOf, isSolvable, isSolved, makePuzzle, persist, playSolution, setToInitial, starRating } from './shared.svelte';
 	import { BOT, LEFT, RIGHT, TOP } from './generator';
+	import { findCell, indexOf, isSolvable, isSolved, makePuzzle, persist, playSolution, setToInitial, starRating } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { _stats, ss } from './state.svelte';
 	import { post } from './utils';
@@ -228,8 +228,8 @@
 		style="rotate: {rotate}; transition-duration: {duration}s; width: {sz + th * 2}px; transition-timing-function: {tfn};"
 		in:fade
 	>
-		<div class="box {ss.flip ? 'flip' : ''}"><Box {sz} {th} /></div>
-		<div bind:this={inner} class="inner {ss.flip ? 'flip' : ''}">
+		<div class="box {ss.flip ? 'swirl' : ''}"><Box {sz} {th} /></div>
+		<div bind:this={inner} class="inner {ss.flip ? 'swirl' : ''}">
 			<div class="cells">
 				{#each ss.cells as cell, i (cell.id)}
 					<Cell bind:cell={ss.cells[i]} />
@@ -257,10 +257,6 @@
 		transition: transform 0.5s linear;
 	}
 
-	.flip {
-		transform: rotateY(90deg);
-	}
-
 	.cells {
 		grid-area: 1/1;
 		place-self: center;
@@ -273,4 +269,8 @@
 		display: grid;
 		transition: transform 0.5s linear;
 	}
+
+    .swirl {
+        transform: rotateZ(360deg) scale(0);
+    }
 </style>
