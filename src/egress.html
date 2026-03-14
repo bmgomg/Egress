@@ -52,9 +52,9 @@ body::before {
   content: '';
   position: fixed; inset: 0;
   background:
-    radial-gradient(ellipse 70% 50% at 15% 10%, #C8A84A0F 0%, transparent 60%),
-    radial-gradient(ellipse 60% 70% at 85% 90%, #4A9FD40F 0%, transparent 60%),
-    radial-gradient(ellipse 40% 40% at 50% 50%, #50D09008 0%, transparent 70%);
+    radial-gradient(ellipse 70% 50% at 15% 10%, rgba(200,168,74,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 70% at 85% 90%, rgba(74,159,212,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(80,208,144,0.03) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -87,8 +87,8 @@ body::before {
   color: var(--gold);
   letter-spacing: 0.12em;
   text-shadow:
-    0 0 40px #C8A84A80,
-    0 0 80px #C8A84A33;
+    0 0 40px rgba(200,168,74,0.5),
+    0 0 80px rgba(200,168,74,0.2);
   line-height: 1;
   margin-bottom: 10px;
 }
@@ -139,9 +139,9 @@ body::before {
 .title-btn::after  { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
 
 .title-btn:hover {
-  background: #C8A84A0F;
+  background: rgba(200,168,74,0.06);
   border-color: var(--gold);
-  box-shadow: 0 0 20px #C8A84A26;
+  box-shadow: 0 0 20px rgba(200,168,74,0.15);
 }
 
 .title-btn.secondary {
@@ -151,7 +151,7 @@ body::before {
   padding: 10px 32px;
 }
 .title-btn.secondary::before, .title-btn.secondary::after { border-color: var(--text-dim); }
-.title-btn.secondary:hover { color: var(--text); border-color: var(--text); background: #C0B0900A; box-shadow: none; }
+.title-btn.secondary:hover { color: var(--text); border-color: var(--text); background: rgba(192,176,144,0.04); box-shadow: none; }
 
 /* ══════════════════════════════════════
    INSTRUCTIONS SCREEN
@@ -245,7 +245,7 @@ body::before {
   font-size: 18px;
   color: var(--gold);
   letter-spacing: 0.1em;
-  text-shadow: 0 0 20px #C8A84A66;
+  text-shadow: 0 0 20px rgba(200,168,74,0.4);
 }
 
 .top-level {
@@ -301,8 +301,8 @@ body::before {
   line-height: 1;
 }
 
-.stat-val.gold  { color: var(--gold); text-shadow: 0 0 12px #C8A84A80; }
-.stat-val.green { color: var(--door); text-shadow: 0 0 12px #50D09080; }
+.stat-val.gold  { color: var(--gold); text-shadow: 0 0 12px rgba(200,168,74,0.5); }
+.stat-val.green { color: var(--door); text-shadow: 0 0 12px rgba(80,208,144,0.5); }
 .stat-val.dim   { color: var(--text); opacity: 0.35; }
 
 /* Game area — the box */
@@ -362,7 +362,7 @@ canvas#box-canvas {
 
 .move-btn:active:not(:disabled) {
   transform: scale(0.96);
-  background: #C8A84A0F;
+  background: rgba(200,168,74,0.06);
 }
 .move-btn:disabled { opacity: 0.25; cursor: not-allowed; }
 
@@ -466,7 +466,7 @@ canvas#box-canvas {
   font-family: 'Cinzel Decorative', serif;
   font-size: clamp(32px, 9vw, 48px);
   color: var(--gold);
-  text-shadow: 0 0 30px #C8A84A99, 0 0 80px #C8A84A33;
+  text-shadow: 0 0 30px rgba(200,168,74,0.6), 0 0 80px rgba(200,168,74,0.2);
   margin-bottom: 8px;
   line-height: 1.1;
 }
@@ -508,15 +508,15 @@ canvas#box-canvas {
   line-height: 1;
 }
 
-.win-stat-val.gold  { color: var(--gold); text-shadow: 0 0 16px #C8A84A80; }
-.win-stat-val.green { color: var(--door); text-shadow: 0 0 16px #50D09080; }
+.win-stat-val.gold  { color: var(--gold); text-shadow: 0 0 16px rgba(200,168,74,0.5); }
+.win-stat-val.green { color: var(--door); text-shadow: 0 0 16px rgba(80,208,144,0.5); }
 
 .win-rating {
   font-size: 28px;
   letter-spacing: 0.15em;
   margin-bottom: 40px;
   color: var(--gold);
-  text-shadow: 0 0 20px #C8A84A80;
+  text-shadow: 0 0 20px rgba(200,168,74,0.5);
 }
 
 .win-divider {
@@ -549,22 +549,32 @@ canvas#box-canvas {
 }
 .win-btn::before { top:-1px; left:-1px; border-width:1px 0 0 1px; }
 .win-btn::after  { bottom:-1px; right:-1px; border-width:0 1px 1px 0; }
-.win-btn:hover { background: #C8A84A12; border-color: var(--gold); box-shadow: 0 0 20px #C8A84A26; }
+.win-btn:hover { background: rgba(200,168,74,0.07); border-color: var(--gold); box-shadow: 0 0 20px rgba(200,168,74,0.15); }
 
 .win-btn.dim {
   color: var(--text-dim); border-color: var(--text-dim); font-size: 10px; padding: 10px 28px;
 }
 .win-btn.dim::before, .win-btn.dim::after { border-color: var(--text-dim); }
-.win-btn.dim:hover { color: var(--text); border-color: var(--text); background: #C0B0900A; box-shadow: none; }
+.win-btn.dim:hover { color: var(--text); border-color: var(--text); background: rgba(192,176,144,0.04); box-shadow: none; }
 
 /* ══════════════════════════════════════
    TRANSITIONS
 ══════════════════════════════════════ */
 @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.5} }
-@keyframes glow   { 0%,100%{text-shadow:0 0 20px #C8A84A66} 50%{text-shadow:0 0 40px #C8A84ACC,0 0 80px #C8A84A4D} }
+@keyframes glow   { 0%,100%{text-shadow:0 0 20px rgba(200,168,74,0.4)} 50%{text-shadow:0 0 40px rgba(200,168,74,0.8),0 0 80px rgba(200,168,74,0.3)} }
 
 .screen.active { animation: fadeIn 0.35s ease; }
+.door-opt {
+  width:100%;background:rgba(255,255,255,0.02);border:1px solid var(--lead-lt);
+  color:var(--text);padding:16px 20px;text-align:left;cursor:pointer;
+  transition:border-color 0.15s,background 0.15s;
+}
+.door-opt:hover{background:rgba(255,255,255,0.05);}
+.door-opt.selected{border-color:rgba(80,208,144,0.7);background:rgba(80,208,144,0.07);}
+.door-opt-title{font-family:var(--cinzel);font-size:13px;letter-spacing:0.1em;color:var(--text);margin-bottom:4px;}
+.door-opt.selected .door-opt-title{color:var(--door);}
+.door-opt-desc{font-family:var(--garamond);font-size:14px;font-style:italic;color:var(--text);opacity:0.55;}
 </style>
 </head>
 <body>
@@ -575,8 +585,34 @@ canvas#box-canvas {
   <div class="game-title">Egress</div>
   <div class="game-tagline">A box full of blocks and bubbles. One door. Rotate to empty it.</div>
   <div class="title-divider"></div>
-  <button class="title-btn" id="btn-play">Play</button>
+  <div style="display:flex;gap:16px;margin-bottom:16px;">
+    <button class="title-btn" id="btn-play-2">2 × 2</button>
+    <button class="title-btn" id="btn-play-3">3 × 3</button>
+  </div>
   <button class="title-btn secondary" id="btn-how">How to Play</button>
+  <button class="title-btn secondary" id="btn-settings" style="margin-top:8px;">Door Settings</button>
+</div>
+
+<!-- ══════════ SETTINGS SCREEN ══════════ -->
+<div id="screen-settings" class="screen">
+  <button id="btn-settings-close" style="position:absolute;top:20px;right:20px;background:none;border:none;color:var(--text);font-size:20px;cursor:pointer;opacity:0.6;line-height:1;padding:6px;">✕</button>
+  <div class="instr-title" style="margin-top:56px;">Door</div>
+  <div class="instr-lead" style="margin-bottom:40px;">How does the door behave on side walls?</div>
+  <div id="door-options" style="display:flex;flex-direction:column;gap:10px;width:100%;padding:0 28px;">
+    <button class="door-opt" data-mode="up">
+      <div class="door-opt-title">Slides Up</div>
+      <div class="door-opt-desc">Panel rises — gap stays at the bottom</div>
+    </button>
+    <button class="door-opt" data-mode="down">
+      <div class="door-opt-title">Slides Down</div>
+      <div class="door-opt-desc">Panel falls — gap stays at the top</div>
+    </button>
+    <button class="door-opt" data-mode="fixed">
+      <div class="door-opt-title">Fixed</div>
+      <div class="door-opt-desc">Door stays where it lands</div>
+    </button>
+  </div>
+  <div style="width:120px;height:1px;background:var(--lead);margin:32px auto 0;"></div>
 </div>
 
 <!-- ══════════ INSTRUCTIONS SCREEN ══════════ -->
@@ -586,32 +622,35 @@ canvas#box-canvas {
   <div class="instr-divider"></div>
   <ul class="instr-list">
     <li>
-      <svg class="bullet" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#4a9fd4" stroke-width="1.5"/><circle cx="10" cy="10" r="4" fill="#4A9FD433"/><circle cx="7" cy="7" r="1.5" fill="white" fill-opacity="0.6"/></svg>
+      <svg class="bullet" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#4a9fd4" stroke-width="1.5"/><circle cx="10" cy="10" r="4" fill="rgba(74,159,212,0.2)"/><circle cx="7" cy="7" r="1.5" fill="white" fill-opacity="0.6"/></svg>
       <span><em>Blocks are heavier than air, bubbles are lighter than air</em></span>
     </li>
     <li>
-      <svg class="bullet" viewBox="0 0 20 20"><rect x="3" y="5" width="14" height="12" fill="#C8782033" stroke="#c87820" stroke-width="1.5"/><line x1="3" y1="5" x2="17" y2="5" stroke="#f0b050" stroke-width="1.5"/></svg>
-      <span>The door must be on the <em>top or bottom wall</em> for pieces to escape—side walls are sealed</span>
+      <svg class="bullet" viewBox="0 0 20 20"><rect x="3" y="5" width="14" height="12" fill="rgba(200,120,32,0.2)" stroke="#c87820" stroke-width="1.5"/><line x1="3" y1="5" x2="17" y2="5" stroke="#f0b050" stroke-width="1.5"/></svg>
+      <span>Pieces can only escape through the door on the top or bottom wall.</span>
     </li>
     <li>
-      <svg class="bullet" viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="6" fill="#C878204D" stroke="#c87820" stroke-width="1"/><circle cx="10" cy="15" r="4" fill="#4A9FD44D" stroke="#4a9fd4" stroke-width="1"/></svg>
+      <svg class="bullet" viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="6" fill="rgba(200,120,32,0.3)" stroke="#c87820" stroke-width="1"/><circle cx="10" cy="15" r="4" fill="rgba(74,159,212,0.3)" stroke="#4a9fd4" stroke-width="1"/></svg>
       <span>A block on top of <em>one bubble</em> drags it down—they fall together</span>
     </li>
     <li>
-      <svg class="bullet" viewBox="0 0 20 20"><circle cx="7" cy="14" r="3.5" fill="#4A9FD44D" stroke="#4a9fd4" stroke-width="1"/><circle cx="13" cy="14" r="3.5" fill="#4A9FD44D" stroke="#4a9fd4" stroke-width="1"/><rect x="6" y="3" width="8" height="6" fill="#C878204D" stroke="#c87820" stroke-width="1"/></svg>
+      <svg class="bullet" viewBox="0 0 20 20"><circle cx="7" cy="14" r="3.5" fill="rgba(74,159,212,0.3)" stroke="#4a9fd4" stroke-width="1"/><circle cx="13" cy="14" r="3.5" fill="rgba(74,159,212,0.3)" stroke="#4a9fd4" stroke-width="1"/><rect x="6" y="3" width="8" height="6" fill="rgba(200,120,32,0.3)" stroke="#c87820" stroke-width="1"/></svg>
       <span>A block on <em>two or more bubbles</em> gets lifted up—they rise together</span>
     </li>
   </ul>
   <div class="instr-divider"></div>
   <div style="font-size:13px;font-style:italic;color:var(--text-dim);margin-bottom:32px;text-align:center">Clear the box in as few rotations as possible.</div>
-  <button class="title-btn" id="btn-start">Begin</button>
+  <div style="display:flex;gap:16px;">
+    <button class="title-btn" id="btn-start-2">2 × 2</button>
+    <button class="title-btn" id="btn-start-3">3 × 3</button>
+  </div>
 </div>
 
 <!-- ══════════ GAME SCREEN ══════════ -->
 <div id="screen-game" class="screen">
   <div class="top-bar">
     <div class="top-title">Egress</div>
-    <div class="top-level" id="level-label">Level 1</div>
+    <div class="top-level" id="level-label"></div>
   </div>
 
   <div class="stats-row">
@@ -624,9 +663,13 @@ canvas#box-canvas {
       <div class="stat-val" id="stat-moves">0</div>
     </div>
     <div class="stat-item">
-      <div class="stat-label">Best</div>
-      <div class="stat-val dim" id="stat-best">—</div>
+      <div class="stat-label">Pieces</div>
+      <div class="stat-val" id="pieces-left">9</div>
     </div>
+  </div>
+
+  <div id="dead-end-banner" style="display:none;width:100%;padding:7px 20px;background:rgba(180,60,40,0.15);border-top:1px solid rgba(180,60,40,0.3);border-bottom:1px solid rgba(180,60,40,0.3);text-align:center;font-family:var(--cinzel);font-size:9px;letter-spacing:0.3em;color:#d07060;text-transform:uppercase;flex-shrink:0;">
+    ⚠ No solution from here — reset to continue
   </div>
 
   <div class="game-area">
@@ -640,10 +683,7 @@ canvas#box-canvas {
       <div class="btn-icon">↺</div>
       <div class="btn-label">CCW</div>
     </button>
-    <div class="move-count">
-      <div class="move-count-val" id="pieces-left">9</div>
-      <div class="move-count-label">Pieces</div>
-    </div>
+
     <button class="move-btn" id="btn-cw">
       <div class="btn-icon">↻</div>
       <div class="btn-label">CW</div>
@@ -653,7 +693,8 @@ canvas#box-canvas {
   <div class="bottom-bar" style="display:flex;width:100%;align-items:center;justify-content:space-between;padding:10px 20px 14px;border-top:1px solid var(--lead);flex-shrink:0;">
     <button class="bottom-btn" id="btn-menu">Menu</button>
     <button class="bottom-btn" id="btn-hint">Hint</button>
-    <button class="bottom-btn" id="btn-reset">Reset</button>
+    <button class="bottom-btn" id="btn-reset">Retry</button>
+    <button class="bottom-btn" id="btn-next-puzzle">Next Puzzle</button>
   </div>
 </div>
 
@@ -671,21 +712,17 @@ canvas#box-canvas {
       <div class="win-stat-label">Par</div>
       <div class="win-stat-val gold" id="win-par">—</div>
     </div>
-    <div class="win-stat">
-      <div class="win-stat-label">Best</div>
-      <div class="win-stat-val green" id="win-best">—</div>
-    </div>
   </div>
   <div class="win-rating" id="win-rating">★★★</div>
   <div class="win-divider"></div>
   <div>
     <button class="win-btn dim" id="btn-retry">Retry</button>
-    <button class="win-btn" id="btn-next">Next →</button>
+    <button class="win-btn" id="btn-new-puzzle">New Puzzle</button>
   </div>
 </div>
 
 <!-- ══════════ HINT OVERLAY ══════════ -->
-<div id="hint-overlay" style="display:none;position:fixed;inset:0;background:#000000BF;z-index:50;align-items:center;justify-content:center;">
+<div id="hint-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:50;align-items:center;justify-content:center;">
   <div style="background:var(--panel);border:1px solid var(--gold-dim);padding:32px 40px;text-align:center;max-width:320px;position:relative;">
     <div style="font-family:var(--cinzel);font-size:10px;letter-spacing:0.4em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:16px;">Solution</div>
     <div id="hint-text" style="font-family:var(--cinzel);font-size:14px;color:var(--text);letter-spacing:0.15em;line-height:2;margin-bottom:24px;"></div>
@@ -707,29 +744,81 @@ canvas#box-canvas {
 // ═══════════════════════════════════════════════════════
 const EMPTY=0, BLOCK=1, BUBBLE=2;
 
+// Side-wall doors slide to top corner under gravity
+let doorMode='up'; // 'up' | 'down' | 'fixed'
+function normalizeDoor(d){
+  if(d.wall===1||d.wall===3){
+    if(doorMode==='fixed') return d;
+    if(doorMode==='up')    return{wall:d.wall,corner:1};
+    if(doorMode==='down')  return{wall:d.wall,corner:0};
+  }
+  return d;
+}
+// Raw rotation without normalization — used to find where panel arrives before sliding
+function rotateDoorCWRaw(d){const np=(toPhysCorner(d.wall,d.corner)+1)%4,nw=(d.wall+1)%4;return{wall:nw,corner:fromPhysCorner(np,nw)};}
+function rotateDoorCCWRaw(d){const np=(toPhysCorner(d.wall,d.corner)+3)%4,nw=(d.wall+3)%4;return{wall:nw,corner:fromPhysCorner(np,nw)};}
+
 // ═══════════════════════════════════════════════════════
 // LEVELS (pre-generated, BFS-verified)
 // ═══════════════════════════════════════════════════════
-const LEVELS = [
-  {grid:[[1,2,2],[2,2,2],[2,2,2]],door:{wall:3,corner:0},par:5,solution:["CW","CCW","CW","CCW","CW"]},
-  {grid:[[1,1,1],[1,2,2],[2,2,2]],door:{wall:3,corner:1},par:5,solution:["CW","CCW","CW","CCW","CCW"]},
-  {grid:[[1,1,1],[1,2,1],[1,2,1]],door:{wall:0,corner:1},par:6,solution:["CW","CW","CCW","CCW","CW","CW"]},
-  {grid:[[2,2,1],[1,2,2],[2,2,2]],door:{wall:3,corner:0},par:7,solution:["CW","CW","CW","CW","CW","CCW","CW"]},
-  {grid:[[1,2,2],[2,1,2],[2,2,2]],door:{wall:1,corner:0},par:7,solution:["CCW","CCW","CCW","CCW","CCW","CW","CCW"]},
-  {grid:[[2,2,1],[2,2,2],[2,1,2]],door:{wall:1,corner:0},par:7,solution:["CCW","CW","CCW","CW","CCW","CCW","CCW"]},
-  {grid:[[2,1,1],[1,2,1],[2,1,2]],door:{wall:0,corner:1},par:8,solution:["CW","CW","CCW","CCW","CW","CW","CW","CW"]},
-  {grid:[[2,2,2],[2,2,2],[2,2,1]],door:{wall:2,corner:0},par:8,solution:["CW","CW","CCW","CW","CW","CW","CW","CW"]},
-  {grid:[[2,2,1],[2,1,1],[1,2,1]],door:{wall:1,corner:0},par:9,solution:["CCW","CW","CCW","CCW","CCW","CW","CCW","CCW","CCW"]},
-  {grid:[[1,1,2],[1,2,1],[2,2,2]],door:{wall:3,corner:0},par:9,solution:["CCW","CW","CW","CW","CW","CW","CW","CCW","CW"]},
-];
+
+// ═══════════════════════════════════════════════════════
+// PUZZLE GENERATION
+// ═══════════════════════════════════════════════════════
+function makeLCG(seed){let s=seed>>>0;return()=>{s=(Math.imul(1664525,s)+1013904223)>>>0;return s/0x100000000;};}
+const ALL_DOORS=[];
+(()=>{for(let wall=0;wall<4;wall++)for(let corner=0;corner<2;corner++){const d=normalizeDoor({wall,corner});if(!ALL_DOORS.some(x=>x.wall===d.wall&&x.corner===d.corner))ALL_DOORS.push(d);}})();
+
+function generatePuzzle(minMoves,maxMoves,seed,N=3){
+  const totalCells=N*N;
+  const rand=makeLCG(seed!=null?seed:Date.now());
+  const total=1<<totalCells;
+  const order=Array.from({length:total},(_,i)=>i);
+  for(let i=order.length-1;i>0;i--){const j=Math.floor(rand()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+  for(const mask of order){
+    const flat=Array.from({length:totalCells},(_,i)=>(mask>>i)&1?BLOCK:BUBBLE);
+    if(flat.filter(x=>x===BLOCK).length<2||flat.filter(x=>x===BUBBLE).length<2)continue;
+    const grid=Array.from({length:N},(_,r)=>flat.slice(r*N,r*N+N));
+    const doors=[...ALL_DOORS];for(let i=doors.length-1;i>0;i--){const j=Math.floor(rand()*(i+1));[doors[i],doors[j]]=[doors[j],doors[i]];}
+    for(const door of doors){
+      if(JSON.stringify(grid)!==JSON.stringify(applyPhysics(grid,door)))continue;
+      const sol=solveGame(grid,door,Math.min(maxMoves,15));
+      if(!sol||sol.length<minMoves||sol.length>maxMoves)continue;
+      return{grid,door,par:sol.length,solution:sol};
+    }
+  }
+  return null;
+}
+
+function solveGame(grid,door,maxDepth){
+  const initial=applyPhysics(grid,door);
+  if(countPieces(initial)===0)return[];
+  const queue=[{grid:initial,door,moves:[]}];
+  const visited=new Set([gridKey(initial,door)]);
+  while(queue.length>0){
+    const{grid:g,door:d,moves}=queue.shift();
+    if(moves.length>=maxDepth)continue;
+    for(const cw of[true,false]){
+      const nd=cw?rotateDoorCW(d):rotateDoorCCW(d);
+      const ng=cw?rotateGridCW(g):rotateGridCCW(g);
+      const sg=applyPhysics(ng,nd);
+      const nm=[...moves,cw?'CW':'CCW'];
+      if(countPieces(sg)===0)return nm;
+      const key=gridKey(sg,nd);
+      if(!visited.has(key)){visited.add(key);queue.push({grid:sg,door:nd,moves:nm});}
+    }
+  }
+  return null;
+}
+
 
 // ═══════════════════════════════════════════════════════
 // PHYSICS ENGINE
 // ═══════════════════════════════════════════════════════
 function toPhysCorner(w,c){return[[0,1],[1,2],[3,2],[0,3]][w][c];}
 function fromPhysCorner(p,w){return({0:{0:0,3:0},1:{0:1,1:0},2:{1:1,2:1},3:{2:0,3:1}})[p][w];}
-function rotateDoorCW(d){const np=(toPhysCorner(d.wall,d.corner)+1)%4,nw=(d.wall+1)%4;return{wall:nw,corner:fromPhysCorner(np,nw)};}
-function rotateDoorCCW(d){const np=(toPhysCorner(d.wall,d.corner)+3)%4,nw=(d.wall+3)%4;return{wall:nw,corner:fromPhysCorner(np,nw)};}
+function rotateDoorCW(d){const np=(toPhysCorner(d.wall,d.corner)+1)%4,nw=(d.wall+1)%4;return normalizeDoor({wall:nw,corner:fromPhysCorner(np,nw)});}
+function rotateDoorCCW(d){const np=(toPhysCorner(d.wall,d.corner)+3)%4,nw=(d.wall+3)%4;return normalizeDoor({wall:nw,corner:fromPhysCorner(np,nw)});}
 function rotateGridCW(g){const N=g.length,ng=Array.from({length:N},()=>Array(N).fill(0));for(let r=0;r<N;r++)for(let c=0;c<N;c++)ng[c][N-1-r]=g[r][c];return ng;}
 function rotateGridCCW(g){const N=g.length,ng=Array.from({length:N},()=>Array(N).fill(0));for(let r=0;r<N;r++)for(let c=0;c<N;c++)ng[N-1-c][r]=g[r][c];return ng;}
 function getExitCol(door,N){if(door.wall===0||door.wall===2)return door.corner===0?0:N-1;return null;}
@@ -770,26 +859,61 @@ function applyPhysics(grid,door){
 }
 
 function countPieces(grid){return grid.flat().filter(x=>x!==EMPTY).length;}
+function gridKey(grid,door){return grid.flat().join('')+'|'+door.wall+door.corner;}
 
 // ═══════════════════════════════════════════════════════
 // GAME STATE
 // ═══════════════════════════════════════════════════════
-let currentLevel=0;
 let state=null;
-const bests=Array(LEVELS.length).fill(null);
+let gridSize=3;
 
-function loadLevel(idx){
-  currentLevel=idx;
-  const lvl=LEVELS[idx];
-  state={
-    grid: lvl.grid.map(r=>[...r]),
-    door: {...lvl.door},
-    moves: 0,
-    history: [],
-  };
-  state.grid=applyPhysics(state.grid,state.door);
-  updateStats();
-  draw();
+function loadPuzzle(){
+  // Show loading state
+  const btn=document.getElementById('btn-next-puzzle');
+  if(btn){btn.textContent='...';btn.disabled=true;}
+  // Generate async so UI can update
+  setTimeout(()=>{
+    const result=generatePuzzle(gridSize===2?3:5, gridSize===2?6:10, null, gridSize);
+    if(!result){loadPuzzle();return;}
+    state={
+      grid: result.grid.map(r=>[...r]),
+      door: {...result.door},
+      initialGrid: result.grid.map(r=>[...r]),
+      initialDoor: {...result.door},
+      par: result.par,
+      solution: result.solution,
+      moves: 0,
+      history: [],
+    };
+    state.grid=applyPhysics(state.grid,state.door);
+    updateStats();
+    draw();
+    const banner=document.getElementById('dead-end-banner');
+    if(banner) banner.style.display='none';
+    if(btn){btn.textContent='Next Puzzle';btn.disabled=false;}
+  },10);
+}
+
+
+// Dead-end detection — BFS capped at depth 20
+function canSolve(grid, door){
+  if(countPieces(grid)===0) return true;
+  const MAX=20;
+  const queue=[{grid,door,d:0}];
+  const visited=new Set([gridKey(grid,door)]);
+  while(queue.length){
+    const{grid:g,door:dr,d}=queue.shift();
+    if(d>=MAX) continue;
+    for(const cw of[true,false]){
+      const nd=cw?rotateDoorCW(dr):rotateDoorCCW(dr);
+      const ng=cw?rotateGridCW(g):rotateGridCCW(g);
+      const sg=applyPhysics(ng,nd);
+      if(countPieces(sg)===0) return true;
+      const key=gridKey(sg,nd);
+      if(!visited.has(key)){visited.add(key);queue.push({grid:sg,door:nd,d:d+1});}
+    }
+  }
+  return false;
 }
 
 // ═══════════════════════════════════════════════════════
@@ -809,7 +933,8 @@ function doMove(cw){
   const gridBeforeRot = state.grid.map(r=>[...r]);
   const doorBeforeRot = {...state.door};
 
-  // Apply rotation
+  // Apply rotation — also compute raw (pre-normalization) door to know where panel lands before sliding
+  const doorRaw = cw ? rotateDoorCWRaw(doorBeforeRot) : rotateDoorCCWRaw(doorBeforeRot);
   if(cw){state.grid=rotateGridCW(state.grid);state.door=rotateDoorCW(state.door);}
   else  {state.grid=rotateGridCCW(state.grid);state.door=rotateDoorCCW(state.door);}
 
@@ -820,17 +945,17 @@ function doMove(cw){
   const gridFinal = applyPhysics(state.grid, state.door);
 
   // Build particles: for each piece in gridAfterRot, find where it ends up in gridFinal
-  // Strategy: track by column (physics is column-local)
+  const N = state.grid.length;
   const cs = cellSize();
   const particles = [];
 
-  for(let col=0; col<3; col++){
+  for(let col=0; col<N; col++){
     const before = gridAfterRot.map(r=>r[col]); // column top→bottom after rotation
     const after  = gridFinal.map(r=>r[col]);     // column after physics
 
     // Match pieces: walk from top, assign each piece in 'before' to its landing in 'after'
     // Pieces that were in 'before' but not 'after' have exited
-    const exitCol = getExitCol(doorAfterRot, 3);
+    const exitCol = getExitCol(doorAfterRot, N);
     const isExitCol = (exitCol === col);
     const topExit = doorAfterRot.wall===0 && isExitCol;
     const botExit = doorAfterRot.wall===2 && isExitCol;
@@ -882,15 +1007,20 @@ function doMove(cw){
   state.moves++;
   state.history.push(cw?'CW':'CCW');
   updateStats();
+  // Dead-end check (async so it doesn't block the animation starting)
+  setTimeout(()=>{
+    const banner=document.getElementById('dead-end-banner');
+    if(banner) banner.style.display = canSolve(state.grid,state.door) ? 'none' : 'block';
+  }, 600); // after animation settles
 
   // Run animation
   const startTime = performance.now();
-  animState = { particles, door: doorAfterRot, startTime };
+  animState = { particles, door: doorAfterRot, doorRaw, startTime };
 
   function frame(now){
     const elapsed = now - startTime;
     const t = Math.min(Math.max((elapsed - ANIM_DELAY) / ANIM_DURATION, 0), 1);
-    drawAnimFrame(t, animState.particles, animState.door);
+    drawAnimFrame(t, animState.particles, animState.door, animState.doorRaw);
     if(elapsed < ANIM_DELAY + ANIM_DURATION){
       requestAnimationFrame(frame);
     } else {
@@ -905,22 +1035,23 @@ function doMove(cw){
 function easeBlock(t){ return t*t; }          // ease-in: blocks accelerate down
 function easeBubble(t){ return 1-(1-t)*(1-t); } // ease-out: bubbles decelerate up
 
-function drawAnimFrame(t, particles, door){
+function drawAnimFrame(t, particles, door, doorRaw){
+  const N=state?state.grid.length:gridSize;
   const cs = cellSize();
   const W=canvas.width, H=canvas.height;
   ctx.clearRect(0,0,W,H);
 
   // Backgrounds
-  for(let r=0;r<3;r++) for(let c=0;c<3;c++){
+  for(let r=0;r<N;r++) for(let c=0;c<N;c++){
     ctx.fillStyle=(r+c)%2===0?'#0c1a0e':'#0a1810';
     ctx.fillRect(c*cs,r*cs,cs,cs);
     const grad=ctx.createRadialGradient(c*cs+cs/2,r*cs+cs/2,0,c*cs+cs/2,r*cs+cs/2,cs*0.6);
-    grad.addColorStop(0,'#50785014'); grad.addColorStop(1,'#00000000');
+    grad.addColorStop(0,'rgba(80,120,80,0.08)'); grad.addColorStop(1,'rgba(0,0,0,0)');
     ctx.fillStyle=grad; ctx.fillRect(c*cs,r*cs,cs,cs);
   }
   // Lead lines
   ctx.strokeStyle='#1e2a1e'; ctx.lineWidth=3;
-  for(let i=1;i<3;i++){
+  for(let i=1;i<N;i++){
     ctx.beginPath();ctx.moveTo(i*cs,0);ctx.lineTo(i*cs,H);ctx.stroke();
     ctx.beginPath();ctx.moveTo(0,i*cs);ctx.lineTo(W,i*cs);ctx.stroke();
   }
@@ -940,53 +1071,27 @@ function drawAnimFrame(t, particles, door){
   ctx.globalAlpha=1;
   ctx.restore();
 
-  // Walls + door indicator using the post-rotation door
-  drawWalls(door, cs, W, H);
+  // Walls — pass doorRaw so panel sliding can be animated
+  drawWalls(door, cs, W, H, doorRaw, t, N);
 }
 
 function updateStats(){
-  const lvl=LEVELS[currentLevel];
-  document.getElementById('stat-par').textContent=lvl.par;
+  document.getElementById('stat-par').textContent=state.par||'—';
   document.getElementById('stat-moves').textContent=state.moves;
-  const best=bests[currentLevel];
-  const bestEl=document.getElementById('stat-best');
-  bestEl.textContent=best!==null?best:'—';
-  bestEl.className='stat-val '+(best!==null?'green':'dim');
   document.getElementById('pieces-left').textContent=countPieces(state.grid);
-  document.getElementById('level-label').textContent=`Level ${currentLevel+1} of ${LEVELS.length}`;
-
-  // History dots
-  const hist=document.getElementById('move-history');
-  if(hist){
-    hist.innerHTML='';
-    state.history.slice(-18).forEach(m=>{
-      const d=document.createElement('div');
-      d.className='mh-dot '+(m==='CW'?'cw':'ccw');
-      hist.appendChild(d);
-    });
-  }
 }
 
 function showWin(){
-  const lvl=LEVELS[currentLevel];
-  const moves=state.moves, par=lvl.par;
-  if(bests[currentLevel]===null||moves<bests[currentLevel])bests[currentLevel]=moves;
-  const best=bests[currentLevel];
+  const moves=state.moves, par=state.par;
   const over=moves-par;
   const rating=over<=0?'★★★':over<=2?'★★☆':'★☆☆';
   const subtitle=over<=0?'Solved at par!':over===1?'One over par':over===2?'Two over par':'Keep practicing';
-
   document.getElementById('win-title').textContent=over<=0?'Perfect':'Cleared';
   document.getElementById('win-subtitle').textContent=subtitle;
   document.getElementById('win-moves').textContent=moves;
   document.getElementById('win-moves').className='win-stat-val'+(over<=0?' gold':'');
   document.getElementById('win-par').textContent=par;
-  document.getElementById('win-best').textContent=best;
   document.getElementById('win-rating').textContent=rating;
-
-  const nextBtn=document.getElementById('btn-next');
-  nextBtn.style.display=currentLevel<LEVELS.length-1?'':'none';
-
   showScreen('win');
 }
 
@@ -1010,11 +1115,11 @@ function setupCanvas(){
   canvas.height = size;
 }
 
-function cellSize(){return Math.floor(canvas.width/3);}
+function cellSize(){return Math.floor(canvas.width/(state?state.grid.length:gridSize));}
 
 // Door gap: which segment of the outer border is open
-function doorGap(door,cs){
-  const N=3,total=cs*N,idx=door.corner===0?0:N-1;
+function doorGap(door,cs,N){
+  const total=cs*N,idx=door.corner===0?0:N-1;
   switch(door.wall){
     case 0:return{x1:idx*cs,y1:0,x2:idx*cs+cs,y2:0};
     case 2:return{x1:idx*cs,y1:total,x2:idx*cs+cs,y2:total};
@@ -1023,78 +1128,123 @@ function doorGap(door,cs){
   }
 }
 
-function drawWalls(door, cs, W, H){
-  const gap=doorGap(door,cs);
-  ctx.strokeStyle='#1e2a1e';
-  ctx.lineWidth=5;
+function drawWalls(door, cs, W, H, doorRaw, t, N){
+  const gap=doorGap(door,cs,N);
+  const BW=5;
   ctx.lineCap='square';
-  function seg(x1,y1,x2,y2){if(x1===x2&&y1===y2)return;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
-  if(door.wall===0){seg(0,0,gap.x1,0);seg(gap.x2,0,W,0);}else seg(0,0,W,0);
-  if(door.wall===2){seg(0,H,gap.x1,H);seg(gap.x2,H,W,H);}else seg(0,H,W,H);
-  if(door.wall===3){seg(0,0,0,gap.y1);seg(0,gap.y2,0,H);}else seg(0,0,0,H);
-  if(door.wall===1){seg(W,0,W,gap.y1);seg(W,gap.y2,W,H);}else seg(W,0,W,H);
-  // Corner accents
-  ctx.fillStyle='#2e4030';
-  [[0,0],[W,0],[W,H],[0,H]].forEach(([x,y])=>{ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.fill();});
-  // Door indicator
+
+  // Helper
+  function seg(x1,y1,x2,y2,color,width,blur){
+    if(x1===x2&&y1===y2)return;
+    ctx.strokeStyle=color;
+    ctx.lineWidth=width;
+    ctx.shadowColor=color;
+    ctx.shadowBlur=blur||0;
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+    ctx.shadowBlur=0;
+  }
+
+  const fixedColor='#8a6a30';   // amber — fixed walls
+  const gapColor  ='#0d1a0d';   // near-black — the opening
   const isVertical=(door.wall===0||door.wall===2);
-  const gapMid=isVertical?(gap.x1+gap.x2)/2:(gap.y1+gap.y2)/2;
-  if(isVertical){
+  const canExit=isVertical;
+  const panelColor = canExit ? 'rgba(80,208,144,1)' : 'rgba(80,208,144,0.5)';
+  const panelBlur  = canExit ? 10 : 3;
+
+  // Settled state: gap at bottom (corner=1 → y=2*cs..3*cs), panel at top two cells (0..2*cs)
+  // When rawCorner=0 (panel arrived near top after rotation), animate sliding up to 0
+  const isSideWall = (door.wall===1||door.wall===3);
+  const rawCorner = (doorRaw && isSideWall) ? doorRaw.corner : door.corner;
+  const needsSlide = doorRaw && isSideWall && rawCorner !== door.corner;
+  const slideT = needsSlide ? easeBlock(Math.min(t * 2, 1)) : 1;
+  // rawCorner=0: panel starts at cs (bottom), slides up to 0
+  // rawCorner=1: already settled at 0
+  const panelOff = needsSlide ? (1 - slideT) * cs : 0;
+  const paF = panelOff;
+  const pbF = panelOff + (N-1) * cs;
+  const pcF = panelOff;
+  const pdF = panelOff + (N-1) * cs;
+
+  if(door.wall===0){
+    seg(0,       0, gap.x1,  0, gapColor,   BW);
+    seg(gap.x1,  0, gap.x2,  0, gapColor,   BW);
+    seg(gap.x2,  0, W,       0, gapColor,   BW);
+    // panel is the two non-gap cells
+    const px1 = door.corner===0 ? cs       : 0;
+    const px2 = door.corner===0 ? W        : (N-1)*cs;
+    seg(px1, 0, px2, 0, panelColor, BW+1, panelBlur);
+  } else {
+    seg(0, 0, W, 0, fixedColor, BW, 3);
+  }
+
+  if(door.wall===2){
+    seg(0,       H, gap.x1,  H, gapColor,   BW);
+    seg(gap.x1,  H, gap.x2,  H, gapColor,   BW);
+    seg(gap.x2,  H, W,       H, gapColor,   BW);
+    const px1 = door.corner===0 ? cs       : 0;
+    const px2 = door.corner===0 ? W        : (N-1)*cs;
+    seg(px1, H, px2, H, panelColor, BW+1, panelBlur);
+  } else {
+    seg(0, H, W, H, fixedColor, BW, 3);
+  }
+
+  if(door.wall===3){
+    seg(0, 0,    0, pcF,  gapColor,   BW);
+    seg(0, pcF,  0, pdF,  panelColor, BW+1, panelBlur);
+    seg(0, pdF,  0, H,    gapColor,   BW);
+  } else {
+    seg(0, 0, 0, H, fixedColor, BW, 3);
+  }
+
+  if(door.wall===1){
+    seg(W, 0,    W, pcF,  gapColor,   BW);
+    seg(W, pcF,  W, pdF,  panelColor, BW+1, panelBlur);
+    seg(W, pdF,  W, H,    gapColor,   BW);
+  } else {
+    seg(W, 0, W, H, fixedColor, BW, 3);
+  }
+
+  // Corner accents
+  ctx.fillStyle='#5a4010';
+  [[0,0],[W,0],[W,H],[0,H]].forEach(([x,y])=>{ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.fill();});
+
+  // Arrow when exit active
+  if(canExit){
     const isTop=door.wall===0;
-    const gx=gap.x1,gw=cs,gh=cs*0.28;
-    const dg=ctx.createLinearGradient(gx,0,gx+gw,0);
-    dg.addColorStop(0,'#50D09000');dg.addColorStop(0.3,'#50D0904D');
-    dg.addColorStop(0.7,'#50D0904D');dg.addColorStop(1,'#50D09000');
-    ctx.fillStyle=dg;ctx.fillRect(gx,isTop?0:H-gh,gw,gh);
-    const lineY=isTop?0:H;
-    const lg=ctx.createLinearGradient(gx,0,gx+gw,0);
-    lg.addColorStop(0,'#50D09000');lg.addColorStop(0.2,'#50D090');
-    lg.addColorStop(0.8,'#50D090');lg.addColorStop(1,'#50D09000');
-    ctx.strokeStyle=lg;ctx.lineWidth=3;
-    ctx.beginPath();ctx.moveTo(gx,lineY);ctx.lineTo(gx+gw,lineY);ctx.stroke();
-    ctx.fillStyle='#50D090E6';
-    ctx.shadowColor='#50D090E6';ctx.shadowBlur=12;
+    const gapMid=(gap.x1+gap.x2)/2;
+    ctx.fillStyle='rgba(80,208,144,0.9)';
+    ctx.shadowColor='rgba(80,208,144,0.9)';ctx.shadowBlur=12;
     ctx.font=`bold ${Math.floor(cs*0.3)}px serif`;
     ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillText(isTop?'↑':'↓',gapMid,isTop?cs*0.22:H-cs*0.22);
     ctx.shadowBlur=0;
-  } else {
-    const isRight=door.wall===1;
-    const lineX=isRight?W:0;
-    const lg=ctx.createLinearGradient(0,gap.y1,0,gap.y2);
-    lg.addColorStop(0,'#50D09000');lg.addColorStop(0.2,'#50D090');
-    lg.addColorStop(0.8,'#50D090');lg.addColorStop(1,'#50D09000');
-    ctx.strokeStyle=lg;ctx.lineWidth=3;
-    ctx.beginPath();ctx.moveTo(lineX,gap.y1);ctx.lineTo(lineX,gap.y2);ctx.stroke();
-    ctx.fillStyle='#50D09059';
-    ctx.font=`${Math.floor(cs*0.28)}px serif`;
-    ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText('⊗',isRight?W-cs*0.22:cs*0.22,gapMid);
   }
 }
 
 function draw(){
+  if(!state)return;
+  const N=state.grid.length;
   const cs=cellSize();
   const W=canvas.width,H=canvas.height;
   ctx.clearRect(0,0,W,H);
-  for(let r=0;r<3;r++)for(let c=0;c<3;c++){
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++){
     ctx.fillStyle=(r+c)%2===0?'#0c1a0e':'#0a1810';
     ctx.fillRect(c*cs,r*cs,cs,cs);
     const grad=ctx.createRadialGradient(c*cs+cs/2,r*cs+cs/2,0,c*cs+cs/2,r*cs+cs/2,cs*0.6);
-    grad.addColorStop(0,'#50785014');grad.addColorStop(1,'#00000000');
+    grad.addColorStop(0,'rgba(80,120,80,0.08)');grad.addColorStop(1,'rgba(0,0,0,0)');
     ctx.fillStyle=grad;ctx.fillRect(c*cs,r*cs,cs,cs);
   }
   ctx.strokeStyle='#1e2a1e';ctx.lineWidth=3;
-  for(let i=1;i<3;i++){
+  for(let i=1;i<N;i++){
     ctx.beginPath();ctx.moveTo(i*cs,0);ctx.lineTo(i*cs,H);ctx.stroke();
     ctx.beginPath();ctx.moveTo(0,i*cs);ctx.lineTo(W,i*cs);ctx.stroke();
   }
-  for(let r=0;r<3;r++)for(let c=0;c<3;c++){
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++){
     const cell=state.grid[r][c];
     if(cell===BUBBLE)drawBubble(ctx,c*cs,r*cs,cs);
     if(cell===BLOCK) drawBlock(ctx,c*cs,r*cs,cs);
   }
-  drawWalls(state.door,cs,W,H);
+  drawWalls(state.door,cs,W,H,null,1,N);
 }
 
 
@@ -1103,45 +1253,45 @@ function drawBubble(ctx,x,y,cs){
 
   // Outer ambient glow
   const glow=ctx.createRadialGradient(cx,cy,r*0.5,cx,cy,r*1.6);
-  glow.addColorStop(0,'#4A9FD41F');
-  glow.addColorStop(1,'#4A9FD400');
+  glow.addColorStop(0,'rgba(74,159,212,0.12)');
+  glow.addColorStop(1,'rgba(74,159,212,0)');
   ctx.fillStyle=glow;
   ctx.beginPath();ctx.arc(cx,cy,r*1.6,0,Math.PI*2);ctx.fill();
 
   // Main glass body
   const body=ctx.createRadialGradient(cx-r*0.28,cy-r*0.28,0,cx,cy,r);
-  body.addColorStop(0,'#B4E6FFE0');
-  body.addColorStop(0.35,'#4A9FD4B7');
-  body.addColorStop(0.75,'#1E508CA6');
-  body.addColorStop(1,'#0A1E4680');
+  body.addColorStop(0,'rgba(180,230,255,0.88)');
+  body.addColorStop(0.35,'rgba(74,159,212,0.72)');
+  body.addColorStop(0.75,'rgba(30,80,140,0.65)');
+  body.addColorStop(1,'rgba(10,30,70,0.5)');
   ctx.fillStyle=body;
   ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();
 
   // Lead rim
-  ctx.strokeStyle='#14321ECC';
+  ctx.strokeStyle='rgba(20,50,30,0.8)';
   ctx.lineWidth=1.5;
   ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke();
 
   // Inner color ring
-  ctx.strokeStyle='#64B4E64D';
+  ctx.strokeStyle='rgba(100,180,230,0.3)';
   ctx.lineWidth=1;
   ctx.beginPath();ctx.arc(cx,cy,r*0.7,0,Math.PI*2);ctx.stroke();
 
   // Primary specular
   const spec=ctx.createRadialGradient(cx-r*0.28,cy-r*0.3,0,cx-r*0.1,cy-r*0.1,r*0.55);
-  spec.addColorStop(0,'#FFFFFFA6');
-  spec.addColorStop(1,'#FFFFFF00');
+  spec.addColorStop(0,'rgba(255,255,255,0.65)');
+  spec.addColorStop(1,'rgba(255,255,255,0)');
   ctx.fillStyle=spec;
   ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();
 
   // Sharp catchlight
-  ctx.fillStyle='#FFFFFFE6';
+  ctx.fillStyle='rgba(255,255,255,0.9)';
   ctx.beginPath();ctx.arc(cx-r*0.27,cy-r*0.3,r*0.1,0,Math.PI*2);ctx.fill();
 
   // Bottom reflected light
   const refl=ctx.createRadialGradient(cx+r*0.1,cy+r*0.35,0,cx,cy+r*0.4,r*0.4);
-  refl.addColorStop(0,'#64C8FF33');
-  refl.addColorStop(1,'#64C8FF00');
+  refl.addColorStop(0,'rgba(100,200,255,0.2)');
+  refl.addColorStop(1,'rgba(100,200,255,0)');
   ctx.fillStyle=refl;
   ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();
 }
@@ -1152,7 +1302,7 @@ function drawBlock(ctx,x,y,cs){
   const iso=bw*0.22; // isometric offset
 
   // Drop shadow
-  ctx.fillStyle='#0000004D';
+  ctx.fillStyle='rgba(0,0,0,0.3)';
   ctx.fillRect(bx+3,by+3,bw,bh);
 
   // Front face
@@ -1173,7 +1323,7 @@ function drawBlock(ctx,x,y,cs){
   ctx.fill();
 
   // Top face highlight
-  ctx.fillStyle='#FFDCC833';
+  ctx.fillStyle='rgba(255,220,140,0.2)';
   ctx.beginPath();
   ctx.moveTo(bx,by);
   ctx.lineTo(bx+iso,by-iso);
@@ -1193,7 +1343,7 @@ function drawBlock(ctx,x,y,cs){
   ctx.fill();
 
   // Lead outlines
-  ctx.strokeStyle='#0A050080';
+  ctx.strokeStyle='rgba(10,5,0,0.5)';
   ctx.lineWidth=1.2;
   // Front rect
   ctx.strokeRect(bx,by,bw,bh);
@@ -1212,7 +1362,7 @@ function drawBlock(ctx,x,y,cs){
   ctx.stroke();
 
   // Front face highlight (left edge)
-  ctx.fillStyle='#FFB4501F';
+  ctx.fillStyle='rgba(255,180,80,0.12)';
   ctx.fillRect(bx,by,bw*0.25,bh);
 }
 
@@ -1227,25 +1377,63 @@ function showScreen(name){
 // ═══════════════════════════════════════════════════════
 // EVENTS
 // ═══════════════════════════════════════════════════════
-document.getElementById('btn-play').onclick=()=>{
-  showScreen('game'); setTimeout(()=>{setupCanvas();loadLevel(0);},50);
+document.getElementById('btn-play-2').onclick=()=>{
+  gridSize=2; showScreen('game'); setTimeout(()=>{setupCanvas();loadPuzzle();},50);
+};
+document.getElementById('btn-play-3').onclick=()=>{
+  gridSize=3; showScreen('game'); setTimeout(()=>{setupCanvas();loadPuzzle();},50);
 };
 document.getElementById('btn-how').onclick=()=>showScreen('instructions');
-document.getElementById('btn-start').onclick=()=>{
-  showScreen('game'); setTimeout(()=>{setupCanvas();loadLevel(0);},50);
+document.getElementById('btn-settings').onclick=()=>{
+  updateDoorOptions();
+  showScreen('settings');
+};
+document.getElementById('btn-settings-close').onclick=()=>showScreen('title');
+document.querySelectorAll('.door-opt').forEach(btn=>{
+  btn.onclick=()=>{
+    doorMode=btn.dataset.mode;
+    updateDoorOptions();
+  };
+});
+function updateDoorOptions(){
+  document.querySelectorAll('.door-opt').forEach(b=>{
+    b.classList.toggle('selected', b.dataset.mode===doorMode);
+  });
+}
+document.getElementById('btn-start-2').onclick=()=>{
+  gridSize=2; showScreen('game'); setTimeout(()=>{setupCanvas();loadPuzzle();},50);
+};
+document.getElementById('btn-start-3').onclick=()=>{
+  gridSize=3; showScreen('game'); setTimeout(()=>{setupCanvas();loadPuzzle();},50);
 };
 document.getElementById('btn-cw').onclick=()=>doMove(true);
 document.getElementById('btn-ccw').onclick=()=>doMove(false);
-document.getElementById('btn-reset').onclick=()=>{loadLevel(currentLevel);};
-document.getElementById('btn-menu').onclick=()=>showScreen('title');
-document.getElementById('btn-retry').onclick=()=>{showScreen('game');setTimeout(()=>{setupCanvas();loadLevel(currentLevel);},50);};
-document.getElementById('btn-next').onclick=()=>{
-  if(currentLevel<LEVELS.length-1){showScreen('game');setTimeout(()=>{setupCanvas();loadLevel(currentLevel+1);},50);}
-  else showScreen('complete');
+document.getElementById('btn-reset').onclick=()=>{
+  state.grid=state.initialGrid.map(r=>[...r]);
+  state.door={...state.initialDoor};
+  state.grid=applyPhysics(state.grid,state.door);
+  state.moves=0;
+  state.history=[];
+  updateStats();draw();
+  const banner=document.getElementById('dead-end-banner');
+  if(banner) banner.style.display='none';
 };
+document.getElementById('btn-menu').onclick=()=>showScreen('title');
+document.getElementById('btn-next-puzzle').onclick=()=>{showScreen('game');setTimeout(()=>{setupCanvas();loadPuzzle();},50);};
+document.getElementById('btn-retry').onclick=()=>{
+  state.grid=state.initialGrid.map(r=>[...r]);
+  state.door={...state.initialDoor};
+  state.grid=applyPhysics(state.grid,state.door);
+  state.moves=0;
+  state.history=[];
+  showScreen('game');updateStats();draw();
+  const banner=document.getElementById('dead-end-banner');
+  if(banner) banner.style.display='none';
+};
+document.getElementById('btn-new-puzzle').onclick=()=>{showScreen('game');setTimeout(()=>{setupCanvas();loadPuzzle();},50);};
 document.getElementById('btn-hint').onclick=()=>{
-  const sol=LEVELS[currentLevel].solution;
-  document.getElementById('hint-text').textContent=sol.join(' → ');
+  const sol=state&&state.solution;
+  document.getElementById('hint-text').textContent=sol?sol.join(' → '):'No hint available.';
   document.getElementById('hint-overlay').style.display='flex';
 };
 document.getElementById('btn-hint-close').onclick=()=>{
@@ -1256,7 +1444,7 @@ document.addEventListener('keydown',e=>{
   if(!document.getElementById('screen-game').classList.contains('active'))return;
   if(e.key==='ArrowRight'||e.key==='d'||e.key==='D')doMove(true);
   if(e.key==='ArrowLeft'||e.key==='a'||e.key==='A')doMove(false);
-  if(e.key==='r'||e.key==='R')loadLevel(currentLevel);
+  if(e.key==='r'||e.key==='R')document.getElementById('btn-reset').click();
 });
 
 // ═══════════════════════════════════════════════════════
@@ -1267,6 +1455,9 @@ window.addEventListener('resize',()=>{
   setupCanvas();
   if(state)draw();
 });
+// Remove complete screen handler if still present
+const btnRestart=document.getElementById('btn-restart');
+if(btnRestart) btnRestart.onclick=()=>{showScreen('game');setTimeout(()=>{setupCanvas();loadPuzzle();},50);};
 </script>
 </body>
 </html>

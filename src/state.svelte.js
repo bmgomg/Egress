@@ -1,7 +1,9 @@
+import { SLIDE_DOWN } from './generator';
 
 export const ss = $state({
     home: true,
-    seenPage: {}
+    seenPage: {},
+    doopSlide: SLIDE_DOWN,
 });
 
 export const _stats = $state({

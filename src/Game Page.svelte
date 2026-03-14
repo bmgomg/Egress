@@ -7,7 +7,7 @@
 	import Stats from './Stats.svelte';
 	import OverPanel from './Over Panel.svelte';
 
-	const hidden = $derived(ss.home);
+	const hidden = $derived(ss.home || ss.doorPage);
 </script>
 
 <div class="game-page {hidden ? 'hidden' : ''}">

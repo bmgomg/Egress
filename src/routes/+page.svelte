@@ -1,4 +1,5 @@
 <script>
+	import DoorPage from '../Door Page.svelte';
 	import GamePage from '../Game Page.svelte';
 	import Home from '../Home.svelte';
 	import Splash from '../Splash.svelte';
@@ -52,6 +53,7 @@
 	{:else}
 		<div class="content bg" style="scale: {scale};">
 			<GamePage />
+			<DoorPage />
 			<Home />
 			{#if ss.home}
 				<div class="disclaimer no-highlight">

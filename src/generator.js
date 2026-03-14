@@ -1,5 +1,6 @@
 export const TOP = 0, RIGHT = 1, BOT = 2, LEFT = 3;
 export const EMPTY = 0, BLOCK = 1, BUBBLE = 2;
+export const NO_SLIDE = 0, SLIDE_UP = -1, SLIDE_DOWN = 1;
 
 // Side-wall doors always slide to top corner under gravity
 function normalizeDoor(d) { return (d.wall === 1 || d.wall === 3) ? { wall: d.wall, corner: 0 } : d; }

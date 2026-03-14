@@ -6,8 +6,8 @@ import { post } from './utils';
 
 export const _log = (value) => console.log($state.snapshot(value));
 
-export const appFlavor = () => `${ss.size}`;
-export const appKey = () => `${APP_STATE} • ${appFlavor()}`;
+export const appSubKey = () => `${ss.size}`;
+export const appKey = () => `${APP_STATE} • ${appSubKey()}`;
 
 export const persist = () => {
     let json = JSON.stringify({ sfx: _sound.sfx, music: _sound.music });
@@ -40,7 +40,7 @@ const loadGame = () => {
         _stats.wins = job.wins;
         _stats.total = job.total;
 
-        if (ss.seenPage[ss.size] || !job.over) {
+        if (ss.seenPage[appSubKey()] || !job.over) {
             ss.cells = job.cells;
             ss.initial = job.initial;
             ss.door = job.door;
@@ -130,7 +130,7 @@ export const onHomePlay = (size) => {
         makePuzzle();
     }
 
-    ss.seenPage[size] = true;
+    ss.seenPage[appSubKey()] = true;
     delete ss.home;
 };
 
