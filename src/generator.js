@@ -177,7 +177,7 @@ export const generatePuzzle = (N, minMoves, maxMoves, slide = -1, seed = Date.no
   for (const grid of gridCandidates()) {
     for (const door of shuffledDoors()) {
       if (!isStable(grid, door, N)) continue;
-      const sol = solve(grid, door, N, Math.min(maxMoves, 15));
+      const sol = solve(grid, door, N, Math.min(maxMoves, 15), slide);
       if (!sol || sol.length < minMoves) continue;
       // sol.length <= maxMoves is guaranteed by solve's maxDepth
       return { grid, door, solution: sol, par: sol.length };

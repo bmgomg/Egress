@@ -75,7 +75,7 @@
 		grid-auto-flow: column;
 		place-content: center;
 		align-items: center;
-		gap: 20px;
+		gap: 35px;
 		font-size: 15px;
 	}
 </style>
