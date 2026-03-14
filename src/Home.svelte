@@ -11,7 +11,7 @@
 	const CONTENT = `
         ${ul}
         ${li}${hi}Blocks</span> are ${hi}heavier</span> than air. ${hi}Bubbles</span> are ${hi}lighter</span> than air.</li>
-        ${li}The ${hi}door</span> must be on the ${hi}top or bottom</span> wall for pieces to escape.</li>
+        ${li}Pieces can only escape through the ${hi}door</span> on the ${hi}top or bottom</span> wall.</li>
         ${li}A block on top of ${hi}one bubble</span> drags it ${hi}down</span>—they fall together.</li>
         ${li}A block on top of ${hi}two bubbles</span> gets lifted ${hi}up</span>—they rise together.</li>
         </ul>

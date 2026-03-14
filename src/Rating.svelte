@@ -7,7 +7,7 @@
 <div class="rating">
 	{#each [1, 2, 3, 4, 5] as i (i)}
 		{@const dim = r === 0 || i > r}
-		<span class={dim ? 'dim' : 'bright'}>{dim ? '☆' : '★'}</span>
+		<span class={dim ? 'dim' : 'bright'} in>{dim ? '☆' : '★'}</span>
 	{/each}
 </div>
 
