@@ -1,6 +1,9 @@
-export const APP_STATE = 'EGRESS V1';
+export const APP_STATE = 'Egress V1';
 export const CELL_SIZE = 80;
 export const CELL_MARGIN = 5;
+export const OP_EASY = 'Easy', OP_NOT_EASY = 'Not Easy', OP_HARD = 'Hard';
+export const TOP = 0, RIGHT = 1, BOT = 2, LEFT = 3;
+export const NO_SLIDE = 0, SLIDE_UP = -1, SLIDE_DOWN = 1;
 
 export const COLUMN_TRANSITIONS =
 {   //  DOOR AT:   TOP           SIDE        BOTTOM

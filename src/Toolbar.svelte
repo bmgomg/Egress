@@ -33,10 +33,6 @@
 		}
 	};
 
-	const onDoorOps = () => {
-		ss.doorPage = true;
-	};
-
 	const onSound = () => {
 		_sound.sfx = !_sound.sfx;
 
@@ -66,11 +62,11 @@
 
 <div class="toolbar">
 	<TextButton id="tb-home" text={['Home']} disabled={!canHome} onClick={onHome} />
-	<TextButton id="tb-door" text={['Door', 'Options']} disabled={false} onClick={onDoorOps} />
 	<TextButton id="tb-surrender" text={['Give', 'Up']} disabled={!canSurrender} onClick={onSurrender} />
 	<TextButton id="tb-stats" text={['Reset', 'Stats']} disabled={!canResetStats} onClick={onResetStats} />
+	<!-- <TextButton id="tb-door" text={['Door', 'Options']} disabled={false} onClick={onDoorOps} />
 	<TextButton id="tb-sfx" text={['Sfx', _sound.sfx ? 'On' : 'Off']} onClick={onSound} />
-	<TextButton id="tb-music" text={['Music', _sound.music ? 'On' : 'Off']} onClick={onMusic} />
+	<TextButton id="tb-music" text={['Music', _sound.music ? 'On' : 'Off']} onClick={onMusic} /> -->
 </div>
 
 <style>

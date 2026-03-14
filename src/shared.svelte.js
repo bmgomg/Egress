@@ -1,12 +1,12 @@
-import { APP_STATE } from './const';
-import { BLOCK, EMPTY, BUBBLE, generatePuzzle, canSolve } from './generator';
+import { APP_STATE, OP_EASY, OP_NOT_EASY } from './const';
+import { BLOCK, BUBBLE, canSolve, EMPTY, generatePuzzle } from './generator';
 import { _sound } from './sound.svelte';
 import { _stats, ss } from './state.svelte';
 import { post } from './utils';
 
 export const _log = (value) => console.log($state.snapshot(value));
 
-export const appSubKey = () => `${ss.size}`;
+export const appSubKey = () => `${ss.mode}`;
 export const appKey = () => `${APP_STATE} • ${appSubKey()}`;
 
 export const persist = () => {
@@ -74,7 +74,7 @@ export const isSolvable = () => {
         }
     }
 
-    const can = canSolve(grid, ss.door);
+    const can = canSolve(grid, ss.door, ss.slide);
     return can;
 };
 
@@ -96,7 +96,8 @@ export const makePuzzle = () => {
     delete ss.over;
     delete ss.deadend;
 
-    const { grid, door, solution } = generatePuzzle(ss.size, 3, 12);
+    const steps = ss.mode === OP_EASY ? [3, 6] : ss.mode === OP_NOT_EASY ? [5, 9] : [9, 15];
+    const { grid, door, solution } = generatePuzzle(ss.size, steps[0], steps[1], ss.slide);
 
     let cells = makeCells(grid);
     ss.door = door;
@@ -118,10 +119,16 @@ const onStart = () => {
     }
 };
 
-export const onHomePlay = (size) => {
+export const onOptions = () => {
+    delete ss.home;
+    ss.opsPage = true;
+};
+
+export const onMode = (op) => {
     _sound.play('plop');
 
-    ss.size = size;
+    ss.mode = op;
+    ss.size = op === OP_EASY ? 2 : 3;
     loadGame();
 
     if (ss.cells) {

@@ -7,8 +7,7 @@
 	import BoxT from '$lib/images/Box T.webp';
 	import BoxTL from '$lib/images/Box TL.webp';
 	import BoxTR from '$lib/images/Box TR.webp';
-	import { CELL_MARGIN, CELL_SIZE } from './const';
-	import { BOT, LEFT, RIGHT, TOP } from './generator';
+	import { CELL_MARGIN, CELL_SIZE, BOT, LEFT, RIGHT, TOP } from './const';
 	import { ss } from './state.svelte';
 
 	const { sz, th } = $props();
@@ -37,7 +36,7 @@
 		let dy = height < sz ? ss.door.corner === 0 ? off : -off : 0;
 
 		if (dy && ss.door.drop) {
-			dy += dsz;
+			dy += ss.door.drop * dsz;
 		}
 
 		return `width: ${th}px; height: ${height}px; translate: 0 ${dy}px; filter: ${filter(height < sz)};`;
@@ -48,7 +47,7 @@
 		let dy = height < sz ? ss.door.corner === 0 ? off : -off : 0;
 
 		if (dy && ss.door.drop) {
-			dy += dsz;
+			dy += ss.door.drop * dsz;
 		}
 
 		return `width: ${th}px; height: ${height}px; translate: 0 ${dy}px; filter: ${filter(height < sz)};`;

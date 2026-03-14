@@ -2,8 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import Box from './Box.svelte';
 	import Cell from './Cell.svelte';
-	import { CELL_MARGIN, CELL_SIZE, COLUMN_TRANSITIONS } from './const';
-	import { BOT, LEFT, RIGHT, TOP } from './generator';
+	import { CELL_MARGIN, CELL_SIZE, COLUMN_TRANSITIONS, BOT, LEFT, NO_SLIDE, RIGHT, SLIDE_DOWN, TOP } from './const';
 	import { findCell, indexOf, isSolvable, isSolved, makePuzzle, persist, playSolution, setToInitial, starRating } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { _stats, ss } from './state.svelte';
@@ -43,18 +42,26 @@
 		}
 	};
 
-	const dropDoor = () => {
-		if ((ss.door.wall === LEFT || ss.door.wall === RIGHT) && ss.door.corner === 1) {
-			post(() => {
-				ss.door.drop = true;
-				post(() => _sound.play('drop'), 280);
-
-				post(() => {
-					delete ss.door.drop;
-					ss.door.corner = 0;
-				}, 350);
-			});
+	const slideDoor = () => {
+		if (ss.slide === NO_SLIDE || ss.door.wall === TOP || ss.door.wall === BOT) {
+			return;
 		}
+
+		const corner = ss.slide === SLIDE_DOWN ? 0 : 1;
+
+		if (ss.door.corner === corner) {
+			return;
+		}
+
+		post(() => {
+			ss.door.drop = ss.slide === SLIDE_DOWN ? 1 : -1;
+			post(() => _sound.play('drop'), 280);
+
+			post(() => {
+				delete ss.door.drop;
+				ss.door.corner = corner;
+			}, 350);
+		});
 	};
 
 	const applyGravity = () => {
@@ -104,7 +111,7 @@
 			_sound.play('link2', { rate: 0.9 });
 		}
 
-		post(onGravityEnd, 500);
+		post(onGravityEnd, 650);
 	};
 
 	const onGravityEnd = () => {
@@ -168,7 +175,7 @@
 
 		moveDoor();
 		ss.spin = 0;
-		dropDoor();
+		slideDoor();
 
 		post(applyGravity);
 	};
@@ -270,7 +277,7 @@
 		transition: transform 0.5s linear;
 	}
 
-    .swirl {
-        transform: rotateZ(360deg) scale(0);
-    }
+	.swirl {
+		transform: rotateZ(360deg) scale(0);
+	}
 </style>

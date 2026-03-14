@@ -1,10 +1,11 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { onHomePlay } from './shared.svelte';
+	import { OP_EASY, OP_HARD, OP_NOT_EASY } from './const';
+	import { onMode, onOptions } from './shared.svelte';
 	import { ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
 
-	const ul = '<ul style="margin: 0;">';
+	const ul = '<ul style="margin: -10px 0 0;">';
 	const li = '<li style="margin: 10px 0 0 -20px;">';
 	const hi = '<span style="color: var(--text);">';
 
@@ -32,8 +33,12 @@
 		</div>
 		<div class="divider"></div>
 		<div class="buttons">
-			<TextButton id='tb-size-2' framed text={['Easy']} onClick={() => onHomePlay(2)} />
-			<TextButton id='tb-size-3' framed text={['Not Easy']} onClick={() => onHomePlay(3)} />
+			<TextButton id='tb-easy' framed style='width: 105px;' text={[OP_EASY]} onClick={() => onMode(OP_EASY)} />
+			<TextButton id='tb-not-easy' framed style='width: 140px;' text={[OP_NOT_EASY]} onClick={() => onMode(OP_NOT_EASY)} />
+		</div>
+		<div class="buttons" style='margin-top: 15px;'>
+			<TextButton id='tb-hard' framed  style='width: 105px;' text={[OP_HARD]} onClick={() => onMode(OP_HARD)} />
+			<TextButton id='tb-ops' framed  style='width: 140px;' text={['Options']} onClick={onOptions} />
 		</div>
 	</div>
 {/if}
@@ -92,14 +97,14 @@
 	.buttons {
 		display: grid;
 		grid-auto-flow: column;
-		gap: 30px;
-		font-size: 20px;
+		gap: 15px;
+		font-size: 18px;
 	}
 
 	.divider {
 		width: 200px;
 		height: 1px;
 		background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
-		margin: 40px 0;
+		margin: 35px 0;
 	}
 </style>

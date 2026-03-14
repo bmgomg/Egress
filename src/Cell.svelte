@@ -22,7 +22,7 @@
 
 	const dur = $derived.by(() => {
 		const d = Math.floor(Math.abs((newRow || row) - row));
-		return d * 0.16;
+		return d * 0.2;
 	});
 
 	const style = $derived(

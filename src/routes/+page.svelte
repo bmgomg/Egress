@@ -1,5 +1,5 @@
 <script>
-	import DoorPage from '../Door Page.svelte';
+	import OpsPage from '../Options Page.svelte';
 	import GamePage from '../Game Page.svelte';
 	import Home from '../Home.svelte';
 	import Splash from '../Splash.svelte';
@@ -53,8 +53,8 @@
 	{:else}
 		<div class="content bg" style="scale: {scale};">
 			<GamePage />
-			<DoorPage />
 			<Home />
+			<OpsPage />
 			{#if ss.home}
 				<div class="disclaimer no-highlight">
 					<span>MUSIC BY ERIC MATYAS  •  WWW.SOUNDIMAGE.ORG</span>

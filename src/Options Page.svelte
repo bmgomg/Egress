@@ -1,19 +1,20 @@
 <script>
 	import { ss } from './state.svelte';
 
-	const hidden = $derived(!ss.doorPage);
+	const hidden = $derived(!ss.opsPage);
 
 	const onClose = () => {
-		delete ss.doorPage;
+		delete ss.opsPage;
+		ss.home = true;
 	};
 </script>
 
-<div class="door-page {hidden ? 'hidden' : ''}">
-	<div onpointerdown={onClose}>DOOR OPTIONS</div>
+<div class="ops_page {hidden ? 'hidden' : ''}">
+	<div onpointerdown={onClose}>OPTIONS</div>
 </div>
 
 <style>
-	.door-page {
+	.ops_page {
 		grid-area: 1/1;
 		display: grid;
 		width: 100%;

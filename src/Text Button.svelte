@@ -71,7 +71,7 @@
 
 	.framed {
 		border: 1px solid var(--gold-dim);
-		padding: 0.25em 1.25em;
+		padding: 0.3em 0;
 	}
 
 	.framed:hover {
