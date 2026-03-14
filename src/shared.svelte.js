@@ -9,9 +9,13 @@ export const _log = (value) => console.log($state.snapshot(value));
 export const appSubKey = () => `${ss.mode} • ${ss.slide}`;
 export const appKey = () => `${APP_STATE} • ${appSubKey()}`;
 
-export const persist = () => {
+export const persist = (commonOnly = false) => {
     let json = JSON.stringify({ sfx: _sound.sfx, music: _sound.music });
     localStorage.setItem(APP_STATE, json);
+
+    if (commonOnly) {
+        return;
+    }
 
     json = JSON.stringify({ ..._stats, cells: ss.cells, door: ss.door, initial: ss.initial, solution: ss.solution, moves: ss.moves, over: ss.over });
     localStorage.setItem(appKey(), json);

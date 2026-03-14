@@ -1,6 +1,5 @@
 <script>
-	import { isAnimated, isInitial, isSolved, persist, playSolution, goHome } from './shared.svelte';
-	import { _sound } from './sound.svelte';
+	import { goHome, isAnimated, isInitial, isSolved, persist, playSolution } from './shared.svelte';
 	import { _stats, ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
 	import { post } from './utils';
@@ -33,28 +32,6 @@
 		}
 	};
 
-	const onSound = () => {
-		_sound.sfx = !_sound.sfx;
-
-		if (_sound.sfx) {
-			_sound.play('won', { rate: 4 });
-		}
-
-		persist();
-	};
-
-	const onMusic = () => {
-		_sound.music = !_sound.music;
-
-		if (_sound.music) {
-			_sound.playMusic();
-		} else {
-			_sound.stopMusic();
-		}
-
-		persist();
-	};
-
 	const canHome = $derived(!isAnimated() && !ss.surrender);
 	const canSurrender = $derived(!isSolved() && !ss.surrender);
 	const canResetStats = $derived(_stats.plays > 0);
@@ -64,9 +41,6 @@
 	<TextButton id="tb-home" text={['Home']} disabled={!canHome} onClick={onHome} />
 	<TextButton id="tb-surrender" text={['Give', 'Up']} disabled={!canSurrender} onClick={onSurrender} />
 	<TextButton id="tb-stats" text={['Reset', 'Stats']} disabled={!canResetStats} onClick={onResetStats} />
-	<!-- <TextButton id="tb-door" text={['Door', 'Options']} disabled={false} onClick={onDoorOps} />
-	<TextButton id="tb-sfx" text={['Sfx', _sound.sfx ? 'On' : 'Off']} onClick={onSound} />
-	<TextButton id="tb-music" text={['Music', _sound.music ? 'On' : 'Off']} onClick={onMusic} /> -->
 </div>
 
 <style>

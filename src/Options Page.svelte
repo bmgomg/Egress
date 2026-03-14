@@ -1,5 +1,6 @@
 <script>
 	import { NO_SLIDE, SLIDE_DOWN, SLIDE_UP } from './const';
+	import SoundOps from './Sound Ops.svelte';
 	import { ss } from './state.svelte';
 
 	const hidden = $derived(!ss.opsPage);
@@ -18,17 +19,20 @@
 	<div class="title" onpointerdown={onClose}>DOOR</div>
 	<div class="subtitle">How does the door behave on side walls?</div>
 	<div class="door-op {selected(SLIDE_UP)}" onpointerdown={() => (ss.slide = SLIDE_UP)}>
-		<div class="door-op-title {selected(SLIDE_UP)}">Slides Up</div>
+		<div class="door-op-title">Slides Up</div>
 		<div class="door-op-desc">Panel rises — gap stays at the bottom</div>
 	</div>
 	<div class="door-op {selected(SLIDE_DOWN)}" onpointerdown={() => (ss.slide = SLIDE_DOWN)}>
-		<div class="door-op-title {selected(SLIDE_DOWN)}">Slides Down</div>
+		<div class="door-op-title">Slides Down</div>
 		<div class="door-op-desc">Panel falls — gap stays at the top</div>
 	</div>
 	<div class="door-op {selected(NO_SLIDE)}" onpointerdown={() => (ss.slide = NO_SLIDE)}>
-		<div class="door-op-title {selected(NO_SLIDE)}">Fixed</div>
+		<div class="door-op-title">Fixed</div>
 		<div class="door-op-desc">Door stays where it lands</div>
 	</div>
+	<div class='divider'></div>
+	<div class="title" onpointerdown={onClose}>SOUND</div>
+	<SoundOps/>
 </div>
 
 <style>
@@ -95,7 +99,7 @@
 		transition: color 0.3s;
 	}
 
-	.door-op-title.selected {
+	.door-op.selected .door-op-title {
 		color: var(--door);
 	}
 
@@ -105,5 +109,16 @@
 		font-style: italic;
 		color: var(--text);
 		opacity: 0.55;
+	}
+
+	.divider {
+		width: 200px;
+		height: 1px;
+		background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+		margin: 50px 0;
+	}
+
+	.divider {
+		/* height: 60px; */
 	}
 </style>
