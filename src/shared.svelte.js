@@ -6,7 +6,7 @@ import { post } from './utils';
 
 export const _log = (value) => console.log($state.snapshot(value));
 
-export const appSubKey = () => `${ss.mode}`;
+export const appSubKey = () => `${ss.mode} • ${ss.slide}`;
 export const appKey = () => `${APP_STATE} • ${appSubKey()}`;
 
 export const persist = () => {

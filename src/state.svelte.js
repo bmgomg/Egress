@@ -1,9 +1,9 @@
-import { SLIDE_DOWN, SLIDE_UP } from './const';
+import { SLIDE_DOWN } from './const';
 
 export const ss = $state({
     home: true,
     seenPage: {},
-    slide: SLIDE_UP,
+    slide: SLIDE_DOWN,
 });
 
 export const _stats = $state({

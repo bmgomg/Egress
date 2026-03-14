@@ -13,11 +13,7 @@
 	<div class="value"><NumberFlow value={_stats.wins} /></div>
 	<span></span>
 	<span class="label">Ave. Rating</span>
-	{#if _stats.wins}
-		<div class="value"><NumberFlow value={ave} /></div>
-	{:else}
-		<div class="bullet">•</div>
-	{/if}
+	<div class="value"><NumberFlow value={ave} /></div>
 	<span></span>
 </div>
 
