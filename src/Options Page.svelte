@@ -8,17 +8,19 @@
 	const hidden = $derived(!ss.opsPage);
 
 	const onClose = () => {
+		_sound.play('tap');
+
 		delete ss.opsPage;
 		ss.home = true;
-	};
-
-	const selected = (slide) => {
-		return ss.slide === slide ? 'selected' : '';
 	};
 
 	const onSlideOp = (op) => {
 		_sound.play('tap');
 		ss.slide = op;
+	};
+
+	const selected = (slide) => {
+		return ss.slide === slide ? 'selected' : '';
 	};
 </script>
 
