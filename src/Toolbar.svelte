@@ -1,20 +1,26 @@
 <script>
-	import { goHome, isAnimated, isInitial, isSolved, persist, playSolution } from './shared.svelte';
+	import { isAnimated, isInitial, isSolved, persist, playSolution } from './shared.svelte';
+	import { _sound } from './sound.svelte';
 	import { _stats, ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
 	import { post } from './utils';
 
 	const onHome = () => {
-		goHome(true);
+		_sound.play('tap');
+		ss.home = true;
 	};
 
 	const onResetStats = () => {
+		_sound.play('tap');
+
 		_stats.plays = 0;
 		_stats.wins = 0;
 		_stats.total = 0;
 	};
 
 	const onSurrender = () => {
+		_sound.play('tap');
+
 		ss.surrender = true;
 		ss.moves = 0;
 

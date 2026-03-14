@@ -58,11 +58,6 @@ const loadGame = () => {
     }
 };
 
-export const goHome = (value, plop = true) => {
-    plop && _sound.play('plop');
-    ss.home = true;
-};
-
 export const isSolved = () => ss.cells?.every(c => c.weight === 0);
 
 export const indexOf = (row, col) => (row - 1) * ss.size + col - 1;
@@ -129,7 +124,7 @@ export const onOptions = () => {
 };
 
 export const onMode = (op) => {
-    _sound.play('plop');
+    _sound.play('tap');
 
     ss.mode = op;
     ss.size = op === OP_EASY ? 2 : 3;

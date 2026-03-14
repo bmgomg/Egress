@@ -6,7 +6,7 @@
 	import { _sound } from './sound.svelte';
 
 	const onReplay = () => {
-		_sound.play('plop');
+		_sound.play('tap');
 
 		ss.replay = true;
 		ss.moves = 0;
@@ -14,7 +14,7 @@
 	};
 
 	const onPlayNew = () => {
-		_sound.play('plop');
+		_sound.play('tap');
 		ss.flip = true;
 	};
 </script>
