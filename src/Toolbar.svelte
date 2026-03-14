@@ -45,8 +45,8 @@
 
 <div class="toolbar">
 	<TextButton id="tb-home" text={['Home']} disabled={!canHome} onClick={onHome} />
-	<TextButton id="tb-surrender" text={['Give', 'Up']} disabled={!canSurrender} onClick={onSurrender} />
-	<TextButton id="tb-stats" text={['Reset', 'Stats']} disabled={!canResetStats} onClick={onResetStats} />
+	<TextButton id="tb-surrender" text={['Give Up']} disabled={!canSurrender} onClick={onSurrender} />
+	<TextButton id="tb-stats" text={['Reset Stats']} disabled={!canResetStats} onClick={onResetStats} />
 </div>
 
 <style>

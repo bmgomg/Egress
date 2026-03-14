@@ -119,6 +119,8 @@ const onStart = () => {
 };
 
 export const onOptions = () => {
+    _sound.play('tap');
+    
     delete ss.home;
     ss.opsPage = true;
 };
