@@ -1,5 +1,5 @@
 <script>
-	import { isAnimated, isInitial, isSolved, persist, playSolution } from './shared.svelte';
+	import { isAnimated, isInitial, isSolved, persist, playSolution, woosh } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { _stats, ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
@@ -35,6 +35,7 @@
 			post(playSolution, 200);
 		} else {
 			ss.flip = 'surrender';
+			woosh();
 		}
 	};
 
@@ -45,7 +46,7 @@
 
 <div class="toolbar">
 	<TextButton id="tb-home" text={['Home']} disabled={!canHome} onClick={onHome} />
-	<TextButton id="tb-surrender" text={['Give Up']} disabled={!canSurrender} onClick={onSurrender} />
+	<TextButton id="tb-surrender" text={['Solve For Me']} disabled={!canSurrender} onClick={onSurrender} />
 	<TextButton id="tb-stats" text={['Reset Stats']} disabled={!canResetStats} onClick={onResetStats} />
 </div>
 

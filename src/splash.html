@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Egress — Splash</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=EB+Garamond:ital,wght@1,400&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%; height: 100%;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.frame {
+  position: relative;
+  width: min(100vw, calc(100vh * 9 / 16));
+  height: min(100vh, calc(100vw * 16 / 9));
+  overflow: hidden;
+  background: #0b0e14;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.frame::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 10%, rgba(200,168,74,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 70% at 85% 90%, rgba(74,159,212,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(80,208,144,0.03) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Dark mask that peels away from center */
+.frame::after {
+  content: '';
+  position: absolute; inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  animation: peel 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes peel {
+  0%   { background: radial-gradient(circle 0vmax    at 50% 50%, transparent 0%,    #0b0e14 0%   ); }
+  100% { background: radial-gradient(circle 160vmax  at 50% 50%, transparent 99.9%, #0b0e14 100% ); }
+}
+
+.title {
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 700;
+  font-size: clamp(44px, 15vw, 130px);
+  color: #c8a84a;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: scale(0.5);
+  animation: emerge 2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+}
+
+.byline {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: clamp(11px, 2.8vw, 24px);
+  color: rgba(192, 176, 144, 0.65);
+  letter-spacing: 0.06em;
+  text-align: center;
+  margin-top: clamp(8px, 2vw, 18px);
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: scale(0.5);
+  animation: emerge 2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+}
+
+@keyframes emerge {
+  0%   { opacity: 0; transform: scale(0.5); }
+  100% { opacity: 1; transform: scale(1);   }
+}
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="title">Egress</div>
+  <div class="byline">by Beautiful Mind Games</div>
+</div>
+</body>
+</html>

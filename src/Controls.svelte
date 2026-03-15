@@ -2,7 +2,7 @@
 	import CCW from '$lib/images/CCW.webp';
 	import CW from '$lib/images/CW.webp';
 	import Reset from '$lib/images/Restart.webp';
-	import { isAnimated, isInitial, isSolved } from './shared.svelte';
+	import { isAnimated, isInitial, isSolved, woosh } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
 	import ToolButton from './Tool Button.svelte';
@@ -20,7 +20,7 @@
 		ss.moves = 0;
 		ss.flip = 'reset';
 
-		post(() => _sound.play('link1', { rate: 0.8 }), 200);
+		woosh();
 	};
 
 	const solved = $derived(isSolved());
@@ -63,17 +63,4 @@
 		font-size: 16px;
 		color: var(--text-dim);
 	}
-
-	/* .pulse {
-		animation: pulse 0.25s alternate infinite ease-in-out;
-	}
-
-	@keyframes pulse {
-		from {
-			transform: scale(1);
-		}
-		to {
-			transform: scale(0.85);
-		}
-	} */
 </style>

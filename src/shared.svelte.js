@@ -114,13 +114,13 @@ export const makePuzzle = () => {
 
 const onStart = () => {
     if (!_sound.musicPlayed) {
-        post(() => _sound.playMusic(), 1000);
+        // post(() => _sound.playMusic(), 1000);
     }
 };
 
 export const onOptions = () => {
     _sound.play('tap');
-    
+
     delete ss.home;
     ss.opsPage = true;
 };
@@ -194,3 +194,5 @@ export const starRating = () => {
 
     return d < 1 ? 5 : d < 2 ? 4 : d < 3 ? 3 : d < 4 ? 2 : 1;
 };
+
+export const woosh = () => post(() => _sound.play('link1', { rate: 0.8 }), 200);

@@ -1,7 +1,7 @@
 import { SLIDE_DOWN } from './const';
 
 export const ss = $state({
-    home: true,
+    home: false,
     seenPage: {},
     slide: SLIDE_DOWN,
 });

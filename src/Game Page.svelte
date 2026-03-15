@@ -6,11 +6,12 @@
 	import Scoreboard from './Scoreboard.svelte';
 	import Stats from './Stats.svelte';
 	import OverPanel from './Over Panel.svelte';
+	import { fade } from 'svelte/transition';
 
 	const hidden = $derived(ss.home || ss.opsPage);
 </script>
 
-<div class="game-page {hidden ? 'hidden' : ''}">
+<div class="game-page {hidden ? 'hidden' : ''}" in:fade>
 	<Stats />
 	<div class="divider"></div>
 	<Scoreboard />

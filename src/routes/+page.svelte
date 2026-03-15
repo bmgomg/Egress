@@ -2,9 +2,12 @@
 	import OpsPage from '../Options Page.svelte';
 	import GamePage from '../Game Page.svelte';
 	import Home from '../Home.svelte';
-	import Splash from '../Splash.svelte';
 	import { ss } from '../state.svelte';
 	import { clientRect, post } from '../utils';
+	import PitchSplash from '../Pitch Splash.svelte';
+	import Splash from '../Splash.svelte';
+	import { onMode } from '../shared.svelte';
+	import { OP_MEDIUM } from '../const';
 
 	let scale = $state(1);
 
@@ -44,12 +47,15 @@
 	});
 
 	let splash = $state(true);
-	post(() => (splash = false), 2000);
+	post(() => {
+		splash = false;
+		onMode(OP_MEDIUM);
+	}, 3500);
 </script>
 
 <div class="app">
 	{#if splash}
-		<Splash />
+		<PitchSplash />
 	{:else}
 		<div class="content bg" style="scale: {scale};">
 			<GamePage />
