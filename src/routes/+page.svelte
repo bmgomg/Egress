@@ -50,7 +50,7 @@
 	post(() => {
 		splash = false;
 		onMode(OP_MEDIUM);
-	}, 3500);
+	}, 13500);
 </script>
 
 <div class="app">

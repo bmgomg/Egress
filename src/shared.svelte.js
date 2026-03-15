@@ -1,5 +1,5 @@
 import { APP_STATE, OP_EASY, OP_MEDIUM } from './const';
-import { BLOCK, BUBBLE, canSolve, EMPTY, generatePuzzle } from './generator';
+import { BLOCK, BUBBLE, canSolve, EMPTY, generatePuzzle, solve } from './core';
 import { _sound } from './sound.svelte';
 import { _stats, ss } from './state.svelte';
 import { post } from './utils';
@@ -10,15 +10,15 @@ export const appSubKey = () => `${ss.mode} • ${ss.slide}`;
 export const appKey = () => `${APP_STATE} • ${appSubKey()}`;
 
 export const persist = (commonOnly = false) => {
-    let json = JSON.stringify({ sfx: _sound.sfx, music: _sound.music });
-    localStorage.setItem(APP_STATE, json);
+    // let json = JSON.stringify({ sfx: _sound.sfx, music: _sound.music });
+    // localStorage.setItem(APP_STATE, json);
 
-    if (commonOnly) {
-        return;
-    }
+    // if (commonOnly) {
+    //     return;
+    // }
 
-    json = JSON.stringify({ ..._stats, cells: ss.cells, door: ss.door, initial: ss.initial, solution: ss.solution, moves: ss.moves, over: ss.over });
-    localStorage.setItem(appKey(), json);
+    // json = JSON.stringify({ ..._stats, cells: ss.cells, door: ss.door, initial: ss.initial, solution: ss.solution, moves: ss.moves, over: ss.over });
+    // localStorage.setItem(appKey(), json);
 };
 
 const loadCommon = () => {
@@ -96,7 +96,23 @@ export const makePuzzle = () => {
     delete ss.deadend;
 
     const steps = ss.mode === OP_EASY ? [3, 6] : ss.mode === OP_MEDIUM ? [5, 9] : [9, 15];
-    const { grid, door, solution } = generatePuzzle(ss.size, steps[0], steps[1], ss.slide);
+    let { grid, door, solution } = generatePuzzle(ss.size, steps[0], steps[1], ss.slide);
+
+    // grid =
+    //     [
+    //         [2, 2, 1],
+    //         [1, 1, 2],
+    //         [1, 2, 1],
+    //     ];
+    grid =
+        [
+            [2, 1, 2],
+            [1, 2, 1],
+            [1, 2, 1],
+        ];
+
+    door = { wall: 1, corner: 0 };
+    solution = solve(grid, door, ss.size, 15, ss.slide);
 
     let cells = makeCells(grid);
     ss.door = door;
@@ -196,3 +212,5 @@ export const starRating = () => {
 };
 
 export const woosh = () => post(() => _sound.play('link1', { rate: 0.8 }), 200);
+
+export const swhoosh = () => post(() => _sound.play('link2', { rate: 0.8 }), 0);

@@ -6,7 +6,6 @@
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
 	import ToolButton from './Tool Button.svelte';
-	import { post } from './utils';
 
 	const onSpin = (cw) => {
 		_sound.play('click');

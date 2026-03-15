@@ -57,7 +57,7 @@ const gridKey = (grid, door) => { return grid.flat().join('') + '|' + door.wall 
 const isStable = (grid, door, N) => { return JSON.stringify(grid) === JSON.stringify(applyPhysics(grid, door, N)); };
 
 // BFS solver — returns shortest move sequence, or null if none within maxDepth
-const solve = (grid, door, N, maxDepth, slide = -1) => {
+export const solve = (grid, door, N, maxDepth, slide = -1) => {
   const initial = applyPhysics(grid, door, N);
   if (countPieces(initial) === 0) return [];
   const queue = [{ grid: initial, door, moves: [] }];
