@@ -2,11 +2,10 @@
 	import CCW from '$lib/images/CCW.webp';
 	import CW from '$lib/images/CW.webp';
 	import Reset from '$lib/images/Restart.webp';
-	import { isAnimated, isInitial, isSolved } from './shared.svelte';
+	import { isAnimated, isInitial, isSolved, whoosh } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
 	import ToolButton from './Tool Button.svelte';
-	import { post } from './utils';
 
 	const onSpin = (cw) => {
 		_sound.play('click');
@@ -16,11 +15,11 @@
 
 	const onReset = () => {
 		_sound.play('click');
+		whoosh();
 
 		ss.moves = 0;
 		ss.flip = 'reset';
 
-		post(() => _sound.play('link1', { rate: 0.8 }), 200);
 	};
 
 	const solved = $derived(isSolved());

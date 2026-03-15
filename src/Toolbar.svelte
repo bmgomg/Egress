@@ -1,5 +1,5 @@
 <script>
-	import { isAnimated, isInitial, isSolved, persist, playSolution } from './shared.svelte';
+	import { isAnimated, isInitial, isSolved, persist, playSolution, swhoosh, whoosh } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { _stats, ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
@@ -12,6 +12,7 @@
 
 	const onResetStats = () => {
 		_sound.play('tap');
+		swhoosh();
 
 		_stats.plays = 0;
 		_stats.wins = 0;
@@ -35,6 +36,7 @@
 			post(playSolution, 200);
 		} else {
 			ss.flip = 'surrender';
+			whoosh();
 		}
 	};
 

@@ -1,12 +1,13 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { isSolved } from './shared.svelte';
+	import { isSolved, whoosh } from './shared.svelte';
 	import { ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
 	import { _sound } from './sound.svelte';
 
 	const onReplay = () => {
 		_sound.play('tap');
+		whoosh();
 
 		ss.replay = true;
 		ss.moves = 0;
