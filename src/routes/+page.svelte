@@ -1,7 +1,8 @@
 <script>
 	import GamePage from '../Game Page.svelte';
 	import Home from '../Home.svelte';
-	import Splash from '../Splash.svelte';
+	import SplashIn from '../Pitch Splash In.svelte';
+	// import Splash from '../Pitch Splash Out.svelte';
 	import { ss } from '../state.svelte';
 	import { clientRect, post } from '../utils';
 
@@ -42,13 +43,13 @@
 		};
 	});
 
-	let splash = $state(true);
-	post(() => (splash = false), 2000);
+	ss.splash = true;
+	post(() => (delete ss.splash), 5000);
 </script>
 
 <div class="app">
-	{#if splash}
-		<Splash />
+	{#if ss.splash}
+		<SplashIn />
 	{:else}
 		<div class="content bg" style="scale: {scale};">
 			<GamePage />

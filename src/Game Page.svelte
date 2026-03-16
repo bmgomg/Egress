@@ -7,20 +7,23 @@
 	import Stats from './Stats.svelte';
 	import OverPanel from './Over Panel.svelte';
 	import DoorTip from './Door Tip.svelte';
+	import { fade } from 'svelte/transition';
 
-	const hidden = $derived(ss.home);
+	const hidden = $derived(ss.splash || ss.home);
 </script>
 
-<div class="game-page {hidden ? 'hidden' : ''}">
-	<Stats />
-	<div class="divider"></div>
-	<Scoreboard />
-	<Board />
-	<Controls />
-	<OverPanel/>
-	<DoorTip />
-	<div class="divider"></div>
-	<Toolbar />
+<div class="game-page" in:fade>
+	{#if !ss.home}
+		<Stats />
+		<div class="divider"></div>
+		<Scoreboard />
+		<Board />
+		<Controls />
+		<OverPanel />
+		<DoorTip />
+		<div class="divider"></div>
+		<Toolbar />
+	{/if}
 </div>
 
 <style>
@@ -29,7 +32,7 @@
 		display: grid;
 		gap: 17px;
 		width: 100%;
-		transition: opacity 0.2s;
+		transition: opacity 1s;
 		box-sizing: border-box;
 		padding: 20px 0;
 		user-select: none;
