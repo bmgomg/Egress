@@ -1,5 +1,4 @@
 <script>
-	import { fade } from 'svelte/transition';
 	import { ss } from './state.svelte';
 
 	const red = $derived(ss.tip === 'red');

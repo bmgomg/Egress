@@ -63,7 +63,7 @@
 	};
 
 	const canHome = $derived(!isAnimated() && !ss.surrender);
-	const canSurrender = $derived(!isSolved() && !ss.surrender);
+	const canSurrender = $derived(!isSolved() && !ss.surrender && !ss.tip);
 	const canResetStats = $derived(_stats.plays > 0);
 </script>
 
