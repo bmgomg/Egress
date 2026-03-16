@@ -1,5 +1,5 @@
 <script>
-	import { isAnimated, isInitial, isSolved, persist, playSolution, swhoosh, whoosh } from './shared.svelte';
+	import { isAnimated, isInitial, isSolved, persist, playSolution, showTip, swhoosh, whoosh } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { _stats, ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
@@ -63,7 +63,7 @@
 	};
 
 	const canHome = $derived(!isAnimated() && !ss.surrender);
-	const canSurrender = $derived(!isSolved() && !ss.surrender && !ss.tip);
+	const canSurrender = $derived(!isSolved() && !ss.surrender && !showTip());
 	const canResetStats = $derived(_stats.plays > 0);
 </script>
 

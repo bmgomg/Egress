@@ -1,11 +1,12 @@
 <script>
 	import X from '$lib/images/X.webp';
-	import { persist, showTip } from './shared.svelte';
+	import { SLIDE_DOWN, SLIDE_UP } from './const';
+	import { persist } from './shared.svelte';
 	import { ss } from './state.svelte';
 
-	const red = $derived(ss.tip === 'red');
-	const blue = $derived(ss.tip === 'blue');
-	const hidden = $derived(!showTip())
+	const red = $derived(ss.slide === SLIDE_DOWN && !ss.seenRed);
+	const blue = $derived(ss.slide === SLIDE_UP && !ss.seenBlue);
+	const hidden = $derived(!red && !blue);
 	const tranistion = $derived(hidden ? 'none' : 'opacity 1s');
 
 	const onClose = () => {
@@ -16,7 +17,6 @@
 		}
 
 		persist(true);
-		delete ss.tip;
 	};
 </script>
 

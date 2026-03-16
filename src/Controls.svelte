@@ -56,27 +56,10 @@
 		z-index: 1;
 	}
 
-	.hidden {
-		opacity: 0;
-	}
-
 	.control {
 		display: grid;
 		justify-items: center;
 		font-size: 16px;
 		color: var(--text-dim);
 	}
-
-	/* .pulse {
-		animation: pulse 0.25s alternate infinite ease-in-out;
-	}
-
-	@keyframes pulse {
-		from {
-			transform: scale(1);
-		}
-		to {
-			transform: scale(0.85);
-		}
-	} */
 </style>
