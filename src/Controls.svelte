@@ -2,6 +2,7 @@
 	import CCW from '$lib/images/CCW.webp';
 	import CW from '$lib/images/CW.webp';
 	import Reset from '$lib/images/Restart.webp';
+	import { fade } from 'svelte/transition';
 	import { isAnimated, isInitial, isSolved, whoosh } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
@@ -19,28 +20,30 @@
 
 		ss.moves = 0;
 		ss.flip = 'reset';
-
 	};
 
 	const solved = $derived(isSolved());
+	const hidden = $derived(solved || ss.surrender || ss.tip);
 	const canRotate = $derived(!isAnimated() && !solved);
 	const canReset = $derived(!isInitial() && canRotate);
 </script>
 
-<div class="controls {isSolved() || ss.surrender || ss.tip ? 'hidden' : ''}">
-	<div class="control">
-		<ToolButton id="tb-ccw" src={CCW} disabled={!canRotate} opaque={true} showDisabled={solved} onClick={() => onSpin(false)} />
-		<span>turn</span>
+{#if !hidden}
+	<div class="controls" in:fade>
+		<div class="control">
+			<ToolButton id="tb-ccw" src={CCW} disabled={!canRotate} opaque={true} showDisabled={solved} onClick={() => onSpin(false)} />
+			<span>turn</span>
+		</div>
+		<div class="control">
+			<ToolButton id="tb-reset" src={Reset} disabled={!canReset} opaque={true} onClick={onReset} />
+			<span>reset</span>
+		</div>
+		<div class="control">
+			<ToolButton id="tb-cw" src={CW} disabled={!canRotate} opaque={true} showDisabled={solved} onClick={() => onSpin(true)} />
+			<span>turn</span>
+		</div>
 	</div>
-	<div class="control">
-		<ToolButton id="tb-reset" src={Reset} disabled={!canReset} opaque={true} onClick={onReset} />
-		<span>reset</span>
-	</div>
-	<div class="control">
-		<ToolButton id="tb-cw" src={CW} disabled={!canRotate} opaque={true} showDisabled={solved} onClick={() => onSpin(true)} />
-		<span>turn</span>
-	</div>
-</div>
+{/if}
 
 <style>
 	.controls {
@@ -50,6 +53,7 @@
 		grid-auto-flow: column;
 		gap: 40px;
 		transition: opacity 0.3s;
+		z-index: 1;
 	}
 
 	.hidden {

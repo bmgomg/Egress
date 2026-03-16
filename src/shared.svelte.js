@@ -11,7 +11,7 @@ export const appSubKey = () => `${ss.challenge}`;
 export const appKey = () => `${APP_STATE} • ${appSubKey()}`;
 
 export const persist = (commonOnly = false) => {
-    let json = JSON.stringify({ sfx: _sound.sfx, music: _sound.music, slide: ss.slide });
+    let json = JSON.stringify({ sfx: _sound.sfx, music: _sound.music, seenRed: ss.seenRed, seenBlue: ss.seenBlue });
     localStorage.setItem(APP_STATE, json);
 
     if (commonOnly) {
@@ -31,6 +31,8 @@ const loadCommon = () => {
     if (job) {
         _sound.sfx = job.sfx;
         _sound.music = job.music;
+        ss.seenRed = job.seenRed;
+        ss.seenBlue = job.seenBlue;
     }
 };
 

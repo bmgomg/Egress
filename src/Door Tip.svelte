@@ -1,12 +1,28 @@
 <script>
 	import { ss } from './state.svelte';
+	import X from '$lib/images/X.webp';
+	import { persist } from './shared.svelte';
 
 	const red = $derived(ss.tip === 'red');
+	const blue = $derived(ss.tip === 'blue');
+	const tranistion = $derived(ss.tip ? 'opacity 1s' : 'none');
+
+	const onClose = () => {
+		if (red) {
+			ss.seenRed = true;
+		} else if (blue) {
+			ss.seenBlue = true;
+		}
+
+		persist(true);
+		delete ss.tip;
+	};
 </script>
 
-<div class="door-tip {red ? 'red-border' : 'blue-border'} {ss.tip ? '' : 'hidden'}">
+<div class="door-tip {red ? 'red-border' : 'blue-border'} {ss.tip ? '' : 'hidden'}" style="transition: {tranistion};">
 	<div class="door-tip-title {red ? 'red-text' : 'blue-text'}">{red ? 'Red' : 'Blue'} Door</div>
 	<div class="door-tip-desc">Slides {red ? 'down' : 'up'}, gap stays at the {red ? 'top' : 'bottom'}</div>
+	<img class="x button-base no-highlight" src={X} alt="" width={16} onpointerdown={onClose} />
 </div>
 
 <style>
@@ -21,7 +37,7 @@
 		color: var(--text);
 		padding: 16px 20px;
 		text-align: left;
-        transition: opacity 0.3s;
+		/* transition: opacity 1s; */
 	}
 
 	.hidden {
@@ -45,6 +61,7 @@
 	}
 
 	.door-tip-title {
+		grid-area: 1/1;
 		font-family: Cinzel;
 		font-size: 16px;
 		letter-spacing: 0.1em;
@@ -57,5 +74,15 @@
 		font-style: italic;
 		color: var(--text);
 		opacity: 0.55;
+	}
+
+	.x {
+		grid-area: 1/1;
+		place-self: start end;
+		opacity: 0.7;
+	}
+
+	.x:hover {
+		opacity: 1;
 	}
 </style>

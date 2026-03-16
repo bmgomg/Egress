@@ -20,12 +20,12 @@
 	};
 </script>
 
-<div class="buttons">
-	{#if isSolved()}
-		<div in:fade><TextButton id="tb-replay" framed style='padding-right: 1.25em;' text={['Replay']} onClick={onReplay} /></div>
-		<div in:fade><TextButton id="tb-new" framed style='padding-right: 1.25em;' text={['Play new']} onClick={onPlayNew} /></div>
-	{/if}
-</div>
+{#if isSolved()}
+	<div class="buttons" in:fade>
+		<div in:fade><TextButton id="tb-replay" framed style="padding-right: 1.25em;" text={['Replay']} onClick={onReplay} /></div>
+		<div in:fade><TextButton id="tb-new" framed style="padding-right: 1.25em;" text={['Play new']} onClick={onPlayNew} /></div>
+	</div>
+{/if}
 
 <style>
 	.buttons {
@@ -35,5 +35,6 @@
 		grid-auto-flow: column;
 		gap: 30px;
 		font-size: 20px;
+		z-index: 1;
 	}
 </style>
