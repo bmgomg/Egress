@@ -1,9 +1,10 @@
 <script>
-	import { NO_SLIDE, SLIDE_DOWN, SLIDE_UP } from './const';
-	import SoundOps from './Sound Ops.svelte';
-	import { ss } from './state.svelte';
 	import X from '$lib/images/X.webp';
+	import { SLIDE_DOWN, SLIDE_UP } from './const';
+	import { persist } from './shared.svelte';
+	import SoundOps from './Sound Ops.svelte';
 	import { _sound } from './sound.svelte';
+	import { ss } from './state.svelte';
 
 	const hidden = $derived(!ss.opsPage);
 
@@ -16,18 +17,18 @@
 
 	const onSlideOp = (op) => {
 		_sound.play('tap');
+
 		ss.slide = op;
+		persist(true);
 	};
 
-	const selected = (slide) => {
-		return ss.slide === slide ? 'selected' : '';
-	};
+	const selected = (slide) => (ss.slide === slide ? 'selected' : '');
 </script>
 
 <div class="ops_page {hidden ? 'hidden' : ''}">
-	<img class='x button-base no-highlight' src={X} alt='' width={30} onpointerdown={onClose}/>
+	<img class="x button-base no-highlight" src={X} alt="" width={30} onpointerdown={onClose} />
 	<div class="title">DOOR</div>
-	<div class="subtitle">How does the door behave on side walls?</div>
+	<div class="subtitle">Applies to Not Easy and Hard modes. How does the door behave on side walls?</div>
 	<div class="door-op {selected(SLIDE_UP)}" onpointerdown={() => onSlideOp(SLIDE_UP)}>
 		<div class="door-op-title">Slides Up</div>
 		<div class="door-op-desc">Panel rises — gap stays at the bottom</div>
@@ -36,13 +37,9 @@
 		<div class="door-op-title">Slides Down</div>
 		<div class="door-op-desc">Panel falls — gap stays at the top</div>
 	</div>
-	<div class="door-op {selected(NO_SLIDE)}" onpointerdown={() => onSlideOp(NO_SLIDE)}>
-		<div class="door-op-title">Fixed</div>
-		<div class="door-op-desc">Door stays where it lands</div>
-	</div>
-	<div class='divider'></div>
+	<div class="divider"></div>
 	<div class="title" onpointerdown={onClose}>SOUND</div>
-	<SoundOps/>
+	<SoundOps />
 </div>
 
 <style>
@@ -73,6 +70,7 @@
 		font-style: italic;
 		color: var(--text);
 		margin: 20px 0;
+		width: 350px;
 	}
 
 	.door-op {

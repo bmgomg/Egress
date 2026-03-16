@@ -40,6 +40,28 @@
 		}
 	};
 
+	const onSfx = () => {
+		_sound.sfx = !_sound.sfx;
+
+		if (_sound.sfx) {
+			_sound.play('won', { rate: 4 });
+		}
+
+		persist(true);
+	};
+
+	const onMusic = () => {
+		_sound.music = !_sound.music;
+
+		if (_sound.music) {
+			_sound.playMusic();
+		} else {
+			_sound.stopMusic();
+		}
+
+		persist(true);
+	};
+
 	const canHome = $derived(!isAnimated() && !ss.surrender);
 	const canSurrender = $derived(!isSolved() && !ss.surrender);
 	const canResetStats = $derived(_stats.plays > 0);
@@ -47,8 +69,10 @@
 
 <div class="toolbar">
 	<TextButton id="tb-home" text={['Home']} disabled={!canHome} onClick={onHome} />
-	<TextButton id="tb-surrender" text={['Give Up']} disabled={!canSurrender} onClick={onSurrender} />
-	<TextButton id="tb-stats" text={['Reset Stats']} disabled={!canResetStats} onClick={onResetStats} />
+	<TextButton id="tb-stats" text={['Reset', 'Stats']} disabled={!canResetStats} onClick={onResetStats} />
+	<TextButton id="tb-surrender" text={['Solve', 'For Me']} disabled={!canSurrender} onClick={onSurrender} />
+	<TextButton id="tb-sfx" text={[' SFX ', _sound.sfx ? 'On' : 'Off']} onClick={onSfx} />
+	<TextButton id="tb-music" text={['Music', _sound.music ? 'On' : 'Off']} onClick={onMusic} />
 </div>
 
 <style>
@@ -57,6 +81,6 @@
 		grid-auto-flow: column;
 		place-content: center;
 		align-items: center;
-		gap: 30px;
+		gap: 25px;
 	}
 </style>

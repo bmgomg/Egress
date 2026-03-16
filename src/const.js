@@ -1,7 +1,7 @@
 export const APP_STATE = 'Egress V1';
 export const CELL_SIZE = 80;
 export const CELL_MARGIN = 5;
-export const OP_EASY = 'Easy', OP_MEDIUM = 'Not So Easy', OP_HARD = 'Not Easy';
+export const OP_EASY = 1, OP_NOT_EASY = 2, OP_HARD = 3;
 export const TOP = 0, RIGHT = 1, BOT = 2, LEFT = 3;
 export const NO_SLIDE = 0, SLIDE_UP = -1, SLIDE_DOWN = 1;
 
@@ -44,3 +44,33 @@ export const COLUMN_TRANSITIONS =
     '🔵🔵🟨': [[-1, -2, +0], [+0, +0, +0], [+0, +0, +1]],
     '🔵🔵🔵': [[-1, -2, -3], [+0, +0, +0], [+0, +0, +0]],
 };
+
+export const INTRO_PUZZLES = [
+    { grid: [[2, 1, 1], [2, 2, 2], [2, 2, 2]], door: { wall: 3, corner: 0 }, slide: SLIDE_DOWN, solution: ['CCW', 'CW', 'CW', 'CW', 'CCW'] },
+    { grid: [[2, 2, 1], [2, 2, 1], [2, 2, 1]], door: { wall: 2, corner: 0 }, slide: SLIDE_DOWN, solution: ['CCW', 'CW', 'CW', 'CW', 'CW', 'CCW'] },
+    { grid: [[1, 2, 1], [1, 1, 1], [1, 2, 1]], door: { wall: 3, corner: 1 }, slide: SLIDE_UP, solution: ['CCW', 'CCW', 'CW', 'CW', 'CCW'] },
+    { grid: [[1, 1, 2], [2, 1, 2], [1, 1, 2]], door: { wall: 2, corner: 1 }, slide: SLIDE_UP, solution: ['CW', 'CW', 'CW', 'CW', 'CW', 'CCW'] }
+];
+
+/*
+Slide-Down / Red — #1 (side wall start, par 5)
+Door: Left wall · Solution: CCW CW CW CW CCW
+o B B
+o o o
+o o o
+Slide-Down / Red — #2 (par 6)
+Door: Bottom wall · Solution: CCW CW CW CW CW CCW
+o o B
+o o B
+o o B
+Slide-Up / Blue — #1 (side wall start, par 5)
+Door: Left wall · Solution: CCW CCW CW CW CCW
+B o B
+B B B
+B o B
+Slide-Up / Blue — #2 (par 6)
+Door: Bottom wall · Solution: CW CW CW CW CW CCW
+B B o
+o B o
+B B o
+*/

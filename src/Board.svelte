@@ -3,7 +3,7 @@
 	import Box from './Box.svelte';
 	import Cell from './Cell.svelte';
 	import { CELL_MARGIN, CELL_SIZE, COLUMN_TRANSITIONS, BOT, LEFT, NO_SLIDE, RIGHT, SLIDE_DOWN, TOP } from './const';
-	import { findCell, indexOf, isSolvable, isSolved, makePuzzle, persist, playSolution, setToInitial, starRating } from './shared.svelte';
+	import { findCell, indexOf, isSolvable, isSolved, makePuzzle, persist, playSolution, setToInitial, slideOp, starRating } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { _stats, ss } from './state.svelte';
 	import { post } from './utils';
@@ -43,18 +43,20 @@
 	};
 
 	const slideDoor = () => {
-		if (ss.slide === NO_SLIDE || ss.door.wall === TOP || ss.door.wall === BOT) {
+		const slide = slideOp();
+
+		if (slide === NO_SLIDE || ss.door.wall === TOP || ss.door.wall === BOT) {
 			return;
 		}
 
-		const corner = ss.slide === SLIDE_DOWN ? 0 : 1;
+		const corner = slide === SLIDE_DOWN ? 0 : 1;
 
 		if (ss.door.corner === corner) {
 			return;
 		}
 
 		post(() => {
-			ss.door.drop = ss.slide === SLIDE_DOWN ? 1 : -1;
+			ss.door.drop = slide === SLIDE_DOWN ? 1 : -1;
 			post(() => _sound.play('drop'), 280);
 
 			post(() => {

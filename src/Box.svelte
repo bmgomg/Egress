@@ -8,6 +8,7 @@
 	import BoxTL from '$lib/images/Box TL.webp';
 	import BoxTR from '$lib/images/Box TR.webp';
 	import { CELL_MARGIN, CELL_SIZE, BOT, LEFT, RIGHT, TOP, NO_SLIDE, SLIDE_DOWN } from './const';
+	import { slideOp } from './shared.svelte';
 	import { ss } from './state.svelte';
 
 	const { sz, th } = $props();
@@ -16,11 +17,13 @@
 	const off = $derived(dsz / 2);
 
 	const filter = (on) => {
-		if (!on || ss.slide === NO_SLIDE) {
+		const slide = slideOp();
+
+		if (!on || slide === NO_SLIDE) {
 			return 'none';
 		}
 
-		if (ss.slide === SLIDE_DOWN) {
+		if (slide === SLIDE_DOWN) {
 			return 'hue-rotate(-90deg)';
 		}
 
