@@ -1,11 +1,12 @@
 <script>
-	import { ss } from './state.svelte';
 	import X from '$lib/images/X.webp';
-	import { persist } from './shared.svelte';
+	import { persist, showTip } from './shared.svelte';
+	import { ss } from './state.svelte';
 
 	const red = $derived(ss.tip === 'red');
 	const blue = $derived(ss.tip === 'blue');
-	const tranistion = $derived(ss.tip ? 'opacity 1s' : 'none');
+	const hidden = $derived(!showTip())
+	const tranistion = $derived(hidden ? 'none' : 'opacity 1s');
 
 	const onClose = () => {
 		if (red) {
@@ -19,7 +20,7 @@
 	};
 </script>
 
-<div class="door-tip {red ? 'red-border' : 'blue-border'} {ss.tip ? '' : 'hidden'}" style="transition: {tranistion};">
+<div class="door-tip {red ? 'red-border' : 'blue-border'} {hidden ? 'hidden' : ''}" style="transition: {tranistion};">
 	<div class="door-tip-title {red ? 'red-text' : 'blue-text'}">{red ? 'Red' : 'Blue'} Door</div>
 	<div class="door-tip-desc">Slides {red ? 'down' : 'up'}, gap stays at the {red ? 'top' : 'bottom'}</div>
 	<img class="x button-base no-highlight" src={X} alt="" width={16} onpointerdown={onClose} />
@@ -37,7 +38,6 @@
 		color: var(--text);
 		padding: 16px 20px;
 		text-align: left;
-		/* transition: opacity 1s; */
 	}
 
 	.hidden {

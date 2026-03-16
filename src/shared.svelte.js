@@ -223,3 +223,5 @@ export const starRating = () => {
 export const whoosh = () => post(() => _sound.play('link1', { rate: 0.8 }), 200);
 
 export const swhoosh = () => post(() => _sound.play('link2', { rate: 0.8 }), 0);
+
+export const showTip = () => ss.challenge > OP_EASY && ss.tip;
