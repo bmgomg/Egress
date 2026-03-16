@@ -27,7 +27,7 @@
 	const canReset = $derived(!isInitial() && canRotate);
 </script>
 
-<div class="controls {isSolved() || ss.surrender ? 'hidden' : ''}">
+<div class="controls {isSolved() || ss.surrender || ss.tip ? 'hidden' : ''}">
 	<div class="control">
 		<ToolButton id="tb-ccw" src={CCW} disabled={!canRotate} opaque={true} showDisabled={solved} onClick={() => onSpin(false)} />
 		<span>turn</span>

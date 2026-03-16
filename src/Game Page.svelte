@@ -6,6 +6,7 @@
 	import Scoreboard from './Scoreboard.svelte';
 	import Stats from './Stats.svelte';
 	import OverPanel from './Over Panel.svelte';
+	import DoorTip from './Door Tip.svelte';
 
 	const hidden = $derived(ss.home || ss.opsPage);
 </script>
@@ -17,6 +18,7 @@
 	<Board />
 	<Controls />
 	<OverPanel/>
+	<DoorTip />
 	<div class="divider"></div>
 	<Toolbar />
 </div>

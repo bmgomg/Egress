@@ -18,7 +18,7 @@ export const persist = (commonOnly = false) => {
         return;
     }
 
-    json = JSON.stringify({ ..._stats, cells: ss.cells, door: ss.door, initial: ss.initial, solution: ss.solution, moves: ss.moves, over: ss.over });
+    json = JSON.stringify({ ..._stats, cells: ss.cells, door: ss.door, initial: ss.initial, solution: ss.solution, slide: ss.slide, moves: ss.moves, over: ss.over });
     localStorage.setItem(appKey(), json);
 };
 
@@ -31,7 +31,6 @@ const loadCommon = () => {
     if (job) {
         _sound.sfx = job.sfx;
         _sound.music = job.music;
-        ss.slide = job.slide;
     }
 };
 
@@ -54,6 +53,7 @@ const loadGame = () => {
             ss.door = job.door;
             ss.solution = job.solution;
             ss.moves = job.moves;
+            ss.slide = job.slide;
         }
     } else {
         _stats.plays = 0;
@@ -110,14 +110,20 @@ export const makePuzzle = () => {
 
     let pzl;
 
-    if (ss.challenge > OP_EASY && _stats.plays < INTRO_PUZZLES.length) {
+    if (ss.challenge === OP_NOT_EASY && _stats.plays < INTRO_PUZZLES.length) {
         pzl = nextIntroPuzzle(_stats.plays);
     } else {
         if (ss.challenge > OP_EASY) {
-            ss.slide = sample(SLIDE_UP, SLIDE_DOWN);
+            ss.slide = sample([SLIDE_UP, SLIDE_DOWN]);
         }
 
         pzl = generatePuzzle(ss.size, steps[0], steps[1], slideOp());
+    }
+
+    if (ss.slide === SLIDE_UP && !ss.seenBlue) {
+        ss.tip = 'blue';
+    } else if (ss.slide === SLIDE_DOWN && !ss.seenRed) {
+        ss.tip = 'red';
     }
 
     const { grid, door, solution } = pzl;
