@@ -218,4 +218,18 @@ export const whoosh = () => post(() => _sound.play('link1', { rate: 0.8 }), 200)
 
 export const swhoosh = () => post(() => _sound.play('link2', { rate: 0.8 }), 0);
 
-export const showTip = () => ss.challenge > OP_EASY && (!ss.seenRed || !ss.seenBlue);
+export const tipping = () => {
+    if (ss.challenge === OP_EASY) {
+        return false;
+    }
+
+    if (ss.slide === SLIDE_DOWN && !ss.seenRed) {
+        return true;
+    }
+
+    if (ss.slide === SLIDE_UP && !ss.seenBlue) {
+        return true;
+    }
+
+    return false;
+};
