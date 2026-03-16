@@ -37,9 +37,6 @@
 			<TextButton id="tb-not-easy" framed text={['Not Easy']} onClick={() => onChallenge(OP_NOT_EASY)} />
 			<TextButton id="tb-hard" framed text={['Quite Hard']} onClick={() => onChallenge(OP_HARD)} />
 		</div>
-		<!-- <div class="buttons" style='margin-top: 15px;'>
-			<TextButton id='tb-ops' framed  style='width: 150px;' text={['Options']} onClick={onOptions} />
-		</div> -->
 	</div>
 {/if}
 

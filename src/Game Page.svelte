@@ -8,7 +8,7 @@
 	import OverPanel from './Over Panel.svelte';
 	import DoorTip from './Door Tip.svelte';
 
-	const hidden = $derived(ss.home || ss.opsPage);
+	const hidden = $derived(ss.home);
 </script>
 
 <div class="game-page {hidden ? 'hidden' : ''}">
