@@ -1,5 +1,5 @@
 import { sample } from 'lodash-es';
-import { APP_STATE, INTRO_PUZZLES, NO_SLIDE, OP_EASY, OP_NOT_EASY, SLIDE_DOWN, SLIDE_UP } from './const';
+import { APP_STATE, INTRO_PUZZLES, NO_SLIDE, OP_EASY, OP_NOT_EASY, PITCH_PUZZLES, SLIDE_DOWN, SLIDE_UP } from './const';
 import { BLOCK, BUBBLE, canSolve, EMPTY, generatePuzzle } from './core';
 import { _sound } from './sound.svelte';
 import { _stats, ss } from './state.svelte';
@@ -11,15 +11,15 @@ export const appSubKey = () => `${ss.challenge}`;
 export const appKey = () => `${APP_STATE} • ${appSubKey()}`;
 
 export const persist = (commonOnly = false) => {
-    let json = JSON.stringify({ sfx: _sound.sfx, music: _sound.music, seenRed: ss.seenRed, seenBlue: ss.seenBlue });
-    localStorage.setItem(APP_STATE, json);
+    // let json = JSON.stringify({ sfx: _sound.sfx, music: _sound.music, seenRed: ss.seenRed, seenBlue: ss.seenBlue });
+    // localStorage.setItem(APP_STATE, json);
 
-    if (commonOnly) {
-        return;
-    }
+    // if (commonOnly) {
+    //     return;
+    // }
 
-    json = JSON.stringify({ ..._stats, cells: ss.cells, door: ss.door, initial: ss.initial, solution: ss.solution, slide: ss.slide, moves: ss.moves, over: ss.over });
-    localStorage.setItem(appKey(), json);
+    // json = JSON.stringify({ ..._stats, cells: ss.cells, door: ss.door, initial: ss.initial, solution: ss.solution, slide: ss.slide, moves: ss.moves, over: ss.over });
+    // localStorage.setItem(appKey(), json);
 };
 
 export const slideOp = () => ss.challenge === OP_EASY ? NO_SLIDE : ss.slide;
@@ -108,24 +108,14 @@ export const makePuzzle = () => {
     delete ss.over;
     delete ss.deadend;
 
-    const steps = ss.challenge === OP_EASY ? [3, 7] : ss.challenge === OP_NOT_EASY ? [5, 9] : [9, 15];
+    ss.next = (ss.next || 0) + 1;
+    const pzl = PITCH_PUZZLES[ss.next - 1];
 
-    let pzl;
-
-    if (ss.challenge === OP_NOT_EASY && _stats.plays < INTRO_PUZZLES.length) {
-        pzl = nextIntroPuzzle(_stats.plays);
-    } else {
-        if (ss.challenge > OP_EASY) {
-            ss.slide = sample([SLIDE_UP, SLIDE_DOWN]);
-        }
-
-        pzl = generatePuzzle(ss.size, steps[0], steps[1], slideOp());
-    }
-
-    const { grid, door, solution } = pzl;
+    const { grid, door, slide = NO_SLIDE, solution } = pzl;
 
     let cells = makeCells(grid);
     ss.door = door;
+    ss.slide = slide;
     ss.solution = solution;
 
     ss.initial = { cells: [...cells], door: { ...ss.door } };
@@ -149,7 +139,7 @@ export const onChallenge = (op) => {
 
     ss.challenge = op;
     ss.size = 3;
-    loadGame();
+    // loadGame();
 
     if (ss.cells) {
         onStart();

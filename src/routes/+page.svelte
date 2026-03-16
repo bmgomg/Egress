@@ -1,7 +1,9 @@
 <script>
+	import { OP_EASY } from '../const';
 	import GamePage from '../Game Page.svelte';
 	import Home from '../Home.svelte';
 	import SplashIn from '../Pitch Splash In.svelte';
+	import { onChallenge } from '../shared.svelte';
 	// import Splash from '../Pitch Splash Out.svelte';
 	import { ss } from '../state.svelte';
 	import { clientRect, post } from '../utils';
@@ -44,7 +46,10 @@
 	});
 
 	ss.splash = true;
-	post(() => (delete ss.splash), 5000);
+	post(() => {
+		delete ss.splash;
+		onChallenge(OP_EASY);
+	}, 8000);
 </script>
 
 <div class="app">

@@ -52,25 +52,6 @@ export const INTRO_PUZZLES = [
     { grid: [[1, 1, 2], [2, 1, 2], [1, 1, 2]], door: { wall: 2, corner: 1 }, slide: SLIDE_UP, solution: ['CW', 'CW', 'CW', 'CW', 'CW', 'CCW'] }
 ];
 
-/*
-Slide-Down / Red — #1 (side wall start, par 5)
-Door: Left wall · Solution: CCW CW CW CW CCW
-o B B
-o o o
-o o o
-Slide-Down / Red — #2 (par 6)
-Door: Bottom wall · Solution: CCW CW CW CW CW CCW
-o o B
-o o B
-o o B
-Slide-Up / Blue — #1 (side wall start, par 5)
-Door: Left wall · Solution: CCW CCW CW CW CCW
-B o B
-B B B
-B o B
-Slide-Up / Blue — #2 (par 6)
-Door: Bottom wall · Solution: CW CW CW CW CW CCW
-B B o
-o B o
-B B o
-*/
+export const PITCH_PUZZLES = [
+    { grid: [[2, 1, 1], [2, 2, 1], [1, 1, 1]], door: { wall: 1, corner: 0 }, solution: ['CW', 'CW', 'CW', 'CW', 'CCW', 'CCW', 'CCW'] }
+];

@@ -69,7 +69,7 @@
 	}
 
 	.id {
-		display: none;
+		display: grid;
 		grid-area: 1/1;
 		place-self: center;
 		font-size: 28px;

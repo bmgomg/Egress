@@ -1,7 +1,14 @@
 <script>
+	import { _sound } from './sound.svelte';
+
+	const onClick = () => {
+		if (!_sound.musicPlayed) {
+			_sound.playMusic();
+		}
+	};
 </script>
 
-<div class="splash">
+<div class="splash no-highlight" onpointerdown={onClick}>
 	<div class="title-ornament">A PUZZLE OF</div>
 	<div class="title-ornament">GRAVITY AND ESCAPE</div>
 	<div class="title">Egress</div>
@@ -10,7 +17,7 @@
 
 <style>
 	.splash {
-        position: absolute;
+		position: absolute;
 		z-index: 300;
 		width: 100dvw;
 		height: 100dvh;
@@ -26,7 +33,7 @@
 		letter-spacing: 0.06em;
 		line-height: 1;
 		text-align: center;
-        margin-top: 3vw;
+		margin-top: 3vw;
 		position: relative;
 		z-index: 1;
 		opacity: 0;
@@ -54,7 +61,7 @@
 		font-family: EBG;
 		font-style: italic;
 		font-size: 4vw;
-		color: #C0B090A6;
+		color: #c0b090a6;
 		letter-spacing: 0.06em;
 		text-align: center;
 		margin-top: 2vw;
