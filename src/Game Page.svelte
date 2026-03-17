@@ -8,9 +8,15 @@
 	import OverPanel from './Over Panel.svelte';
 	import DoorTip from './Door Tip.svelte';
 	import { fade } from 'svelte/transition';
+
+	const onPointerDown = (e) => {
+		if (e.button === 2) {
+			ss.pulse = true;
+		}
+	};
 </script>
 
-<div class="game-page" in:fade>
+<div class="game-page" in:fade onpointerdown={onPointerDown}>
 	{#if !ss.home}
 		<Stats />
 		<div class="divider"></div>

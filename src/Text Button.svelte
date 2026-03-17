@@ -6,9 +6,8 @@
 
 	let scale = $state(1);
 	let timer = $state(false);
-	let pulse = $state(false);
 
-	const classes = $derived(['button-base no-highlight button ' + (framed ? 'framed' : 'text-only') +  (pulse ? ' pulse' : ''), { disabled }]);
+	const classes = $derived(['button-base no-highlight button ' + (framed ? 'framed' : 'text-only'), { disabled }]);
 	const _style = $derived(`${style}; transform: scale(${scale})`);
 
 	$effect(() => {
@@ -33,11 +32,6 @@
 	});
 
 	const onPointerDown = (e) => {
-		if (e.button === 2) {
-			pulse = true;
-			return;
-		}
-
 		if (e.ctrlKey && e.shiftKey && e.altKey) {
 			ss.debug = !ss.debug;
 			return;
@@ -119,19 +113,5 @@
 
 	.button:focus {
 		outline: none !important;
-	}
-
-	.pulse {
-		animation: pulse 0.2s alternate 6 ease-in-out;
-		animation-delay: 0.5s;
-	}
-
-	@keyframes pulse {
-		from {
-			transform: scale(1);
-		}
-		to {
-			transform: scale(0.7);
-		}
 	}
 </style>

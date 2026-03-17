@@ -70,7 +70,9 @@
 <div class="toolbar">
 	<TextButton id="tb-home" text={['Home']} disabled={!canHome} onClick={onHome} />
 	<TextButton id="tb-stats" text={['Reset', 'Stats']} disabled={!canResetStats} onClick={onResetStats} />
-	<TextButton id="tb-surrender" text={['Solve', 'For Me']} disabled={!canSurrender} onClick={onSurrender} />
+	<div class={ss.pulse ? 'pulse' : ''}>
+		<TextButton id="tb-surrender" text={['Solve', 'For Me']} disabled={!canSurrender} onClick={onSurrender} />
+	</div>
 	<TextButton id="tb-sfx" text={[' SFX ', _sound.sfx ? 'On' : 'Off']} onClick={onSfx} />
 	<TextButton id="tb-music" text={['Music', _sound.music ? 'On' : 'Off']} onClick={onMusic} />
 </div>
@@ -83,5 +85,18 @@
 		place-content: center;
 		align-items: center;
 		gap: 25px;
+	}
+
+	.pulse {
+		animation: pulse 0.2s alternate 6 linear;
+	}
+
+	@keyframes pulse {
+		from {
+			transform: scale(1);
+		}
+		to {
+			transform: scale(1.3);
+		}
 	}
 </style>
