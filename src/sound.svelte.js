@@ -1,6 +1,22 @@
 import sounds from '$lib/sounds/sfx.mp3';
 import music from '$lib/sounds/music.mp3';
+import Line1 from '$lib/sounds/Line 1.mp3';
+import Line2 from '$lib/sounds/Line 2.mp3';
+import Line3 from '$lib/sounds/Line 3.mp3';
+import Line4 from '$lib/sounds/Line 4.mp3';
+import Line5 from '$lib/sounds/Line 5.mp3';
+import Line6 from '$lib/sounds/Line 6.mp3';
+import Line7 from '$lib/sounds/Line 7.mp3';
+import Line8 from '$lib/sounds/Line 8.mp3';
+import Line9 from '$lib/sounds/Line 9.mp3';
+import Line10 from '$lib/sounds/Line 10.mp3';
+import Line11 from '$lib/sounds/Line 11.mp3';
+import Line12 from '$lib/sounds/Line 12.mp3';
+import Line13 from '$lib/sounds/Line 13.mp3';
+import Line14 from '$lib/sounds/Line 14.mp3';
 import { Howl } from 'howler/dist/howler.core.min';
+
+let line;
 
 const sprite = {
     click: [0, 160],
@@ -24,7 +40,22 @@ const sprite = {
 };
 
 const howl = new Howl({ src: [sounds], sprite });
-const loop = new Howl({ src: [music], loop: true, volume: 0.6});
+const loop = new Howl({ src: [music], loop: true, volume: 0.6 });
+const v1 = new Howl({ src: Line1 });
+const v2 = new Howl({ src: Line2 });
+const v3 = new Howl({ src: Line3 });
+const v4 = new Howl({ src: Line4 });
+const v5 = new Howl({ src: Line5 });
+const v6 = new Howl({ src: Line6 });
+const v7 = new Howl({ src: Line7 });
+const v8 = new Howl({ src: Line8 });
+const v9 = new Howl({ src: Line9 });
+const v10 = new Howl({ src: Line10 });
+const v11 = new Howl({ src: Line11 });
+const v12 = new Howl({ src: Line12 });
+const v13 = new Howl({ src: Line13 });
+const v14 = new Howl({ src: Line14 });
+const LINES = [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14];
 
 export const _sound = $state({
     sfx: true,
@@ -46,5 +77,8 @@ export const _sound = $state({
     },
     stopMusic: () => {
         loop.stop();
+    },
+    playVoice: (l) => {
+        LINES[l - 1].play();
     }
 });

@@ -2,6 +2,7 @@
 export const ss = $state({
     home: false,
     seenPage: {},
+    voiceLine: 1
 });
 
 export const _stats = $state({

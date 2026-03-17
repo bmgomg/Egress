@@ -9,7 +9,9 @@
 			_sound.playMusic();
 		}
 
-		if (e.ctrlKey) {
+		if (e.altKey) {
+			_sound.playVoice(ss.voiceLine);
+		} else if (e.ctrlKey) {
 			delete ss.splash;
 			onChallenge(OP_EASY);
 		}
