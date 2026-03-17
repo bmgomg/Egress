@@ -8,14 +8,7 @@
 	const red = $derived(ss.slide === SLIDE_DOWN && !ss.seenRed);
 	const blue = $derived(ss.slide === SLIDE_UP && !ss.seenBlue);
 	const hidden = $derived(!red && !blue);
-
-	$effect(() => {
-		_log('red = ' + red);
-		_log('seen red = ' + ss.seenRed);
-		_log('blue = ' + blue);
-		_log('seen blue = ' + ss.seenBlue);
-		console.log('---');
-	});
+	const tranistion = $derived(hidden ? 'none' : 'opacity 1s');
 
 	const onClose = () => {
 		if (red) {
@@ -28,13 +21,11 @@
 	};
 </script>
 
-{#if !hidden}
-	<div class="door-tip {red ? 'red-border' : 'blue-border'}" in:fade={{ duration: 1000 }}>
-		<div class="door-tip-title {red ? 'red-text' : 'blue-text'}">{red ? 'Red' : 'Blue'} Door</div>
-		<div class="door-tip-desc">Slides {red ? 'down' : 'up'}, gap stays at the {red ? 'top' : 'bottom'}</div>
-		<img class="x button-base no-highlight" src={X} alt="" width={16} onpointerdown={onClose} />
-	</div>
-{/if}
+<div class="door-tip {red ? 'red-border' : 'blue-border'} {hidden ? 'hidden' : ''}" style="transition: {tranistion};">
+	<div class="door-tip-title {red ? 'red-text' : 'blue-text'}">{red ? 'Red' : 'Blue'} Door</div>
+	<div class="door-tip-desc">Slides {red ? 'down' : 'up'}, gap stays at the {red ? 'top' : 'bottom'}</div>
+	<img class="x button-base no-highlight" src={X} alt="" width={16} onpointerdown={onClose} />
+</div>
 
 <style>
 	.door-tip {
@@ -48,6 +39,10 @@
 		color: var(--text);
 		padding: 16px 20px;
 		text-align: left;
+	}
+
+	.hidden {
+		opacity: 0;
 	}
 
 	.red-border {
