@@ -141,13 +141,13 @@ export const onChallenge = (op) => {
     ss.size = 3;
     // loadGame();
 
-    if (ss.cells) {
-        onStart();
-    } else {
+    // if (ss.cells) {
+        // onStart();
+    // } else {
         makePuzzle();
-    }
+    // }
 
-    ss.seenPage[appSubKey()] = true;
+    // ss.seenPage[appSubKey()] = true;
     delete ss.home;
 };
 

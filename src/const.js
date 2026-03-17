@@ -6,16 +6,7 @@ export const TOP = 0, RIGHT = 1, BOT = 2, LEFT = 3;
 export const NO_SLIDE = 0, SLIDE_UP = -1, SLIDE_DOWN = 1;
 
 export const COLUMN_TRANSITIONS =
-{   //  DOOR AT:   TOP           SIDE        BOTTOM
-    '❌❌': [[+0, +0, +0], [+0, +0, +0], [+0, +0, +0]],
-    '❌🟨': [[+0, +0, +0], [+0, +0, +0], [+0, +0, +1]],
-    '❌🔵': [[+0, -2, +0], [+1, -1, +0], [+1, -1, +0]],
-    '🟨❌': [[+1, -1, +0], [+1, -1, +0], [+2, +0, +0]],
-    '🟨🟨': [[+0, +0, +0], [+0, +0, +0], [+2, +1, +0]],
-    '🟨🔵': [[+0, +0, +0], [+0, +0, +0], [+2, +1, +0]],
-    '🔵❌': [[-1, +0, +0], [+0, +0, +0], [+0, +0, +0]],
-    '🔵🟨': [[-1, +0, +0], [+0, +0, +0], [+0, +1, +0]],
-    '🔵🔵': [[-1, -2, +0], [+0, +0, +0], [+0, +0, +0]],
+{   // DOOR AT:  TOP OF COL    NOT IN COL    BOT OF COL
     '❌❌❌': [[+0, +0, +0], [+0, +0, +0], [+0, +0, +0]],
     '❌❌🟨': [[+0, +0, +0], [+0, +0, +0], [+0, +0, +1]],
     '❌❌🔵': [[+0, +0, -3], [+1, +1, -2], [+1, +1, -2]],
@@ -53,5 +44,7 @@ export const INTRO_PUZZLES = [
 ];
 
 export const PITCH_PUZZLES = [
-    { grid: [[2, 1, 1], [2, 2, 1], [1, 1, 1]], door: { wall: 1, corner: 0 }, solution: ['CW', 'CW', 'CW', 'CW', 'CCW', 'CCW', 'CCW'] }
+    { grid: [[2, 1, 1], [2, 2, 1], [1, 1, 1]], door: { wall: 1, corner: 0 }, solution: ['CW', 'CW', 'CW', 'CW', 'CCW', 'CCW', 'CCW'] },
+    { grid: [[2, 1, 1], [2, 2, 2], [2, 2, 2]], door: { wall: 3, corner: 0 }, slide: SLIDE_DOWN, solution: ['CCW', 'CW', 'CW', 'CW', 'CCW'] },
+    { grid: [[1, 2, 1], [1, 1, 1], [1, 2, 1]], door: { wall: 3, corner: 1 }, slide: SLIDE_UP, solution: ['CCW', 'CCW', 'CW', 'CW', 'CCW'] },
 ];

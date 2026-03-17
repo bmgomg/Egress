@@ -8,8 +8,6 @@
 	import OverPanel from './Over Panel.svelte';
 	import DoorTip from './Door Tip.svelte';
 	import { fade } from 'svelte/transition';
-
-	const hidden = $derived(ss.splash || ss.home);
 </script>
 
 <div class="game-page" in:fade>
@@ -36,11 +34,6 @@
 		box-sizing: border-box;
 		padding: 20px 0;
 		user-select: none;
-	}
-
-	.hidden {
-		opacity: 0;
-		pointer-events: none;
 	}
 
 	.divider {
