@@ -6,6 +6,7 @@
 
 	const red = $derived(ss.slide === SLIDE_DOWN && !ss.seenRed);
 	const blue = $derived(ss.slide === SLIDE_UP && !ss.seenBlue);
+	const hidden = $derived(!red && !blue);
 	const tranistion = $derived(hidden ? 'none' : 'opacity 1s');
 
 	$effect(() => {
