@@ -1,13 +1,20 @@
 <script>
 	import X from '$lib/images/X.webp';
 	import { SLIDE_DOWN, SLIDE_UP } from './const';
-	import { persist } from './shared.svelte';
+	import { _log, persist } from './shared.svelte';
 	import { ss } from './state.svelte';
 
 	const red = $derived(ss.slide === SLIDE_DOWN && !ss.seenRed);
 	const blue = $derived(ss.slide === SLIDE_UP && !ss.seenBlue);
-	const hidden = $derived(!red && !blue);
-	const tranistion = $derived(hidden ? 'none' : 'opacity 1s');
+	const visible = $derived(!ss.home && (red || blue));
+
+	$effect(() => {
+		_log('red = ' + red);
+		_log('seen red = ' + ss.seenRed);
+		_log('blue = ' + blue);
+		_log('seen blue = ' + ss.seenBlue);
+		console.log('---');
+	});
 
 	const onClose = () => {
 		if (red) {
@@ -20,7 +27,7 @@
 	};
 </script>
 
-<div class="door-tip {red ? 'red-border' : 'blue-border'} {hidden ? 'hidden' : ''}" style="transition: {tranistion};">
+<div class="door-tip {red ? 'red-border' : 'blue-border'} {visible ? 'visible' : ''}">
 	<div class="door-tip-title {red ? 'red-text' : 'blue-text'}">{red ? 'Red' : 'Blue'} Door</div>
 	<div class="door-tip-desc">Slides {red ? 'down' : 'up'}, gap stays at the {red ? 'top' : 'bottom'}</div>
 	<img class="x button-base no-highlight" src={X} alt="" width={16} onpointerdown={onClose} />
@@ -38,10 +45,12 @@
 		color: var(--text);
 		padding: 16px 20px;
 		text-align: left;
+		transition: opacity 5s;
+		opacity: 0;
 	}
 
-	.hidden {
-		opacity: 0;
+	.visible {
+		opacity: 1;
 	}
 
 	.red-border {

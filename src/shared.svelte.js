@@ -109,6 +109,11 @@ export const makePuzzle = () => {
     delete ss.deadend;
 
     ss.next = (ss.next || 0) + 1;
+
+    if (ss.next >= PITCH_PUZZLES.length) {
+        ss.next = 1;
+    }
+
     const pzl = PITCH_PUZZLES[ss.next - 1];
 
     const { grid, door, slide = NO_SLIDE, solution } = pzl;
@@ -148,7 +153,7 @@ export const onChallenge = (op) => {
     // }
 
     // ss.seenPage[appSubKey()] = true;
-    delete ss.home;
+    ss.home = false;
 };
 
 export const isInitial = () => {
