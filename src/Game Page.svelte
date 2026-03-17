@@ -19,7 +19,7 @@
 		<Controls />
 		<OverPanel />
 		<DoorTip />
-		<div class="divider"></div>
+		<div class="divider" style='grid-area: 6/1;'></div>
 		<Toolbar />
 	{/if}
 </div>

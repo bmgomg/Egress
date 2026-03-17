@@ -252,6 +252,7 @@
 
 <style>
 	.board {
+		grid-area: 4/1;
 		place-self: center;
 		display: grid;
 		transition: rotate 0.5s linear;

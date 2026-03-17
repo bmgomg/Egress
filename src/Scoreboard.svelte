@@ -27,6 +27,7 @@
 
 <style>
 	.scoreboard {
+		grid-area: 3/1;
 		place-self: center;
 		display: grid;
 		grid-auto-flow: column;

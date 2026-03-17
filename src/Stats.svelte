@@ -19,6 +19,7 @@
 
 <style>
 	.stats {
+		grid-area: 1/1;
 		place-content: center;
 		display: grid;
 		grid-auto-flow: column;
