@@ -1,9 +1,17 @@
 <script>
+	import { OP_EASY } from './const';
+	import { onChallenge } from './shared.svelte';
 	import { _sound } from './sound.svelte';
+	import { ss } from './state.svelte';
 
-	const onClick = () => {
+	const onClick = (e) => {
 		if (!_sound.musicPlayed) {
 			_sound.playMusic();
+		}
+
+		if (e.button === 2) {
+			delete ss.splash;
+			onChallenge(OP_EASY);
 		}
 	};
 </script>

@@ -1,5 +1,6 @@
 <script>
 	import X from '$lib/images/X.webp';
+	import { fade } from 'svelte/transition';
 	import { SLIDE_DOWN, SLIDE_UP } from './const';
 	import { _log, persist } from './shared.svelte';
 	import { ss } from './state.svelte';
@@ -7,7 +8,6 @@
 	const red = $derived(ss.slide === SLIDE_DOWN && !ss.seenRed);
 	const blue = $derived(ss.slide === SLIDE_UP && !ss.seenBlue);
 	const hidden = $derived(!red && !blue);
-	const tranistion = $derived(hidden ? 'none' : 'opacity 1s');
 
 	$effect(() => {
 		_log('red = ' + red);
@@ -28,11 +28,13 @@
 	};
 </script>
 
-<div class="door-tip {red ? 'red-border' : 'blue-border'} {hidden ? 'hidden' : ''}" style="transition: {tranistion};">
-	<div class="door-tip-title {red ? 'red-text' : 'blue-text'}">{red ? 'Red' : 'Blue'} Door</div>
-	<div class="door-tip-desc">Slides {red ? 'down' : 'up'}, gap stays at the {red ? 'top' : 'bottom'}</div>
-	<img class="x button-base no-highlight" src={X} alt="" width={16} onpointerdown={onClose} />
-</div>
+{#if !hidden}
+	<div class="door-tip {red ? 'red-border' : 'blue-border'}" in:fade={{ duration: 1000 }}>
+		<div class="door-tip-title {red ? 'red-text' : 'blue-text'}">{red ? 'Red' : 'Blue'} Door</div>
+		<div class="door-tip-desc">Slides {red ? 'down' : 'up'}, gap stays at the {red ? 'top' : 'bottom'}</div>
+		<img class="x button-base no-highlight" src={X} alt="" width={16} onpointerdown={onClose} />
+	</div>
+{/if}
 
 <style>
 	.door-tip {
@@ -46,10 +48,6 @@
 		color: var(--text);
 		padding: 16px 20px;
 		text-align: left;
-	}
-
-	.hidden {
-		opacity: 0;
 	}
 
 	.red-border {

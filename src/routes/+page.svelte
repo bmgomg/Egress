@@ -46,10 +46,11 @@
 	});
 
 	ss.splash = true;
-	post(() => {
-		delete ss.splash;
-		onChallenge(OP_EASY);
-	}, 8000);
+
+	// post(() => {
+	// 	delete ss.splash;
+	// 	onChallenge(OP_EASY);
+	// }, 8000);
 </script>
 
 <div class="app">

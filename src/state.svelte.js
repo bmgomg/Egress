@@ -1,6 +1,6 @@
 
 export const ss = $state({
-    // home: true,
+    home: false,
     seenPage: {},
 });
 

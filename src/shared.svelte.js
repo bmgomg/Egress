@@ -149,7 +149,7 @@ export const onChallenge = (op) => {
     // if (ss.cells) {
         // onStart();
     // } else {
-        makePuzzle();
+        post(makePuzzle);
     // }
 
     // ss.seenPage[appSubKey()] = true;
