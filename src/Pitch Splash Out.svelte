@@ -1,7 +1,15 @@
 <script>
+	import { _sound } from './sound.svelte';
+	import { ss } from './state.svelte';
+
+	const onPointerDown = (e) => {
+		if (e.ctrlKey) {
+			_sound.playVoice(++ss.voiceLine);
+		}
+	};
 </script>
 
-<div class="splash">
+<div class="splash no-highlight" onpointerdown={onPointerDown}>
 	<div class="title">Egress</div>
 	<div class="byline">by Beautiful Mind Games</div>
 	<div class="tagline">Think outside the box — then empty it.</div>
@@ -63,7 +71,7 @@
 		z-index: 1;
 		opacity: 0;
 		animation: fadein 1.8s ease forwards;
-		animation-delay: 2.6s;
+		animation-delay: 4s;
 	}
 
 	@keyframes emerge {

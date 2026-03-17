@@ -8,12 +8,15 @@
 	import OverPanel from './Over Panel.svelte';
 	import DoorTip from './Door Tip.svelte';
 	import { fade } from 'svelte/transition';
+	import { _sound } from './sound.svelte';
 
 	const onPointerDown = (e) => {
-		if (e.altKey) {
+		if (e.altKey && e.ctrlKey) {
+			ss.splash = 'out';
+		} else if (e.altKey) {
 			ss.pulse = true;
 		} else if (e.ctrlKey) {
-			ss.splash = 'out';
+			_sound.playVoice(++ss.voiceLine);
 		}
 	};
 </script>

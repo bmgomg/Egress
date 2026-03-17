@@ -4,6 +4,7 @@
 	import { onChallenge } from './shared.svelte';
 	import { ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
+	import { _sound } from './sound.svelte';
 
 	const ul = '<ul style="margin: -10px 0 0;">';
 	const li = '<li style="margin: 10px 0 0 -20px;">';
@@ -18,10 +19,16 @@
         </ul>
 		<span style='margin-top: 30px;'>Clear the box in as few rotations as possible.</span>
 		`;
+
+	const onPointerDown = (e) => {
+		if (e.ctrlKey) {
+			_sound.playVoice(++ss.voiceLine);
+		}
+	};
 </script>
 
 {#if ss.home}
-	<div class="home" in:fade={{ duration: 200 }}>
+	<div class="home" in:fade={{ duration: 200 }} onpointerdown={onPointerDown}>
 		<div class="title-ornament">A puzzle of</div>
 		<div class="title-ornament">gravity &amp; escape</div>
 		<div class="title">Egress</div>
