@@ -10,7 +10,7 @@
 	import { fade } from 'svelte/transition';
 
 	const onPointerDown = (e) => {
-		if (e.button === 2) {
+		if (e.altKey) {
 			ss.pulse = true;
 		} else if (e.ctrlKey) {
 			ss.splash = 'out';

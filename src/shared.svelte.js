@@ -110,7 +110,7 @@ export const makePuzzle = () => {
 
     ss.next = (ss.next || 0) + 1;
 
-    if (ss.next >= PITCH_PUZZLES.length) {
+    if (ss.next > PITCH_PUZZLES.length) {
         ss.next = 1;
     }
 
