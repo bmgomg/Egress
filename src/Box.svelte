@@ -24,7 +24,7 @@
 		}
 
 		if (slide === SLIDE_DOWN) {
-			return 'hue-rotate(-90deg)';
+			return 'hue-rotate(-90deg) brightness(1.3)';
 		}
 
 		return 'hue-rotate(120deg) brightness(1.5)';

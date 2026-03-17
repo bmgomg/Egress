@@ -51,7 +51,7 @@
 	}
 
 	.red-border {
-		border-color: #a15f48b3;
+		border-color: #e15f48b3;
 	}
 
 	.blue-border {
@@ -59,7 +59,7 @@
 	}
 
 	.red-text {
-		color: #a15f48;
+		color: #b15f48;
 	}
 
 	.blue-text {
