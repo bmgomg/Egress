@@ -12,11 +12,13 @@
 	const onPointerDown = (e) => {
 		if (e.button === 2) {
 			ss.pulse = true;
+		} else if (e.ctrlKey) {
+			ss.splash = 'out';
 		}
 	};
 </script>
 
-<div class="game-page" in:fade onpointerdown={onPointerDown}>
+<div class="game-page" transition:fade onpointerdown={onPointerDown}>
 	{#if !ss.home}
 		<Stats />
 		<div class="divider"></div>

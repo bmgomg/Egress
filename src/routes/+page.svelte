@@ -3,6 +3,7 @@
 	import GamePage from '../Game Page.svelte';
 	import Home from '../Home.svelte';
 	import SplashIn from '../Pitch Splash In.svelte';
+	import SplashOut from '../Pitch Splash Out.svelte';
 	import { onChallenge } from '../shared.svelte';
 	// import Splash from '../Pitch Splash Out.svelte';
 	import { ss } from '../state.svelte';
@@ -45,7 +46,7 @@
 		};
 	});
 
-	ss.splash = true;
+	ss.splash = 'in';
 
 	// post(() => {
 	// 	delete ss.splash;
@@ -54,8 +55,10 @@
 </script>
 
 <div class="app">
-	{#if ss.splash}
+	{#if ss.splash === 'in'}
 		<SplashIn />
+	{:else if ss.splash === 'out'}
+		<SplashOut />
 	{:else}
 		<div class="content bg" style="scale: {scale};">
 			<GamePage />

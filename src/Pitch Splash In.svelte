@@ -9,7 +9,7 @@
 			_sound.playMusic();
 		}
 
-		if (e.button === 2) {
+		if (e.ctrlKey) {
 			delete ss.splash;
 			onChallenge(OP_EASY);
 		}
