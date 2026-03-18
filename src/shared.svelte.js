@@ -117,6 +117,21 @@ export const makePuzzle = () => {
     } else {
         if (ss.challenge > OP_EASY) {
             ss.slide = sample([SLIDE_UP, SLIDE_DOWN]);
+
+            // don't allow the same slide for three plays in a row
+            const i = ss.challenge - OP_NOT_EASY;
+            const recents = ss.recentSlides[i];
+            const count = recents.length;
+
+            if (count > 1) {
+                if (recents[count - 1] === recents[count - 2] && recents[count - 2] === ss.slide) {
+                    ss.slide = -ss.slide;
+                }
+
+                ss.recentSlides[i].shift();
+            }
+
+            ss.recentSlides[i].push(ss.slide);
         }
 
         pzl = generatePuzzle(ss.size, steps[0], steps[1], slideOp());

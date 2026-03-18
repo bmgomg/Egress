@@ -2,6 +2,7 @@
 export const ss = $state({
     home: true,
     seenPage: {},
+    recentSlides: [[-1, -1], []],
 });
 
 export const _stats = $state({
