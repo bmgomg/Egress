@@ -145,7 +145,7 @@ const onStart = () => {
 };
 
 export const onChallenge = (op) => {
-    _sound.play('tap');
+    _sound.tap();
 
     ss.challenge = op;
     ss.size = 3;

@@ -6,12 +6,12 @@
 	import { post } from './utils';
 
 	const onHome = () => {
-		_sound.play('tap');
+		_sound.tap();
 		ss.home = true;
 	};
 
 	const onResetStats = () => {
-		_sound.play('tap');
+		_sound.tap();
 		swhoosh();
 
 		_stats.plays = 0;
@@ -20,7 +20,7 @@
 	};
 
 	const onSurrender = () => {
-		_sound.play('tap');
+		_sound.tap();
 
 		ss.surrender = true;
 		ss.moves = 0;
