@@ -24,7 +24,7 @@ const sprite = {
 };
 
 const howl = new Howl({ src: [sounds], sprite });
-const loop = new Howl({ src: [music], loop: true, volume: 0.6});
+const loop = new Howl({ src: [music], loop: true, volume: 0.6 });
 
 export const _sound = $state({
     sfx: true,
@@ -38,6 +38,8 @@ export const _sound = $state({
             howl.volume(volume);
         }
     },
+
+    tap: () => howl.play('tap'),
     playMusic: () => {
         if (_sound.music) {
             _sound.musicPlayed = true;
@@ -46,6 +48,5 @@ export const _sound = $state({
     },
     stopMusic: () => {
         loop.stop();
-    },
-    tap: () => howl.play('tap'),
+    }
 });
