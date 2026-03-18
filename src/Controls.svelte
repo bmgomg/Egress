@@ -51,7 +51,7 @@
 		place-self: center;
 		display: grid;
 		grid-auto-flow: column;
-		gap: 40px;
+		gap: 55px;
 		transition: opacity 0.3s;
 		z-index: 1;
 	}
