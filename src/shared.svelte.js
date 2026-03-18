@@ -1,6 +1,6 @@
 import { sample } from 'lodash-es';
-import { APP_STATE, INTRO_PUZZLES, NO_SLIDE, OP_EASY, OP_NOT_EASY, SLIDE_DOWN, SLIDE_UP } from './const';
-import { BLOCK, BUBBLE, canSolve, EMPTY, generatePuzzle } from './core';
+import { APP_STATE, BLOCK, BUBBLE, EMPTY, INTRO_PUZZLES, NO_SLIDE, OP_EASY, OP_NOT_EASY, SLIDE_DOWN, SLIDE_UP } from './const';
+import { canSolve, generatePuzzle } from './core';
 import { _sound } from './sound.svelte';
 import { _stats, ss } from './state.svelte';
 import { post } from './utils';
