@@ -47,5 +47,5 @@ export const _sound = $state({
     stopMusic: () => {
         loop.stop();
     },
-    tap: _sound.play('tap'),
+    tap: () => howl.play('tap'),
 });
