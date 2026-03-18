@@ -78,6 +78,7 @@ export const _sound = $state({
     stopMusic: () => {
         loop.stop();
     },
+    tap: _sound.play('tap'),
     playVoice: (l) => {
         LINES[l - 1].play();
     }

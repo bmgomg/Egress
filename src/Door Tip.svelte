@@ -1,8 +1,8 @@
 <script>
 	import X from '$lib/images/X.webp';
-	import { fade } from 'svelte/transition';
 	import { SLIDE_DOWN, SLIDE_UP } from './const';
-	import { _log, persist } from './shared.svelte';
+	import { persist } from './shared.svelte';
+	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
 
 	const red = $derived(ss.slide === SLIDE_DOWN && !ss.seenRed);
@@ -11,6 +11,8 @@
 	const tranistion = $derived(hidden ? 'none' : 'opacity 1s');
 
 	const onClose = () => {
+		_sound.tap();
+
 		if (red) {
 			ss.seenRed = true;
 		} else if (blue) {
