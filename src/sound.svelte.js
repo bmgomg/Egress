@@ -16,8 +16,6 @@ import Line13 from '$lib/sounds/Line 13.mp3';
 import Line14 from '$lib/sounds/Line 14.mp3';
 import { Howl } from 'howler/dist/howler.core.min';
 
-let line;
-
 const sprite = {
     click: [0, 160],
     cluck: [230, 180],
@@ -69,6 +67,7 @@ export const _sound = $state({
             howl.volume(volume);
         }
     },
+    tap: () => howl.play('tap'),
     playMusic: () => {
         if (_sound.music) {
             _sound.musicPlayed = true;
@@ -78,7 +77,6 @@ export const _sound = $state({
     stopMusic: () => {
         loop.stop();
     },
-    tap: _sound.play('tap'),
     playVoice: (l) => {
         LINES[l - 1].play();
     }
