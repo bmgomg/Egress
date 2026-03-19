@@ -11,57 +11,57 @@ export const appSubKey = () => `${ss.challenge}`;
 export const appKey = () => `${APP_STATE} • ${appSubKey()}`;
 
 export const persist = (commonOnly = false) => {
-    let json = JSON.stringify({ sfx: _sound.sfx, music: _sound.music, seenRed: ss.seenRed, seenBlue: ss.seenBlue });
-    localStorage.setItem(APP_STATE, json);
+    // let json = JSON.stringify({ sfx: _sound.sfx, music: _sound.music, seenRed: ss.seenRed, seenBlue: ss.seenBlue });
+    // localStorage.setItem(APP_STATE, json);
 
-    if (commonOnly) {
-        return;
-    }
+    // if (commonOnly) {
+    //     return;
+    // }
 
-    json = JSON.stringify({ ..._stats, cells: ss.cells, door: ss.door, initial: ss.initial, solution: ss.solution, slide: ss.slide, moves: ss.moves, over: ss.over });
-    localStorage.setItem(appKey(), json);
+    // json = JSON.stringify({ ..._stats, cells: ss.cells, door: ss.door, initial: ss.initial, solution: ss.solution, slide: ss.slide, moves: ss.moves, over: ss.over });
+    // localStorage.setItem(appKey(), json);
 };
 
 export const slideOp = () => ss.challenge === OP_EASY ? NO_SLIDE : ss.slide;
 
 const loadCommon = () => {
-    const json = localStorage.getItem(APP_STATE);
-    const job = JSON.parse(json);
+    // const json = localStorage.getItem(APP_STATE);
+    // const job = JSON.parse(json);
 
-    if (job) {
-        _sound.sfx = job.sfx;
-        _sound.music = job.music;
-        ss.seenRed = job.seenRed;
-        ss.seenBlue = job.seenBlue;
-    }
+    // if (job) {
+    //     _sound.sfx = job.sfx;
+    //     _sound.music = job.music;
+    //     ss.seenRed = job.seenRed;
+    //     ss.seenBlue = job.seenBlue;
+    // }
 };
 
 const loadGame = () => {
-    loadCommon();
+    // loadCommon();
 
-    const json = localStorage.getItem(appKey());
-    const job = JSON.parse(json);
+    // const json = localStorage.getItem(appKey());
+    // const job = JSON.parse(json);
 
-    delete ss.cells;
+    // delete ss.cells;
 
-    if (job) {
-        _stats.plays = job.plays;
-        _stats.wins = job.wins;
-        _stats.total = job.total;
+    // if (job) {
+    //     _stats.plays = job.plays;
+    //     _stats.wins = job.wins;
+    //     _stats.total = job.total;
 
-        if (ss.seenPage[appSubKey()] || !job.over) {
-            ss.cells = job.cells;
-            ss.initial = job.initial;
-            ss.door = job.door;
-            ss.solution = job.solution;
-            ss.moves = job.moves;
-            ss.slide = job.slide;
-        }
-    } else {
-        _stats.plays = 0;
-        _stats.wins = 0;
-        _stats.total = 0;
-    }
+    //     if (ss.seenPage[appSubKey()] || !job.over) {
+    //         ss.cells = job.cells;
+    //         ss.initial = job.initial;
+    //         ss.door = job.door;
+    //         ss.solution = job.solution;
+    //         ss.moves = job.moves;
+    //         ss.slide = job.slide;
+    //     }
+    // } else {
+    //     _stats.plays = 0;
+    //     _stats.wins = 0;
+    //     _stats.total = 0;
+    // }
 };
 
 export const isSolved = () => ss.cells?.every(c => c.weight === 0);
@@ -169,7 +169,7 @@ export const onChallenge = (op) => {
     if (ss.cells) {
         onStart();
     } else {
-        makePuzzle();
+        post(makePuzzle);
     }
 
     ss.seenPage[appSubKey()] = true;

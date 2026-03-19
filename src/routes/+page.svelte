@@ -1,7 +1,9 @@
 <script>
+	import { OP_EASY } from '../const';
 	import GamePage from '../Game Page.svelte';
 	import Home from '../Home.svelte';
-	import Splash from '../Splash.svelte';
+	import { onChallenge } from '../shared.svelte';
+	import SplashIn from '../Splash Pitch In.svelte';
 	import { ss } from '../state.svelte';
 	import { clientRect, post } from '../utils';
 
@@ -42,13 +44,17 @@
 		};
 	});
 
-	let splash = $state(true);
-	post(() => (splash = false), 2000);
+	ss.splash = true;
+
+	post(() => {
+		ss.splash = false;
+		onChallenge(OP_EASY);
+	}, 2000);
 </script>
 
 <div class="app">
-	{#if splash}
-		<Splash />
+	{#if ss.splash}
+		<SplashIn />
 	{:else}
 		<div class="content bg" style="scale: {scale};">
 			<GamePage />
