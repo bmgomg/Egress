@@ -5,16 +5,24 @@
   "configurations": [
     {
       "version": "dev",
-      "name": "Launch Edge",
+      "name": "Edge",
       "request": "launch",
       "type": "msedge",
       "url": "http://localhost:2227",
       "webRoot": "${workspaceFolder}"
     },
     {
+      "version": "dev",
+      "name": "Edge Integrated",
+      "request": "launch",
+      "type": "editor-browser",
+      "url": "http://localhost:2227",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
       "type": "chrome",
       "request": "launch",
-      "name": "Launch Chrome against localhost",
+      "name": "Chrome",
       "url": "http://localhost:2227",
       "webRoot": "${workspaceFolder}"
     }
