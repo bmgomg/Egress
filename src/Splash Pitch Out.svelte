@@ -1,28 +1,18 @@
 <script>
-	import { OP_EASY } from './const';
-	import { onChallenge } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
 
-	const onClick = (e) => {
-		if (!_sound.musicPlayed) {
-			_sound.playMusic();
-		}
-
+	const onPointerDown = (e) => {
 		if (e.ctrlKey) {
-			_sound.playVoice(ss.voiceLine);
-		} else if (e.altKey) {
-			delete ss.splash;
-			onChallenge(OP_EASY);
+			_sound.playVoice(++ss.voiceLine);
 		}
 	};
 </script>
 
-<div class="splash no-highlight" onpointerdown={onClick}>
-	<div class="title-ornament">A PUZZLE OF</div>
-	<div class="title-ornament">GRAVITY AND ESCAPE</div>
+<div class="splash no-highlight" onpointerdown={onPointerDown}>
 	<div class="title">Egress</div>
 	<div class="byline">by Beautiful Mind Games</div>
+	<div class="tagline">Think outside the box — then empty it.</div>
 </div>
 
 <style>
@@ -54,19 +44,6 @@
 			0 0 80px #c8a84a33;
 	}
 
-	.title-ornament {
-		font-size: 2.5vw;
-		letter-spacing: 0.6em;
-		color: var(--gold-dim);
-		text-align: center;
-		margin-bottom: 2vw;
-		position: relative;
-		z-index: 1;
-		opacity: 0;
-		transform: scale(0.5);
-		animation: emerge 5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
-	}
-
 	.byline {
 		font-family: EBG;
 		font-style: italic;
@@ -82,6 +59,21 @@
 		animation: emerge 5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
 	}
 
+	.tagline {
+		font-family: EBG;
+		font-style: italic;
+		font-size: 4.6vw;
+		color: #c0b09080;
+		letter-spacing: 0.04em;
+		text-align: center;
+		margin-top: 8vw;
+		position: relative;
+		z-index: 1;
+		opacity: 0;
+		animation: fadein 1.8s ease forwards;
+		animation-delay: 6s;
+	}
+
 	@keyframes emerge {
 		0% {
 			opacity: 0;
@@ -90,6 +82,15 @@
 		100% {
 			opacity: 1;
 			transform: scale(1);
+		}
+	}
+
+	@keyframes fadein {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
 		}
 	}
 </style>
