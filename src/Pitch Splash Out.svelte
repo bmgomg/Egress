@@ -71,7 +71,7 @@
 		z-index: 1;
 		opacity: 0;
 		animation: fadein 1.8s ease forwards;
-		animation-delay: 4s;
+		animation-delay: 6s;
 	}
 
 	@keyframes emerge {

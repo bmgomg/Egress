@@ -45,6 +45,4 @@ export const INTRO_PUZZLES = [
 
 export const PITCH_PUZZLES = [
     { grid: [[2, 1, 1], [2, 2, 1], [1, 1, 2]], door: { wall: 1, corner: 0 }, solution: ['CW', 'CW', 'CW', 'CW', 'CCW', 'CCW', 'CCW'] },
-    { grid: [[2, 1, 1], [2, 2, 2], [2, 2, 2]], door: { wall: 3, corner: 0 }, slide: SLIDE_DOWN, solution: ['CCW', 'CCW', 'CCW', 'CCW', 'CW'] },
-    { grid: [[1, 2, 1], [1, 1, 1], [1, 2, 1]], door: { wall: 3, corner: 1 }, slide: SLIDE_UP, solution: ['CCW', 'CCW', 'CW', 'CW', 'CCW'] },
 ];

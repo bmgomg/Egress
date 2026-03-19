@@ -53,7 +53,7 @@ const v11 = new Howl({ src: Line11 });
 const v12 = new Howl({ src: Line12 });
 const v13 = new Howl({ src: Line13 });
 const v14 = new Howl({ src: Line14 });
-const LINES = [v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14];
+const LINES = [v1, v2, v10, v13, v14];
 
 export const _sound = $state({
     sfx: true,
