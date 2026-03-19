@@ -3,7 +3,18 @@
 	import Box from './Box.svelte';
 	import Cell from './Cell.svelte';
 	import { CELL_MARGIN, CELL_SIZE, COLUMN_TRANSITIONS, BOT, LEFT, NO_SLIDE, RIGHT, SLIDE_DOWN, TOP } from './const';
-	import { findCell, indexOf, isSolvable, isSolved, makePuzzle, persist, playSolution, setToInitial, slideOp, starRating } from './shared.svelte';
+	import {
+		findCell,
+		indexOf,
+		isSolvable,
+		isSolved,
+		makePuzzle,
+		persist,
+		playSolution,
+		setToInitial,
+		slideOp,
+		starRating
+	} from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { _stats, ss } from './state.svelte';
 	import { post } from './utils';
@@ -69,6 +80,8 @@
 	const applyGravity = () => {
 		const newCells = [...ss.cells];
 
+		let maxOff = 0;
+
 		for (let c = 0; c < ss.size; c++) {
 			const colKey = newCells
 				.filter((cob) => cob.col === c + 1)
@@ -99,6 +112,12 @@
 				const cell = findCell(newCells, r + 1, c + 1);
 				cell.newRow = cell.row + off;
 
+				const d = Math.abs(off);
+
+				if (d > maxOff) {
+					maxOff = d;
+				}
+
 				if (cell.newRow === 0) {
 					cell.newRow -= 0.5;
 				} else if (cell.newRow === ss.size + 1) {
@@ -113,7 +132,7 @@
 			_sound.play('link2', { rate: 0.9 });
 		}
 
-		post(onGravityEnd, 650);
+		post(onGravityEnd, maxOff * 200 + 50);
 	};
 
 	const onGravityEnd = () => {
@@ -226,17 +245,17 @@
 	const rotate = $derived(`${dance ? 360 : ss.spin * 90}deg`);
 	const duration = $derived(dance ? 1 : ss.spin ? 0.5 : 0);
 	const tfn = $derived(ss.spin ? 'linear' : 'ease-in-out');
+	const sz = $derived((CELL_SIZE + CELL_MARGIN * 2) * ss.size + CELL_MARGIN * 4);
+
+	const th = 10;
+	const style = $derived(
+		`rotate: ${rotate}; transition-duration: ${duration}s; width: ${sz + th * 2}px; transition-timing-function: ${tfn};`
+	);
 </script>
 
 {#if ss.cells && (ss.practice || !ss.levelPrompt)}
 	{@const sz = (CELL_SIZE + CELL_MARGIN * 2) * ss.size + CELL_MARGIN * 4}
-	{@const th = 10}
-	<div
-		bind:this={_this}
-		class="board"
-		style="rotate: {rotate}; transition-duration: {duration}s; width: {sz + th * 2}px; transition-timing-function: {tfn};"
-		in:fade
-	>
+	<div bind:this={_this} class="board" {style} in:fade>
 		<div class="box {ss.flip ? 'swirl' : ''}"><Box {sz} {th} /></div>
 		<div bind:this={inner} class="inner {ss.flip ? 'swirl' : ''}">
 			<div class="cells">
