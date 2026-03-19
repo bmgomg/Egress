@@ -8,6 +8,8 @@
 	const onHome = () => {
 		_sound.tap();
 		ss.home = true;
+
+		post(() => ss.splash = 'out', 4000);
 	};
 
 	const onResetStats = () => {

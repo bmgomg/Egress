@@ -7,8 +7,13 @@
 	import Stats from './Stats.svelte';
 	import OverPanel from './Over Panel.svelte';
 	import DoorTip from './Door Tip.svelte';
+	import { _log } from './shared.svelte';
 
 	const hidden = $derived(ss.splash || ss.home);
+
+	$effect(() => {
+		_log('hidden = ' + hidden);
+	});
 </script>
 
 <div class="game-page {hidden ? 'hidden' : ''}">
@@ -17,7 +22,7 @@
 	<Scoreboard />
 	<Board />
 	<Controls />
-	<OverPanel/>
+	<OverPanel />
 	<DoorTip />
 	<div class="divider"></div>
 	<Toolbar />

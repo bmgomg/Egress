@@ -4,6 +4,7 @@
 	import Home from '../Home.svelte';
 	import { onChallenge } from '../shared.svelte';
 	import SplashIn from '../Splash Pitch In.svelte';
+	import SplashOut from '../Splash Pitch Out.svelte';
 	import { ss } from '../state.svelte';
 	import { clientRect, post } from '../utils';
 
@@ -44,7 +45,7 @@
 		};
 	});
 
-	ss.splash = true;
+	ss.splash = 'in';
 
 	post(() => {
 		ss.splash = false;
@@ -53,8 +54,10 @@
 </script>
 
 <div class="app">
-	{#if ss.splash}
+	{#if ss.splash === 'in'}
 		<SplashIn />
+	{:else if ss.splash === 'out'}
+		<SplashOut />
 	{:else}
 		<div class="content bg" style="scale: {scale};">
 			<GamePage />
