@@ -1,5 +1,5 @@
 import { sample } from 'lodash-es';
-import { APP_STATE, BLOCK, BUBBLE, EMPTY, INTRO_PUZZLES, NO_SLIDE, OP_EASY, OP_NOT_EASY, SLIDE_DOWN, SLIDE_UP } from './const';
+import { APP_STATE, BLOCK, BUBBLE, EMPTY, INTRO_PUZZLES, NO_SLIDE, OP_EASY, OP_NOT_EASY, PITCH_PUZZLE, SLIDE_DOWN, SLIDE_UP } from './const';
 import { canSolve, generatePuzzle } from './core';
 import { _sound } from './sound.svelte';
 import { _stats, ss } from './state.svelte';
@@ -108,36 +108,7 @@ export const makePuzzle = () => {
     delete ss.over;
     delete ss.deadend;
 
-    const steps = ss.challenge === OP_EASY ? [3, 7] : ss.challenge === OP_NOT_EASY ? [5, 9] : [9, 15];
-
-    let pzl;
-
-    if (ss.challenge === OP_NOT_EASY && _stats.plays < INTRO_PUZZLES.length) {
-        pzl = nextIntroPuzzle(_stats.plays);
-    } else {
-        if (ss.challenge > OP_EASY) {
-            ss.slide = sample([SLIDE_UP, SLIDE_DOWN]);
-
-            // don't allow the same slide for three plays in a row
-            const i = ss.challenge - OP_NOT_EASY;
-            const recents = ss.recentSlides[i];
-            const count = recents.length;
-
-            if (count > 1) {
-                if (recents[count - 1] === recents[count - 2] && recents[count - 2] === ss.slide) {
-                    ss.slide = -ss.slide;
-                }
-
-                ss.recentSlides[i].shift();
-            }
-
-            ss.recentSlides[i].push(ss.slide);
-        }
-
-        pzl = generatePuzzle(ss.size, steps[0], steps[1], slideOp());
-    }
-
-    const { grid, door, solution } = pzl;
+    const { grid, door, solution } = PITCH_PUZZLE;
 
     let cells = makeCells(grid);
     ss.door = door;
