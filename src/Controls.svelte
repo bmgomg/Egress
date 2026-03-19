@@ -3,7 +3,7 @@
 	import CW from '$lib/images/CW.webp';
 	import Reset from '$lib/images/Restart.webp';
 	import { fade } from 'svelte/transition';
-	import { isAnimated, isInitial, isSolved, tipping, whoosh } from './shared.svelte';
+	import { isAnimated, isSolved, tipping, whoosh } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { ss } from './state.svelte';
 	import ToolButton from './Tool Button.svelte';
@@ -25,7 +25,7 @@
 	const solved = $derived(isSolved());
 	const hidden = $derived(solved || ss.surrender || tipping());
 	const canRotate = $derived(!isAnimated() && !solved);
-	const canReset = $derived(!isInitial() && canRotate);
+	const canReset = $derived(canRotate && ss.moves > 0);
 </script>
 
 {#if !hidden}

@@ -224,9 +224,14 @@ export const starRating = () => {
     }
 
     const par = ss.solution?.length || 0;
-    const d = ss.moves - par;
 
-    return d < 1 ? 5 : d < 2 ? 4 : d < 3 ? 3 : d < 4 ? 2 : 1;
+    if (ss.moves === par) {
+        return 5;
+    }
+
+    const d = ss.moves / par;
+
+    return d < 1.2 ? 4 : d < 1.4 ? 3 : d < 1.6 ? 2 : 1;
 };
 
 export const whoosh = () => post(() => _sound.play('link1', { rate: 0.8 }), 200);
