@@ -34,7 +34,7 @@
 
 	.value {
 		font-family: Florentina;
-		font-size: 18px;
+		font-size: 19px;
 		opacity: 0.5;
 		cursor: pointer;
 		width: 1.2em;
