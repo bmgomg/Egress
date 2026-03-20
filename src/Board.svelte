@@ -137,7 +137,7 @@
 		}
 
 		for (const off of uniqOffs) {
-			post(() => _sound.play(off < 0 ?'plop' : 'drop', { rate: off < 0 ? 2 : 4 }), Math.abs(off) * 150);
+			post(() => _sound.play(off < 0 ?'plop' : 'drop', { rate: off < 0 ? 2 : 4 }), Math.abs(off) * 200);
 		}
 
 		post(onGravityEnd, maxOff * 200 + 50);
