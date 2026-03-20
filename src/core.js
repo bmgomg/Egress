@@ -1,12 +1,10 @@
 import { BLOCK, BUBBLE, EMPTY, NO_SLIDE } from './const';
 
-// –– Door helpers ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
 const toPhysCorner = (wall, corner) => [[0, 1], [1, 2], [3, 2], [0, 3]][wall][corner];
 
 const fromPhysCorner = (phys, wall) => ({ 0: { 0: 0, 3: 0 }, 1: { 0: 1, 1: 0 }, 2: { 1: 1, 2: 1 }, 3: { 2: 0, 3: 1 } })[phys][wall];
 
-// Side-wall doors slide to a fixed corner based on slide direction.
+// side-wall doors slide to a fixed corner based on slide direction.
 // slide < 0 => gap at bottom (corner = 1)
 // slide > 0 => gap at top (corner = 0)
 // slide = 0 => fixed, stays where it lands
@@ -38,8 +36,6 @@ const rotateDoorCCW = (door, slide) => {
     return normalizeDoor({ wall: nw, corner: fromPhysCorner(np, nw) }, slide);
 };
 
-// –– Grid rotation –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
 const rotateGridCW = (grid, N) => {
     const ng = Array.from({ length: N }, () => Array(N).fill(0));
 
@@ -64,8 +60,6 @@ const rotateGridCCW = (grid, N) => {
     return ng;
 };
 
-// –– Physics –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
 const getExitCol = (door, N) => {
     if (door.wall !== 0 && door.wall !== 2) {
         return null;
@@ -82,7 +76,7 @@ const settleColumn = (col, topExit, botExit) => {
     while (changed) {
         changed = false;
 
-        // Block on 2+ bubbles => rises
+        // block on 2+ bubbles => rises
         for (let r = 0; r < N; r++) {
             if (c[r] !== BLOCK) {
                 continue;
@@ -107,7 +101,7 @@ const settleColumn = (col, topExit, botExit) => {
                     break;
                 }
             } else if (nBubbles === 1) {
-                // Block on 1 bubble => falls together
+                // block on 1 bubble => falls together
                 if (r + 2 < N && c[r + 2] === EMPTY) {
                     c[r + 2] = BUBBLE;
                     c[r + 1] = BLOCK;
@@ -127,7 +121,7 @@ const settleColumn = (col, topExit, botExit) => {
             continue;
         }
 
-        // Lone bubble rises
+        // lone bubble rises
         for (let r = 1; r < N; r++) {
             if (c[r] === BUBBLE && c[r - 1] === EMPTY) {
                 c[r - 1] = BUBBLE;
@@ -141,14 +135,14 @@ const settleColumn = (col, topExit, botExit) => {
             continue;
         }
 
-        // Bubble exits top
+        // bubble exits top
         if (topExit && c[0] === BUBBLE) {
             c[0] = EMPTY;
             changed = true;
             continue;
         }
 
-        // Lone block falls
+        // lone block falls
         for (let r = N - 2; r >= 0; r--) {
             if (c[r] === BLOCK && c[r + 1] === EMPTY) {
                 c[r + 1] = BLOCK;
@@ -162,7 +156,7 @@ const settleColumn = (col, topExit, botExit) => {
             continue;
         }
 
-        // Block exits bottom
+        // block exits bottom
         if (botExit && c[N - 1] === BLOCK) {
             c[N - 1] = EMPTY;
             changed = true;
@@ -189,15 +183,11 @@ const applyPhysics = (grid, door, N) => {
     return g;
 };
 
-// –– Helpers –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
 const countPieces = (grid) => grid.flat().filter((x) => x !== EMPTY).length;
 
 const gridKey = (grid, door) => grid.flat().join('') + '|' + door.wall + door.corner;
 
 const isStable = (grid, door, N) => JSON.stringify(grid) === JSON.stringify(applyPhysics(grid, door, N));
-
-// –– Solver ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 // BFS — returns optimal move sequence, or null if none within maxDepth
 const solve = (grid, door, N, maxDepth, slide = NO_SLIDE) => {
@@ -239,7 +229,7 @@ const solve = (grid, door, N, maxDepth, slide = NO_SLIDE) => {
     return null;
 };
 
-// Dead-end detection — BFS capped at maxDepth
+// dead-end detection — BFS capped at maxdepth
 export const canSolve = (grid, door, slide = NO_SLIDE, maxDepth = 20) => {
     const N = grid.length;
 
@@ -277,8 +267,6 @@ export const canSolve = (grid, door, slide = NO_SLIDE, maxDepth = 20) => {
 
     return false;
 };
-
-// –– Generator –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 const makeLCG = (seed) => {
     let s = seed >>> 0;
