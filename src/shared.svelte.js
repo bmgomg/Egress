@@ -1,5 +1,5 @@
 import { sample } from 'lodash-es';
-import { APP_STATE, BLOCK, BUBBLE, EMPTY, INTRO_PUZZLES, NO_SLIDE, OP_EASY, OP_NOT_EASY, SLIDE_DOWN, SLIDE_UP, VOLUMES } from './const';
+import { APP_STATE, BLOCK, BUBBLE, EMPTY, INTRO_PUZZLES, NO_SLIDE, OP_EASY, OP_NOT_EASY, SLIDE_DOWN, SLIDE_UP } from './const';
 import { canSolve, generatePuzzle } from './core';
 import { _sound } from './sound.svelte';
 import { _stats, ss } from './state.svelte';
@@ -155,7 +155,7 @@ export const makePuzzle = () => {
 
 const onStart = () => {
     if (!_sound.musicPlayed) {
-        post(() => _sound.playMusic(VOLUMES[ss.vol]), 1000);
+        post(() => _sound.playMusic(), 1000);
     }
 };
 

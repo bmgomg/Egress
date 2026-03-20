@@ -1,7 +1,6 @@
-import sounds from '$lib/sounds/sfx.mp3';
 import music from '$lib/sounds/music.mp3';
+import sounds from '$lib/sounds/sfx.mp3';
 import { Howl } from 'howler/dist/howler.core.min';
-import { ss } from './state.svelte';
 
 const sprite = {
     click: [0, 160],
@@ -24,12 +23,14 @@ const sprite = {
     won: [12680, 2010],
 };
 
+const MUSIC_VOLUMES = [0, 0.25, 0.5, 0.8];
+
 const howl = new Howl({ src: [sounds], sprite });
 const loop = new Howl({ src: [music], loop: true });
 
 export const _sound = $state({
     sfx: true,
-    music: true,
+    music: 2,
     play: (id, options = {}) => {
         const { rate = 1, volume = 1 } = options;
 
@@ -39,17 +40,14 @@ export const _sound = $state({
             howl.volume(volume);
         }
     },
-
     tap: () => howl.play('tap'),
-    playMusic: (vol = 0.5) => {
-        if (_sound.music) {
-            if (!_sound.musicPlayed) {
-                _sound.musicPlayed = true;
-                loop.play();
-            }
-            
-            loop.volume(vol);
+    playMusic: () => {
+        if (!_sound.musicPlayed) {
+            _sound.musicPlayed = true;
+            loop.play();
         }
+
+        loop.volume(MUSIC_VOLUMES[_sound.music]);
     },
     stopMusic: () => {
         loop.stop();

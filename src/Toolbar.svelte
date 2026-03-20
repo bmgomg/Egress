@@ -1,6 +1,6 @@
 <script>
-	import { VOLUMES } from './const';
-	import { isAnimated, isInitial, isSolved, persist, playSolution, tipping, swhoosh, whoosh } from './shared.svelte';
+	import MusicVolume from './Music Volume.svelte';
+	import { isAnimated, isInitial, isSolved, persist, playSolution, swhoosh, tipping, whoosh } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { _stats, ss } from './state.svelte';
 	import TextButton from './Text Button.svelte';
@@ -51,19 +51,6 @@
 		persist(true);
 	};
 
-	const onMusic = () => {
-		// _sound.music = !_sound.music;
-
-		if (_sound.music) {
-			ss.vol = ss.vol === VOLUMES.length - 1 ? 0 : ss.vol + 1;
-			_sound.playMusic(VOLUMES[ss.vol]);
-		} else {
-			_sound.stopMusic();
-		}
-
-		persist(true);
-	};
-
 	const canHome = $derived(!isAnimated() && !ss.surrender);
 	const canSurrender = $derived(!isSolved() && !ss.surrender && !tipping());
 	const canResetStats = $derived(_stats.plays > 0);
@@ -74,7 +61,7 @@
 	<TextButton id="tb-stats" text={['Reset', 'Stats']} disabled={!canResetStats} onClick={onResetStats} />
 	<TextButton id="tb-surrender" text={['Solve', 'For Me']} disabled={!canSurrender} onClick={onSurrender} />
 	<TextButton id="tb-sfx" text={[' SFX ', _sound.sfx ? 'On' : 'Off']} onClick={onSfx} />
-	<TextButton id="tb-music" text={['Music', _sound.music ? 'On' : 'Off']} onClick={onMusic} />
+	<MusicVolume />
 </div>
 
 <style>
