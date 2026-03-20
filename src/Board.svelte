@@ -69,7 +69,7 @@
 
 		post(() => {
 			ss.door.drop = slide === SLIDE_DOWN ? 1 : -1;
-			post(() => _sound.play('drop'), 280);
+			post(() => _sound.play('drop'), 400);
 
 			post(() => {
 				delete ss.door.drop;

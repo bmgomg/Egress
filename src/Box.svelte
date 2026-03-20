@@ -78,7 +78,7 @@
 
 <style>
 	.drop {
-		transition: translate 0.4s cubic-bezier(0.15, 0.055, 0.675, 0.19);
+		transition: translate 0.5s cubic-bezier(0.15, 0.055, 0.675, 0.19);
 	}
 
 	.box-tl {
