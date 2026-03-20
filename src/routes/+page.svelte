@@ -26,7 +26,7 @@
 				scy = r.height / 800;
 			}
 
-			scale = Math.min(scx, scy) * 1.1;
+			scale = Math.min(scx, scy);
 		};
 
 		onResize();

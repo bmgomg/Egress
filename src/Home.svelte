@@ -48,6 +48,7 @@
 		justify-items: center;
 		user-select: none;
 		font-size: 18px;
+		scale: 1.05;
 	}
 
 	.title-ornament {
@@ -95,7 +96,7 @@
 		display: grid;
 		grid-auto-flow: column;
 		gap: 15px;
-		font-size: 18px;
+		font-size: 17px;
 	}
 
 	.divider {
