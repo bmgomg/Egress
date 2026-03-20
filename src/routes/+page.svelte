@@ -50,7 +50,7 @@
 	post(() => {
 		ss.splash = false;
 		onChallenge(OP_EASY);
-	}, 2000);
+	}, 9000);
 </script>
 
 <div class="app">

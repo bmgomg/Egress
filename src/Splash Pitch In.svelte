@@ -48,7 +48,7 @@
 		z-index: 1;
 		opacity: 0;
 		transform: scale(0.5);
-		animation: emerge 5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+		animation: emerge 5s cubic-bezier(0.16, 1, 0.3, 1) 3.5s forwards;
 		text-shadow:
 			0 0 40px #c8a84a80,
 			0 0 80px #c8a84a33;
@@ -64,7 +64,7 @@
 		z-index: 1;
 		opacity: 0;
 		transform: scale(0.5);
-		animation: emerge 5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+		animation: emerge 5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
 	}
 
 	.byline {
@@ -79,7 +79,7 @@
 		z-index: 1;
 		opacity: 0;
 		transform: scale(0.5);
-		animation: emerge 5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+		animation: emerge 5s cubic-bezier(0.16, 1, 0.3, 1) 5.5s forwards;
 	}
 
 	@keyframes emerge {
