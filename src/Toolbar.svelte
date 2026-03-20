@@ -1,4 +1,5 @@
 <script>
+	import { VOLUMES } from './const';
 	import { isAnimated, isInitial, isSolved, persist, playSolution, tipping, swhoosh, whoosh } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import { _stats, ss } from './state.svelte';
@@ -51,10 +52,11 @@
 	};
 
 	const onMusic = () => {
-		_sound.music = !_sound.music;
+		// _sound.music = !_sound.music;
 
 		if (_sound.music) {
-			_sound.playMusic();
+			ss.vol = ss.vol === VOLUMES.length - 1 ? 0 : ss.vol + 1;
+			_sound.playMusic(VOLUMES[ss.vol]);
 		} else {
 			_sound.stopMusic();
 		}
