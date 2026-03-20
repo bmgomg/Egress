@@ -18,6 +18,7 @@
 	import { _sound } from './sound.svelte';
 	import { _stats, ss } from './state.svelte';
 	import { post } from './utils';
+	import { SvelteSet } from 'svelte/reactivity';
 
 	let _this = $state(null);
 	let inner = $state(null);
@@ -81,6 +82,7 @@
 		const newCells = [...ss.cells];
 
 		let maxOff = 0;
+		const uniqOffs = new SvelteSet();
 
 		for (let c = 0; c < ss.size; c++) {
 			const colKey = newCells
@@ -122,6 +124,8 @@
 					cell.newRow -= 0.5;
 				} else if (cell.newRow === ss.size + 1) {
 					cell.newRow += 0.5;
+				} else if (cell.weight) {
+					uniqOffs.add(off);
 				}
 			}
 		}
@@ -130,6 +134,10 @@
 
 		if (ss.cells.some((c) => c.newRow < 1 || c.newRow > ss.size)) {
 			_sound.play('link2', { rate: 0.9 });
+		}
+
+		for (const off of uniqOffs) {
+			post(() => _sound.play(off < 0 ?'plop' : 'drop', { rate: off < 0 ? 2 : 4 }), Math.abs(off) * 150);
 		}
 
 		post(onGravityEnd, maxOff * 200 + 50);
